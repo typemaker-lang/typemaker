@@ -253,6 +253,14 @@ virtual precedence(1) /datum/foo/proc/Bar() -> void {
 }
 ```
 
+## .dmm Inclusion
+
+`.dmm` files are now included via the `#include_map` directive
+
+```dm
+#include_map "_maps/BoxStation/BoxStation.dmm"
+```
+
 ## DreamMaker Compatibility
 
 Option to include a `.dme` which will be the prefix for the output `.dme` the compiler genenerates.
@@ -346,6 +354,7 @@ Automatically include all `.tm` files in a project root
         "major": "<511/512/etc...>",
         "minor": "<1443/1444/etc...>"
     },
+    "debug": "<true/false, default true, sets the DEBUG preprocessor directive>",
     "scripts":
     {
         "pre_transpile": "<Shell command to invoke before beginning transpilation>",
