@@ -28,7 +28,7 @@ All vars are implicitly prefixed. Manual prefixing is required if type deduction
 
 Proc parameters forced to follow the `type/name` syntax without leading slash and are validated at the call site if no default values exist
 
-New prefixes: `/bool`, `/string`, `/path`, `/int`, `/float`, `/interface`. `/nullable` comes before any prefix if the variable may be `null`. `/path/concrete` limits to non-abstract paths and is the only `/path` type usable in `new` statements, `/list/<another path>` now allows accessing the list strongly
+New prefixes: `/resource`, `/bool`, `/string`, `/path`, `/int`, `/float`, `/interface`. `/nullable` comes before any prefix if the variable may be `null`. `/path/concrete` limits to non-abstract paths and is the only `/path` type usable in `new` statements, `/list/<another path>` now allows accessing the list strongly
 
 No default initialization for `/string` and `/path`
 
