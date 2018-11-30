@@ -357,7 +357,7 @@ Automatically include all `.tm` files in a project root
         "enforce_tabs": "<optional true/false, false enforces spaces, default non-enforce>",
         "allman_braces": "<optional true/false, false enforces BSD KNF, default non-enforce>",
         "no_operator_overloading": "<true/false, default true>",
-        "no_single_line_blocks": "<true/false, default true>",
+        "no_single_line_blocks": "<true/false, default false>",
         "other_options": "to come"
     }
 }
