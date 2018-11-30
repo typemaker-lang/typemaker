@@ -10,76 +10,6 @@ No but seriously, I just wanna make the project more maintainable
 
 # Features
 
-## Cross platform, easy installation
-
-Single binary installer, ideally workable via shell command ala rust. Installs to ~/.typemaker/bin, multiple .so/.dlls fine provided no system dependencies required. Overwrite for updates. Delete to uninstall.
-
-Compiler named `tmc`
-
-### BYOND Version Management
-
-Projects specify exactly which BYOND version to use for compilation in `typemaker.json` file. `tmc` handles downloading and installing versions in `~/.typemaker/byond` as necessary.
-
-## DreamMaker Compatibility
-
-Option to include a `.dme` which will be the prefix for the output `.dme` the compiler genenerates.
-
-If done, the `unsafe` block is unlocked to allow assigning from and calling into DM written code
-
-```dm
-/proc/dm_access_example() -> void {
-    var/int/test
-    var/int/test2
-    unsafe {
-        //typechecking stopped for this block
-        var/datum/dm_declared_datum/D = new
-        test = D.Func()
-    }
-    
-    //test now assumed to be valid
-    //test2 still unassigned
-}
-```
-
-## Optimization
-
-Transpiled code will use `:` access operators wherever possible. Code transpiled as relatively pathed for compiler optimization. Unreferenced code will be eliminated (`.vars` usage does not prevent this)
-
-### Explicit keyword
-
-The explicit keyword keeps variables/datum/functions from undercode dead code elimination. Use this when these are valid reflection types
-
-```dm
-explicit /datum/example {
-    //none of these vars, procs, or the datum will be optimized out
-    var/int/x = 4;
-}
-
-/datum/some_things_eliminated {
-    var/int/wont_be_elimiated_because_of_proc_foo = 4;
-    var/int/wont_be_elimiated_because_of_proc_WontBeEliminated = 4;
-
-    var/nullable/string/this_will_be_eliminated;
-    explicit var/nullable/string/this_wont_be_elimiated;
-}
-
-/datum/some_things_eliminated/proc/WillBeElminated() -> void {}
-
-explicit /datum/some_things_eliminated/proc/WontBeElminated() -> void {
-    wont_be_elimiated_because_of_proc_WontBeEliminated = 5;
-}
-
-/datum/some_things_eliminated/proc/WontBeElminatedBecauseOfProcFoo() -> void {}
-
-//won't be eliminated
-explicit /proc/foo() -> void {
-    var/datum/some_things_elimiated/D = ;
-    D.wont_be_elimiated_because_of_proc_foo = 5;
-    D.WontBeElminatedBecauseOfProcFoo();
-}
-
-```
-
 ## C-Style Blocks
 
 Statements must end with `;`s. Blocks must either use `{}`s or be a single statement. Entire program may be written on one line
@@ -322,6 +252,76 @@ virtual precedence(1) /datum/foo/proc/Bar() -> void {
     //this will be run second when called
 }
 ```
+
+## DreamMaker Compatibility
+
+Option to include a `.dme` which will be the prefix for the output `.dme` the compiler genenerates.
+
+If done, the `unsafe` block is unlocked to allow assigning from and calling into DM written code
+
+```dm
+/proc/dm_access_example() -> void {
+    var/int/test
+    var/int/test2
+    unsafe {
+        //typechecking stopped for this block
+        var/datum/dm_declared_datum/D = new
+        test = D.Func()
+    }
+    
+    //test now assumed to be valid
+    //test2 still unassigned
+}
+```
+
+## Optimization
+
+Transpiled code will use `:` access operators wherever possible. Code transpiled as relatively pathed for compiler optimization. Unreferenced code will be eliminated (`.vars` usage does not prevent this)
+
+### Explicit keyword
+
+The explicit keyword keeps variables/datum/functions from undercode dead code elimination. Use this when these are valid reflection types
+
+```dm
+explicit /datum/example {
+    //none of these vars, procs, or the datum will be optimized out
+    var/int/x = 4;
+}
+
+/datum/some_things_eliminated {
+    var/int/wont_be_elimiated_because_of_proc_foo = 4;
+    var/int/wont_be_elimiated_because_of_proc_WontBeEliminated = 4;
+
+    var/nullable/string/this_will_be_eliminated;
+    explicit var/nullable/string/this_wont_be_elimiated;
+}
+
+/datum/some_things_eliminated/proc/WillBeElminated() -> void {}
+
+explicit /datum/some_things_eliminated/proc/WontBeElminated() -> void {
+    wont_be_elimiated_because_of_proc_WontBeEliminated = 5;
+}
+
+/datum/some_things_eliminated/proc/WontBeElminatedBecauseOfProcFoo() -> void {}
+
+//won't be eliminated
+explicit /proc/foo() -> void {
+    var/datum/some_things_elimiated/D = ;
+    D.wont_be_elimiated_because_of_proc_foo = 5;
+    D.WontBeElminatedBecauseOfProcFoo();
+}
+
+```
+
+## Cross platform, easy installation
+
+Single binary installer, ideally workable via shell command ala rust. Installs to ~/.typemaker/bin, multiple .so/.dlls fine provided no system dependencies required. Overwrite for updates. Delete to uninstall.
+
+Compiler named `tmc`
+
+### BYOND Version Management
+
+Projects specify exactly which BYOND version to use for compilation in `typemaker.json` file. `tmc` handles downloading and installing versions in `~/.typemaker/byond` as necessary.
 
 ## Language Server and Linting
 
