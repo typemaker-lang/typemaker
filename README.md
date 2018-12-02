@@ -56,6 +56,47 @@ Non-nullable var types in datum definitions must be initialized in `/New()`
 }
 ```
 
+### Enums
+
+The `/enum` type cannot be used on it's own and represents a strongly typed set of values. May be freely converted to and from their backing type (int or string). Automatic incrementing int's by default. If strings, value must be declared
+
+```dm
+/enum/Thing {
+	A,	//default 0
+	B,	//default 1
+	C = 17,
+	D	//default 18
+}
+
+/enum/StringEnum {
+	A = "asdf",
+	B = "fdsa"
+}
+
+/proc/Example() -> void {
+	var/enum/Thing/X = /enum/Thing/C;
+	var/int/C = X;
+	C += 20;
+	//no backcast validation
+	X = C;
+}
+```
+
+### Nameof
+
+`nameof()` simply takes any identifier and stringifies the most significant portion of it
+
+```dm
+/datum/foo {
+	var/string/asdf = "fdsa";
+}
+
+/proc/Example -> void {
+	var/string/X = nameof(/proc); //"proc"
+	X = nameof(/datum/foo/proc/Example); //"Example"
+	X = nameof(asdf); //"asdf"
+}
+
 ## Access Modifiers
 
 ### Static Procs
