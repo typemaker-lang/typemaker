@@ -73,7 +73,7 @@ static /datum/test/proc/Foo() -> void {
 }
 ```
 
-### Public, Protected, Private
+### Public, Protected
 
 All Typemaker accesses default to private. All DreamMaker access defaults to public
 
@@ -82,17 +82,14 @@ All Typemaker accesses default to private. All DreamMaker access defaults to pub
 
 /datum/test
 {
-    private var/int/only_accessible_by_test = 1;
+    var/int/only_accessible_by_test = 1;
     protected var/int/only_accessible_by_test_and_children = 2;
     public var/int/accessible_by_everyone = 3;
-
-    var/int/also_only_accessible_by_test = 4;
 }
 
 public /datum/test/proc/ThisCanBeCalledByAnyone() -> void {}
 protected /datum/test/proc/ThisCanOnlyBeCalledByTestOrChildren -> void {}
-private /datum/test/proc/ThisCanOnlyBeCalledByTest -> void {}
-/datum/test/proc/AlsoCanOnlyBeCalledByTest -> void {}
+/datum/test/proc/ThisCanOnlyBeCalledByTest -> void {}
 ```
 
 ### Partial, Sealed
