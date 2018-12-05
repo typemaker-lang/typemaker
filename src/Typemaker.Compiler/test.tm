@@ -25,4 +25,11 @@ explicit /proc/foo() -> void {
     var/datum/some_things_elimiated/D = ;
     D.wont_be_elimiated_because_of_proc_foo = 5;
     D.WontBeElminatedBecauseOfProcFoo();
+
+	var/string/x = "basic string";
+
+	var/resource/e = 'path/to/asdf';
+
+	var/string/y = "string with [true] embedded expr";
+	var/string/z = "multiple ["embedded ["expression"]"] string";
 }
