@@ -293,10 +293,10 @@ virtual precedence(1) /datum/foo/proc/Bar() -> void {
 
 ## .dmm Inclusion
 
-`.dmm` files are now included via the `#include_map` directive
+`.dmm` files are now included via the top level `map()` directive
 
 ```dm
-#include_map "_maps/BoxStation/BoxStation.dmm"
+map('_maps/BoxStation/BoxStation.dmm')
 ```
 
 ## DreamMaker Compatibility
