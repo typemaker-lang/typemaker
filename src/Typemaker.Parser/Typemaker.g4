@@ -16,8 +16,10 @@ compileUnit
 
 NUMBER: '0'..'9';
 
-OPENC: '/*';
-CLOSEC: '*/';
+
+BLOCKCOMMENT: '/*' .*? '*/' -> skip;
+LINECOMMENT: '//' ~[\r\n]* -> skip;
+
 INC: '++';
 DEC: '--';
 PEQUALS: '+=';
@@ -53,7 +55,13 @@ QUESTION: '?';
 EXCLAIM: '!';
 AT: '@';
 BSLASH: '\\';
-SQUOTE: '\'';
+
+RES: '\'' .+? '\'';
+LSTRING: '"' ('\\[' | ~[[\r\n'])* '[';
+RSTRING: ']' ('\\"' | ~["\r\n])* '"'; 
+CSTRING: ']' ('\\[' | ~[[\r\n])* '['; 
+FSTRING: '"' ('\\"' | ~["\r\n])* '"';
+
 DQUOTE: '"';
 NEW: 'new';
 PULL: '<<';
@@ -78,7 +86,17 @@ DO: 'do';
 AS: 'as';
 STATIC: 'static';
 VAR: 'var';
-DSLASH: '//';
+VOID: 'void';
+EXPLICIT: 'explicit';
+
+PUBLIC: 'public';
+PROTECTED: 'protected';
+VIRTUAL: 'virtual';
+SEALED: 'sealed';
+PRECEDENCE: 'precedence';
+FINAL: 'final';
+ABSTRACT: 'abstract';
+INLINE: 'inline';
 SLASH: '/';
 CONCRETE: 'concrete';
 FILE: 'file';
@@ -98,6 +116,7 @@ VERB: 'verb';
 SET: 'set';
 WORLD: 'world';
 
-IDENTIFIER: [a-zA-Z][a-zA-Z0-9]*;
+IDENTIFIER: [_a-zA-Z][_a-zA-Z0-9]*;
 
-WS: [ \n\t\r]+ -> skip;
+NEWLINE: [\n] -> channel(HIDDEN);
+WS: [ \t\r]+ -> channel(HIDDEN);
