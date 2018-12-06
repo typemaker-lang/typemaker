@@ -114,7 +114,7 @@ static /datum/test/proc/Foo() -> void {
 }
 ```
 
-### Public, Protected
+### Public, Protected, Readonly
 
 All Typemaker accesses default to private. All DreamMaker access defaults to public
 
@@ -124,8 +124,14 @@ All Typemaker accesses default to private. All DreamMaker access defaults to pub
 /datum/test
 {
     var/int/only_accessible_by_test = 1;
+	readonly var/int/can_only_be_changed_in_constructor = 5;
     protected var/int/only_accessible_by_test_and_children = 2;
     public var/int/accessible_by_everyone = 3;
+}
+
+/datum/test/New() -> void {
+	..();
+	can_only_be_changed_in_constructor = 7;
 }
 
 public /datum/test/proc/ThisCanBeCalledByAnyone() -> void {}
@@ -171,13 +177,24 @@ Overridden procs may remove the `/nullable` spec from return types.
 
 Virtual/abstract procs must be public or protected
 
-```dm
+`New()` is the only virtual proc that may have it's arguments changed by children
 
+```dm
 /datum/foo/proc/CannotBeOverridden() -> void {}
+
+/datum/foo/New(int/first_arg) -> void {
+	..()
+}
 
 protected virtual /datum/foo/proc/CanBeOverridden(datum/enforced_on_children) -> nullable/int {}
 
 public abstract /datum/foo/proc/MustBeOverridden(int/x, datum/enforced_on_children = null) -> void;
+
+/datum/foo/bar/New(string/can_have_different_args_than_parent) -> void {
+	//but parent must still be called with correct args if at all
+	if(prob(50))
+		..(4);
+}
 
 /datum/foo/bar/CanBeOverridden() -> int {
     ..(); //not necessary
@@ -317,6 +334,42 @@ If done, the `unsafe` block is unlocked to allow assigning from and calling into
     
     //test now assumed to be valid
     //test2 still unassigned
+}
+```
+
+### Declarations
+
+Declarations allow strong typing of existing DM types/var/functions without defining their values or bodies. These are used to expose the DM standard library to Typemaker code. Declarations must be either public, protected, or global. Static and non-virtual procs cannot be declared.
+
+foo.dm
+```dm
+/proc/Something() 
+	world.log << "Hello world";
+
+/datum/foo/var/whatever = list();
+/datum/foo/var/whatever2 = "asdf";
+
+/datum/foo/proc/Run()
+	return 4
+```dm
+
+foo.tm
+```
+declare /proc/Something() -> void;
+
+declare /datum/foo {
+	//only public and protected allowed
+	protected var/string/whatever2;
+	//whatever can't be accessed by typemaker
+	public /proc/Run() -> int;
+}
+```
+
+bar.tm
+```
+/proc/bar() -> void {
+	var/datum/foo = new;
+	foo.Run();
 }
 ```
 
