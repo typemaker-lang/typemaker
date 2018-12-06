@@ -322,6 +322,8 @@ Option to include a `.dme` which will be the prefix for the output `.dme` the co
 
 If done, the `unsafe` block is unlocked to allow assigning from and calling into DM written code
 
+`arglist()` and `call()()` cannot be used outside of unsafe blocks
+
 ```dm
 /proc/dm_access_example() -> void {
     var/int/test

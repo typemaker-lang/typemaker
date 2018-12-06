@@ -2,7 +2,7 @@
 
 //a lot of this was stolen from here: https://github.com/antlr/grammars-v4/blob/edc36d1/csharp/CSharpLexer.g4
 
-channels { COMMENTS_CHANNEL, DIRECTIVE }
+channels { COMMENTS_CHANNEL }
 
 SINGLE_LINE_COMMENT:     '//'  InputCharacter*    -> channel(COMMENTS_CHANNEL);
 DELIMITED_COMMENT: '/*' .*? '*/' -> channel(COMMENTS_CHANNEL);
@@ -41,8 +41,6 @@ fragment UnicodeClassZS
 	| '\u205F' // MEDIUM MATHEMATICAL SPACE
 ;
 
-SHARP: '#' -> mode(DIRECTIVE_MODE);
-
 WHITESPACES: (WHITESPACE | NEWLINE)+ -> channel(HIDDEN);
 
 VERBATIUM_STRING: '@"' (~["\r\n])* '"';
@@ -62,7 +60,8 @@ fragment CommonCharacter
 	| '\\v'
 	;
 
-NUMBER: '0'..'9';
+INTEGER: ('0'..'9')+;
+REAL: ('0'..'9')+ '.' ('0'..'9')+;
 
 BLOCKCOMMENT: '/*' .*? '*/' -> skip;
 LINECOMMENT: '//' ~[\r\n]* -> skip;

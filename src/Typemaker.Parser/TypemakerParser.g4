@@ -27,12 +27,14 @@ generic_file: enum* interface*;
 
 map: MAP LPAREN RES RPAREN SEMI;
 
-integer: MINUS NUMBER | NUMBER;
+number: INTEGER | REAL;
 
 enum_type: ENUM SLASH IDENTIFIER;
 
 concrete_path: PATH SLASH CONCRETE;
 path_type: concrete_path | PATH;
+
+/* //TODO: embedded expressions
 
 string_content: CHAR_INSIDE | STRING_INSIDE;
 string_body: string_content | string_content string_body;
@@ -40,9 +42,13 @@ string_body: string_content | string_content string_body;
 multi_string: MULTI_STRING_START string_body MULTI_STRING_CLOSE;
 line_string: STRING_START string_body STRING_CLOSE;
 dynamic_string: line_string | multi_string;
-
+*/
 const_string: VERBATIUM_STRING | MULTILINE_VERBATIUM_STRING;
-string: const_string | dynamic_string;
+string
+	: const_string 
+	//TODO: embedded expressions
+	//| dynamic_string
+	;
 
 root_type: enum_type | path_type | interface_type | LIST | INT | FILE | RESOURCE | BOOL | FLOAT | EXCEPTION;
 list_identifier: IDENTIFIER | LIST;
@@ -62,24 +68,33 @@ var_definition_statement: var_definition SEMI;
 
 inc_dec: INC | DEC;
 
-math_expression
-	: expression PLUS expression 
-	| expression MINUS expression
-	| expression SLASH expression
+list_declaration: string EQUALS expression | expression;
+list_declarations: list_declaration | list_declaration COMMA list_declarations;
+list_declaration_list: LPAREN RPAREN | LPAREN list_declarations RPAREN;
+list_definition: LIST list_declaration_list;
+
+nameof_expression: NAMEOF LPAREN target RPAREN;
+
+new_expression: NEW true_type | NEW true_type argument_list | NEW argument_list | NEW;
+
+expression
+	: target
+	| assignment
+	| EXCLAIM expression
 	| expression POW expression
 	| expression STAR expression
+	| expression SLASH expression
+	| expression PLUS expression 
+	| expression MINUS expression
 	| expression BAND expression
 	| expression BOR expression
 	| expression XOR expression
 	| expression PUSH expression
 	| expression PULL expression
-	| inc_dec math_expression
-	| math_expression inc_dec
-	| INT
-	| FLOAT;
-
-logical_expression
-	: expression LAND expression
+	| MINUS expression
+	| inc_dec expression
+	| expression inc_dec
+	| expression LAND expression
 	| expression LOR expression
 	| expression LESS expression
 	| expression GREATER expression
@@ -87,22 +102,49 @@ logical_expression
 	| expression GREATERE expression
 	| expression EEQUALS expression
 	| expression NEQUALS expression
-	| EXCLAIM expression
+	| expression IN expression
+	| expression QUESTION expression COLON expression
+	| new_expression
+	| path_type
+	| RESOURCE
 	| TRUE
-	| FALSE;
+	| FALSE
+	| INT
+	| FLOAT
+	| NULL
+	;
 
-range_expression: expression IN expression;
+invocation
+	: call_invocation
+	| basic_identifier argument_list
+	;
 
-list_declaration: string EQUALS expression | expression;
-list_declarations: list_declaration | list_declaration COMMA list_declarations;
-list_declaration_list: LPAREN RPAREN | LPAREN list_declarations RPAREN;
-list: LIST list_declaration_list;
+target
+	: bracketed_expression
+	| fully_extended_identifier
+	| list_definition
+	| nameof_expression	
+	| invocation
+	| target accessor invocation
+	| target accessor IDENTIFIER
+	| target LBRACE expression RBRACE	//list access
+	| string
+	| basic_identifier
+	;
 
-list_access: expression LBRACE expression RBRACE;
+accessor
+	: DOT	// x.y
+	| QUESTION DOT	// x?.y
+	| COLON	// x:y
+	| QUESTION COLON	// x?:y
+	;
 
-nameof_expression: NAMEOF LPAREN target RPAREN;
-
-expression: invocation | assignment | list |bracketed_expression | logical_expression | math_expression | range_expression | nameof_expression | string | list_access | RESOURCE | NULL;
+basic_identifier
+	: IDENTIFIER
+	| DOTDOT
+	| SRC
+	| DOT
+	;
 
 assignment
 	: target OEQUALS expression
@@ -113,8 +155,6 @@ assignment
 	| target SEQUALS expression
 	| target EQUALS expression;
 
-valid_calls: FILE | IDENTIFIER | DOTDOT;
-target: fully_extended_identifier | expression DOT IDENTIFIER | valid_calls;
 target_var: target | var_definition_only;
 
 argument: expression | IDENTIFIER EQUALS expression;
@@ -122,7 +162,6 @@ arguments: argument | argument arguments;
 argument_list: LPAREN RPAREN | LPAREN arguments RPAREN;
 
 call_invocation: CALL argument_list | CALL LPAREN string RPAREN argument_list;
-invocation: target argument_list | call_invocation;
 
 in_for: LPAREN target_var IN expression RPAREN;
 
@@ -185,7 +224,7 @@ proc_arguments: LPAREN RPAREN | LPAREN argument_declaration_list RPAREN;
 proc_definition: SLASH IDENTIFIER proc_arguments RDEC return_type;
 
 access: PUBLIC | PROTECTED;
-precedence: PRECEDENCE LPAREN integer RPAREN;
+precedence: PRECEDENCE LPAREN INTEGER RPAREN;
 
 universal_decorator: EXPLICIT | INLINE | ABSTRACT;
 proc_decorator: precedence | access | universal_decorator | VIRTUAL | FINAL | STATIC;
@@ -209,7 +248,7 @@ interface_definitions: interface_definition | interface_definition interface_def
 interface_block: LCURL RCURL | LCURL interface_definitions RCURL;
 interface: SLASH interface_type interface_block;
 
-enum_value: integer | const_string;
+enum_value: INTEGER | const_string;
 enum_definition: IDENTIFIER EQUALS enum_value | IDENTIFIER;
 enum_definitions: enum_definition | enum_definition COMMA enum_definitions;
 enum_block: LCURL RCURL | LCURL enum_definitions RCURL;
