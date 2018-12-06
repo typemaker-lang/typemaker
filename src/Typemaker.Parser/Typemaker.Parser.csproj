@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="TypemakerLexer.g4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Antlr4.CodeGenerator" Version="4.6.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -17,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Typemaker.g4">
+    <None Update="TypemakerParser.g4">
       <Generator>MSBuild:Compile</Generator>
     </None>
   </ItemGroup>

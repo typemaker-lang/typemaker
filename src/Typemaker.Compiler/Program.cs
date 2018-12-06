@@ -11,7 +11,6 @@ namespace Typemaker.Compiler
 			{
 				var lexer = new Parser.TypemakerLexer(new Antlr4.Runtime.AntlrInputStream(fs));
 				var tokens = lexer.GetAllTokens();
-				var i = 0;
 			}
 		}
 	}
