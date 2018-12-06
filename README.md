@@ -356,7 +356,7 @@ foo.dm
 ```dm
 
 foo.tm
-```
+```dm
 declare /proc/Something() -> void;
 
 declare /datum/foo {
