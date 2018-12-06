@@ -341,7 +341,7 @@ If done, the `unsafe` block is unlocked to allow assigning from and calling into
 
 ### Declarations
 
-Declarations allow strong typing of existing DM types/var/functions without defining their values or bodies. These are used to expose the DM standard library to Typemaker code. Declarations must be either public, protected, or global. Static and non-virtual procs cannot be declared.
+Declarations allow strong typing of existing DM types/var/functions without defining their values or bodies. These are used to expose the DM standard library to Typemaker code. Static and non-virtual procs cannot be declared. Untyped declarations cannot be used outside of `unsafe` blocks
 
 foo.dm
 ```dm
@@ -360,6 +360,8 @@ foo.tm
 declare /proc/Something() -> void;
 
 declare /datum/foo {
+	public var/unknown_type_can_only_be_used_in_unsafe_block;
+
 	//only public and protected allowed
 	protected var/string/whatever2;
 	//whatever can't be accessed by typemaker
@@ -372,6 +374,12 @@ bar.tm
 /proc/bar() -> void {
 	var/datum/foo = new;
 	foo.Run();
+
+	var/string/val;
+	unsafe {
+		val = foo.unknown_type_can_only_be_used_in_unsafe_block;
+		foo.unknown_type_can_only_be_used_in_unsafe_block = 42;
+	}
 }
 ```
 

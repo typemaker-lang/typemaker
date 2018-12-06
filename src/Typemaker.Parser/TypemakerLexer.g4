@@ -143,6 +143,8 @@ PARTIAL: 'partial';
 READONLY: 'readonly';
 NAMEOF: 'nameof';
 
+SPAWN: 'spawn';
+
 TRY: 'try';
 CATCH: 'catch';
 
@@ -150,6 +152,9 @@ DECLARE: 'declare';
 UNSAFE: 'unsafe';
 
 SLASH: '/';
+
+TM_BASE: '__typemaker_base_object';
+
 CONCRETE: 'concrete';
 FILE: 'file';
 RESOURCE: 'resource';

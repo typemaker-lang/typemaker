@@ -9,7 +9,7 @@ map_file: map+;
 proc_declaration: SLASH PROC proc_definition SEMI;
 global_proc_declaration: DECLARE proc_declaration;
 
-datum_declaration_item: var_definition_only SEMI | proc_decorator_set proc_interface;
+datum_declaration_item: var_definition_only SEMI | set_statement | proc_decorator_set proc_interface;
 datum_declaration_items: datum_declaration_item | datum_declaration_item datum_declaration_items;
 datum_declaration_block: LCURL RCURL | LCURL datum_declaration_items RCURL;
 datum_declaration: DECLARE fully_extended_identifier datum_declaration_block;
@@ -27,7 +27,7 @@ generic_file: enum* interface*;
 
 map: MAP LPAREN RES RPAREN SEMI;
 
-number: INTEGER | REAL;
+number: INTEGER | REAL | MINUS INTEGER | MINUS REAL;
 
 enum_type: ENUM SLASH IDENTIFIER;
 
@@ -50,14 +50,14 @@ string
 	//| dynamic_string
 	;
 
-root_type: enum_type | path_type | interface_type | LIST | INT | FILE | RESOURCE | BOOL | FLOAT | EXCEPTION;
+root_type: enum_type | path_type | interface_type | LIST | INT | FILE | RESOURCE | BOOL | FLOAT | EXCEPTION | TM_BASE;
 list_identifier: IDENTIFIER | LIST;
 extended_list_type:  SLASH list_identifier | list_identifier SLASH extended_list_type;
 extended_identifier: IDENTIFIER | IDENTIFIER fully_extended_identifier;
 fully_extended_identifier: SLASH extended_identifier;
 
 true_type: root_type | extended_identifier | LIST extended_list_type;
-type: true_type | NULLABLE SLASH true_type;
+type: true_type | NULLABLE SLASH true_type | CONST SLASH true_type;
 return_type: type | VOID;
 
 typed_identifier: type SLASH IDENTIFIER;
@@ -198,6 +198,8 @@ set_statement: SET identifier_assignment;
 
 unsafe_block: UNSAFE statement_block;
 push_pull: expression PUSH expression | expression PULL expression;
+
+spawn_block: SPAWN LPAREN number RPAREN statement_block;
 
 try_block: TRY statement_block CATCH LPAREN EXCEPTION SLASH IDENTIFIER RPAREN statement_block;
 
