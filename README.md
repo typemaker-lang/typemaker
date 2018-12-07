@@ -353,10 +353,10 @@ foo.dm
 
 /datum/foo/proc/Run()
 	return 4
-```dm
+```
 
 foo.tm
-```
+```dm
 declare /proc/Something() -> void;
 
 declare /datum/foo {
@@ -370,7 +370,7 @@ declare /datum/foo {
 ```
 
 bar.tm
-```
+```dm
 /proc/bar() -> void {
 	var/datum/foo = new;
 	foo.Run();
