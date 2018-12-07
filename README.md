@@ -389,7 +389,7 @@ Transpiled code will use `:` access operators wherever possible. Code transpiled
 
 ### Explicit keyword
 
-The explicit keyword keeps variables/datum/functions from undergoing dead code elimination. Use this when these are valid reflection types
+The explicit keyword keeps variables/datum/functions from undergoing dead code elimination. Use this when these are valid reflection types. `declare`d types and `unsafe` blocks propagate explicitness.
 
 ```dm
 explicit /datum/example {
