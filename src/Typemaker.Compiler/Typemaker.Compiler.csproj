@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Typemaker.CodeTree\Typemaker.CodeTree.csproj" />
     <ProjectReference Include="..\Typemaker.Parser\Typemaker.Parser.csproj" />
   </ItemGroup>
 

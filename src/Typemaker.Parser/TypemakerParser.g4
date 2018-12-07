@@ -9,21 +9,19 @@ map_file: map+;
 proc_declaration: SLASH PROC proc_definition SEMI;
 global_proc_declaration: DECLARE proc_declaration;
 
-datum_declaration_item: var_definition_only SEMI | set_statement | proc_decorator_set proc_interface;
+datum_var_declaration: untyped_var_definition_only SEMI | var_decorations untyped_var_definition_only SEMI;
+datum_declaration_item: datum_var_declaration | set_assignment_statement | proc_decorator_set proc_interface | implements_statement;
 datum_declaration_items: datum_declaration_item | datum_declaration_item datum_declaration_items;
 datum_declaration_block: LCURL RCURL | LCURL datum_declaration_items RCURL;
 datum_declaration: DECLARE fully_extended_identifier datum_declaration_block;
-datum_declaration_file: datum_declaration+;
 
-global_declaration_file: global_var* global_proc_declaration*;
-
-declaration_file: global_declaration_file | datum_declaration_file;
+declaration_file: global_var* global_proc_declaration* datum_declaration*;
 
 typemaker_file: datum_file | globals_file;
 
-globals_file: global_var* generic_file global_proc*;
-datum_file: generic_file datum_def+ datum_proc*;
-generic_file: enum* interface*;
+globals_file: global_var* generic_declaration* global_proc*;
+datum_file: generic_declaration* datum_def+ datum_proc*;
+generic_declaration: enum | interface;
 
 map: MAP LPAREN RES RPAREN SEMI;
 
@@ -50,19 +48,24 @@ string
 	//| dynamic_string
 	;
 
-root_type: enum_type | path_type | interface_type | LIST | INT | FILE | RESOURCE | BOOL | FLOAT | EXCEPTION | TM_BASE;
+dict_type: DICT SLASH nullable_type BSLASH nullable_type;
+root_type: enum_type | path_type | interface_type | dict_type | LIST | INT | RESOURCE | BOOL | FLOAT | EXCEPTION | TM_BASE;
 list_identifier: IDENTIFIER | LIST;
-extended_list_type:  SLASH list_identifier | list_identifier SLASH extended_list_type;
+extended_list_type: SLASH list_identifier | list_identifier SLASH extended_list_type;
 extended_identifier: IDENTIFIER | IDENTIFIER fully_extended_identifier;
 fully_extended_identifier: SLASH extended_identifier;
 
-true_type: root_type | extended_identifier | LIST extended_list_type;
-type: true_type | NULLABLE SLASH true_type | CONST SLASH true_type;
-return_type: type | VOID;
+true_type: root_type | extended_identifier | LIST SLASH nullable_type;
+nullable_type: true_type | NULLABLE SLASH true_type;
+const_type: true_type | CONST SLASH true_type;
+type: const_type | nullable_type;
+return_type: nullable_type | VOID | IDENTIFIER;
 
 typed_identifier: type SLASH IDENTIFIER;
+untyped_identifier: typed_identifier | IDENTIFIER;
 
 var_definition_only: VAR SLASH typed_identifier;
+untyped_var_definition_only: VAR SLASH untyped_identifier;
 var_definition: var_definition_only | var_definition_only EQUALS expression;
 var_definition_statement: var_definition SEMI;
 
@@ -76,6 +79,8 @@ list_definition: LIST list_declaration_list;
 nameof_expression: NAMEOF LPAREN target RPAREN;
 
 new_expression: NEW true_type | NEW true_type argument_list | NEW argument_list | NEW;
+
+in_expression: target IN expression;
 
 expression
 	: target
@@ -102,16 +107,8 @@ expression
 	| expression GREATERE expression
 	| expression EEQUALS expression
 	| expression NEQUALS expression
-	| expression IN expression
 	| expression QUESTION expression COLON expression
 	| new_expression
-	| path_type
-	| RESOURCE
-	| TRUE
-	| FALSE
-	| INT
-	| FLOAT
-	| NULL
 	;
 
 invocation
@@ -130,6 +127,13 @@ target
 	| target LBRACE expression RBRACE	//list access
 	| string
 	| basic_identifier
+	| path_type
+	| RES
+	| TRUE
+	| FALSE
+	| INT
+	| FLOAT
+	| NULL
 	;
 
 accessor
@@ -157,7 +161,7 @@ assignment
 
 target_var: target | var_definition_only;
 
-argument: expression | IDENTIFIER EQUALS expression;
+argument: expression | basic_identifier EQUALS expression;
 arguments: argument | argument arguments;
 argument_list: LPAREN RPAREN | LPAREN arguments RPAREN;
 
@@ -193,8 +197,9 @@ if: if_start if_continuation | if_start;
 
 flow_control: return_statement | while | do_while | for | switch | if;
 
-identifier_assignment: IDENTIFIER EQUALS expression SEMI;
-set_statement: SET identifier_assignment;
+identifier_assignment: basic_identifier EQUALS expression SEMI;
+set_assignment_statement: SET identifier_assignment;
+set_statement: set_assignment_statement | SET in_expression;
 
 unsafe_block: UNSAFE statement_block;
 push_pull: expression PUSH expression | expression PULL expression;
@@ -216,14 +221,19 @@ decorated_var_definition_statements: decorated_var_definition_statement | decora
 datum_decorator: universal_decorator | SEALED | PARTIAL;
 datum_decorators: datum_decorator | datum_decorator datum_decorators;
 datum_decorator_set: datum_decorators SLASH | SLASH;
-datum_block: LCURL decorated_var_definition_statements RCURL | LCURL RCURL;
+implements_statement: IMPLEMENTS extended_identifier SEMI;
+implements_statements: implements_statement | implements_statement implements_statements;
+datum_block_interior: implements_statements decorated_var_definition_statements | implements_statements | decorated_var_definition_statements;
+datum_block: LCURL datum_block_interior RCURL | LCURL RCURL;
 datum_def: datum_decorator_set extended_identifier datum_block;
 
-argument_declaration: typed_identifier | typed_identifier EQUALS expression;
-argument_declaration_list: argument_declaration | argument_declaration COMMA argument_declaration_list;
+argument_declaration: untyped_identifier | untyped_identifier EQUALS expression;
+argument_declaration_list: argument_declaration | argument_declaration COMMA argument_declaration_list | VARARGS;
 
 proc_arguments: LPAREN RPAREN | LPAREN argument_declaration_list RPAREN;
-proc_definition: SLASH IDENTIFIER proc_arguments RDEC return_type;
+proc_identifier: IDENTIFIER | CONSTRUCTOR;
+proc_name_and_args: SLASH proc_identifier proc_arguments;
+proc_definition: proc_name_and_args RDEC return_type | proc_name_and_args;
 
 access: PUBLIC | PROTECTED;
 precedence: PRECEDENCE LPAREN INTEGER RPAREN;

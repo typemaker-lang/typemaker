@@ -66,6 +66,8 @@ REAL: ('0'..'9')+ '.' ('0'..'9')+;
 BLOCKCOMMENT: '/*' .*? '*/' -> skip;
 LINECOMMENT: '//' ~[\r\n]* -> skip;
 
+CONSTRUCTOR: 'New';
+VARARGS: '...';
 INC: '++';
 DEC: '--';
 PEQUALS: '+=';
@@ -142,6 +144,7 @@ INLINE: 'inline';
 PARTIAL: 'partial';
 READONLY: 'readonly';
 NAMEOF: 'nameof';
+IMPLEMENTS: 'implements';
 
 SPAWN: 'spawn';
 
@@ -156,7 +159,6 @@ SLASH: '/';
 TM_BASE: '__typemaker_base_object';
 
 CONCRETE: 'concrete';
-FILE: 'file';
 RESOURCE: 'resource';
 BOOL: 'bool';
 STRING: 'string';
@@ -167,6 +169,7 @@ INTERFACE: 'interface';
 NULLABLE: 'nullable';
 NULL: 'null';
 PROC: 'proc';
+DICT: 'dict';
 
 CALL: 'call';
 SRC: 'src';

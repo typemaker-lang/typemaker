@@ -1,0 +1,17 @@
+﻿{
+  "library": true,
+  "include": {
+    "root": "1458",
+    "ignore": "strong"
+  },
+  "byond_version": {
+    "min": {
+      "major": 512,
+      "minor": 1458
+    },
+    "max": {
+      "major": 512,
+      "minor": 1458
+    }
+  }
+}

@@ -28,7 +28,15 @@ All vars are implicitly prefixed. Manual prefixing is required if type deduction
 
 Proc parameters forced to follow the `type/name` syntax without leading slash and are validated at the call site if no default values exist
 
-New prefixes: `/file`, `/resource`, `/bool`, `/string`, `/path`, `/int`, `/float`, `/interface`. `/nullable` comes before any prefix if the variable may be `null`. `/path/concrete` limits to non-abstract paths and is the only `/path` type usable in `new` statements, `/list/<another path>` now allows accessing the list strongly
+New prefixes: `/file`, `/resource`, `/bool`, `/string`, `/path`, `/int`, `/float`, `/dict`, `/interface`, `/enum`. `/nullable` comes before any prefix if the variable may be `null`.
+
+`/path/concrete` limits to non-abstract paths and is the only `/path` type usable in `new` statements.
+
+`/list` by itself is an unsafe type and may only be read in unsafe blocks
+
+`/list/<another path>` now allows accessing an indexed list strongly
+
+`/dict` is a `/list` keyed by something. The format is `/dict/<key_type>\\<value_type>` They cannot be keyed by `/dict`s, `/bool`s, `/int`s, or `/float`s
 
 No default initialization for `/string` and `/path`
 
@@ -214,19 +222,25 @@ final /datum/foo/bar/MustBeOverridden(int/x = 4, datum/enforced_on_children = ne
 
 `var/interface/x;` is an invalid variable declaration.
 
+interfaces inherit from child interfaces
+
 `implements` must be in a declaration block of a datum to bind it to the contract
 
 ```dm
 /interface/IEmptyInterfacesAreValidAndStillTypeChecked {}
 
-/interface/IExample
+/interface/IExample/IExtendedExample
 {
     var/string/must_have_this_public_var;
+}
+
+/interface/IExample
+{
     proc/MustHaveThisPublicProcWithThisSignature(int/x) -> void;
 }
 
 /datum/example {
-    implements IExample;
+    implements IExample/IExtendedExample;
     var/string/must_have_this_public_var;
 }
 
@@ -310,10 +324,10 @@ virtual precedence(1) /datum/foo/proc/Bar() -> void {
 
 ## .dmm Inclusion
 
-`.dmm` files are now included via the top level `map()` directive
+`.dmm` files are now included via the top level `include_map()` directive
 
 ```dm
-map('_maps/BoxStation/BoxStation.dmm')
+include_map('_maps/BoxStation/BoxStation.dmm')
 ```
 
 ## DreamMaker Compatibility
@@ -341,7 +355,7 @@ If done, the `unsafe` block is unlocked to allow assigning from and calling into
 
 ### Declarations
 
-Declarations allow strong typing of existing DM types/var/functions without defining their values or bodies. These are used to expose the DM standard library to Typemaker code. Static and non-virtual procs cannot be declared. Untyped declarations cannot be used outside of `unsafe` blocks
+Declarations allow strong typing of existing DM types/var/functions without defining their values or bodies. These are used to expose the DM standard library to Typemaker code. Static and non-virtual procs cannot be declared (the virtual is implied). Untyped declarations cannot be used outside of `unsafe` blocks
 
 foo.dm
 ```dm
@@ -449,20 +463,29 @@ Automatically include all `.tm` files in a project root
 ```json
 {
     "version": "<file schema semver>",
-    "code_root": "<optionally specify a directory other than `.`>",
-    "output_directory": "<optionally specify a directory other than `.`>",
-    "byond_version": {
-        "major": "<511/512/etc...>",
-        "minor": "<1443/1444/etc...>"
-    },
-    "debug": "<true/false, default true, sets the DEBUG preprocessor directive>",
+	"library": "<true/false>, default false, if this represents a library to be included in a final output",
+	"libraries": [
+		"Additional libraries to include, TODO"
+	],
+	"include": {
+		"root": "<optionally specify a directory other than `.`>",
+		"ignore": [
+			"list of",
+			"paths to",
+			"ignore"
+		]
+	},
+    "output_directory": "<optionally specify a directory other than `.`, not valid for libraries>",
+    "byond_version": "<A version definitions object>",
+	"strong_libdm": "<true/false>, default true. If false, the dm standard library will use protected/private/final/abstract/sealed variables, procs, and objects where appropriate",
+    "debug": "<true/false, default true, sets the DEBUG preprocessor directive, not valid for libraries>",
     "scripts":
     {
         "pre_transpile": "<Shell command to invoke before beginning transpilation>",
         "pre_compile": "<Shell command to invoke before running dm>",
         "post_compile": "<Shell command to invoke after successfully running dm>"
     },
-    "dme": "<Path to .dme to #include before transpiled code>",
+    "dme": "<Path to .dme to #include before transpiled code>, not valid for libraries",
     "linter_settings": {
         "enforce_tabs": "<optional true/false, false enforces spaces, default non-enforce>",
         "allman_braces": "<optional true/false, false enforces BSD KNF, default non-enforce>",
@@ -470,6 +493,16 @@ Automatically include all `.tm` files in a project root
         "no_single_line_blocks": "<true/false, default false>",
         "other_options": "to come"
     }
+}
+```
+
+## Version Definitions
+
+```json
+{
+	"min": "libraries only, a Byond Version object specifiying the minimum supported BYOND version",
+	"max": "libraries only, a Byond Version object specifiying the maximum supported BYOND version",
+	"target": "not for libraries, a Byond Version object specifiying the target BYOND version"
 }
 ```
 
