@@ -1,0 +1,31 @@
+﻿{
+  "version": "1.02",
+  "code_root": "tgstation",
+  "output_directory": "tgstation/bin",
+  "byond_version": {
+    "major": "512",
+    "minor": "1443"
+  },
+  "debug": "true",
+  "scripts": {
+    "pre_transpile": {
+      "windows": "",
+      "linux": ""
+    },
+    "pre_compile": {
+      "windows": "",
+      "linux": ""
+    },
+    "post_compile": {
+      "windows": "",
+      "linux": ""
+    }
+  },
+  "dme": "<Path to .dme to #include before transpiled code>",
+  "linter_settings": {
+    "enforce_tabs": "true",
+    "allman_braces": "true",
+    "no_operator_overloading": "false",
+    "no_single_line_blocks": "false"
+  }
+}
