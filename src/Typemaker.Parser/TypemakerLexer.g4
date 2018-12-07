@@ -168,6 +168,7 @@ NULLABLE: 'nullable';
 NULL: 'null';
 PROC: 'proc';
 DICT: 'dict';
+GLOBAL: 'global';
 
 CALL: 'call';
 SRC: 'src';

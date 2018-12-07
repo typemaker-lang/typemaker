@@ -6,7 +6,7 @@ compilation_unit: typemaker_file | map_file | declaration_file;
 
 map_file: map+ EOF;
 
-proc_declaration: SLASH PROC proc_definition SEMI;
+proc_declaration: SLASH proc_type? proc_definition SEMI;
 global_proc_declaration: DECLARE proc_declaration;
 global_var_declaration: DECLARE var_definition_only SEMI;
 
@@ -130,6 +130,7 @@ target
 	| basic_identifier
 	| fully_extended_identifier
 	| path_type
+	| GLOBAL
 	| RES
 	| TRUE
 	| FALSE
@@ -215,7 +216,7 @@ statement: var_definition_statement | set_statement | return_statement | flow_co
 statement_block: statement | LCURL statement+ RCURL;
 proc_block: statement_block | unsafe_block;
 
-var_decorations: access | access READONLY | READONLY;
+var_decorations: access | access READONLY | READONLY | STATIC READONLY | access STATIC READONLY | access STATIC | STATIC;
 decorated_var_definition_statement: var_decorations var_definition_statement | var_definition_statement | identifier_assignment;
 decorated_var_definition_statements: decorated_var_definition_statement+;
 
@@ -245,10 +246,10 @@ proc_decorator_set: proc_decorator+ SLASH | SLASH;
 
 global_proc_decorator_set: universal_decorator+ SLASH | SLASH;
 
-global_proc: global_proc_decorator_set PROC proc_definition proc_block;
+global_proc: global_proc_decorator_set proc_type proc_definition proc_block;
 
-datum_proc_type: PROC | VERB;
-datum_proc: proc_decorator_set extended_identifier datum_proc_type proc_definition proc_block;
+proc_type: PROC | VERB;
+datum_proc: proc_decorator_set extended_identifier proc_type? proc_definition proc_block;
 
 interface_type: INTERFACE fully_extended_identifier;
 

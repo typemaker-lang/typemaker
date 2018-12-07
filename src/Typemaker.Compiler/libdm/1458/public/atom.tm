@@ -1,0 +1,3 @@
+﻿declare partial /atom {
+	//WIP
+}

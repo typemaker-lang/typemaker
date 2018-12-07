@@ -373,11 +373,16 @@ foo.tm
 ```dm
 declare /proc/Something() -> void;
 
+
 declare /datum/foo {
 	public var/unknown_type_can_only_be_used_in_unsafe_block;
 
 	//only public and protected allowed
 	protected var/string/whatever2;
+	
+	//when declaring /New overrides, omit /proc
+	protected /New(string/asdf);
+
 	//whatever can't be accessed by typemaker
 	public /proc/Run() -> int;
 }
@@ -386,7 +391,7 @@ declare /datum/foo {
 bar.tm
 ```dm
 /proc/bar() -> void {
-	var/datum/foo = new;
+	var/datum/foo = new ("fdsa");
 	foo.Run();
 
 	var/string/val;
@@ -463,9 +468,11 @@ Automatically include all `.tm` files in a project root
 ```json
 {
     "version": "<file schema semver>",
+	"extends": "<optional path to additional json file, results will be merged, does not change default code root>"
 	"library": "<true/false>, default false, if this represents a library to be included in a final output",
 	"libraries": [
-		"Additional libraries to include, TODO"
+		"Additional library typemaker.jsons to include, TODO",
+		"Appropriate libdm is automatically included"
 	],
 	"include": {
 		"root": "<optionally specify a directory other than `.`>",

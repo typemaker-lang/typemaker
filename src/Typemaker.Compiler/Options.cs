@@ -1,8 +1,5 @@
 ﻿using Newtonsoft.Json;
 using CommandLine;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Typemaker.Compiler
 {

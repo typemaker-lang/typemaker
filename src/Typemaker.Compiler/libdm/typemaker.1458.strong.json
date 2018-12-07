@@ -1,6 +1,6 @@
 ﻿{
   "extends": "1458/typemaker.json",
   "include": {
-    "ignore": "strong"
+    "ignore": "public"
   }
 }
