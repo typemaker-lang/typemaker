@@ -156,8 +156,6 @@ UNSAFE: 'unsafe';
 
 SLASH: '/';
 
-TM_BASE: '__typemaker_base_object';
-
 CONCRETE: 'concrete';
 RESOURCE: 'resource';
 BOOL: 'bool';

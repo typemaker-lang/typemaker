@@ -2,32 +2,33 @@ parser grammar TypemakerParser;
 
 options { tokenVocab=TypemakerLexer; }
 
-compilation_unit: typemaker_file EOF | map_file EOF | declaration_file EOF;
+compilation_unit: typemaker_file | map_file | declaration_file;
 
-map_file: map+;
+map_file: map+ EOF;
 
 proc_declaration: SLASH PROC proc_definition SEMI;
 global_proc_declaration: DECLARE proc_declaration;
+global_var_declaration: DECLARE var_definition_only SEMI;
 
 datum_var_declaration: untyped_var_definition_only SEMI | var_decorations untyped_var_definition_only SEMI;
 datum_declaration_item: datum_var_declaration | set_assignment_statement | proc_decorator_set proc_interface | implements_statement;
-datum_declaration_items: datum_declaration_item | datum_declaration_item datum_declaration_items;
+datum_declaration_items: datum_declaration_item+;
 datum_declaration_block: LCURL RCURL | LCURL datum_declaration_items RCURL;
-datum_declaration: DECLARE fully_extended_identifier datum_declaration_block;
+datum_declaration: DECLARE datum_decorator_set fully_extended_identifier datum_declaration_block;
 
-declaration_file: global_var* global_proc_declaration* datum_declaration*;
+declaration_file: global_var_declaration* generic_declaration* global_proc_declaration* datum_declaration* EOF;
 
 typemaker_file: datum_file | globals_file;
 
-globals_file: global_var* generic_declaration* global_proc*;
-datum_file: generic_declaration* datum_def+ datum_proc*;
+globals_file: global_var* generic_declaration* global_proc* EOF;
+datum_file: generic_declaration* datum_def+ datum_proc* EOF;
 generic_declaration: enum | interface;
 
 map: MAP LPAREN RES RPAREN SEMI;
 
 number: INTEGER | REAL | MINUS INTEGER | MINUS REAL;
 
-enum_type: ENUM SLASH IDENTIFIER;
+enum_type: SLASH ENUM SLASH IDENTIFIER;
 
 concrete_path: PATH SLASH CONCRETE;
 path_type: concrete_path | PATH;
@@ -49,7 +50,7 @@ string
 	;
 
 dict_type: DICT SLASH nullable_type BSLASH nullable_type;
-root_type: enum_type | path_type | interface_type | dict_type | LIST | INT | RESOURCE | BOOL | FLOAT | EXCEPTION | TM_BASE;
+root_type: enum_type | path_type | interface_type | dict_type | LIST | INT | RESOURCE | BOOL | FLOAT | EXCEPTION;
 list_identifier: IDENTIFIER | LIST;
 extended_list_type: SLASH list_identifier | list_identifier SLASH extended_list_type;
 extended_identifier: IDENTIFIER | IDENTIFIER fully_extended_identifier;
@@ -127,6 +128,7 @@ target
 	| target LBRACE expression RBRACE	//list access
 	| string
 	| basic_identifier
+	| fully_extended_identifier
 	| path_type
 	| RES
 	| TRUE
@@ -199,7 +201,7 @@ flow_control: return_statement | while | do_while | for | switch | if;
 
 identifier_assignment: basic_identifier EQUALS expression SEMI;
 set_assignment_statement: SET identifier_assignment;
-set_statement: set_assignment_statement | SET in_expression;
+set_statement: set_assignment_statement | SET in_expression SEMI;
 
 unsafe_block: UNSAFE statement_block;
 push_pull: expression PUSH expression | expression PULL expression;
@@ -210,19 +212,17 @@ try_block: TRY statement_block CATCH LPAREN EXCEPTION SLASH IDENTIFIER RPAREN st
 
 semicolonless_statement: push_pull | assignment | invocation | BREAK | CONTINUE;
 statement: var_definition_statement | set_statement | return_statement | flow_control | unsafe_block | try_block | semicolonless_statement SEMI;
-statements: statement | statement statements;
-statement_block: statement | LCURL statements RCURL;
+statement_block: statement | LCURL statement+ RCURL;
 proc_block: statement_block | unsafe_block;
 
 var_decorations: access | access READONLY | READONLY;
 decorated_var_definition_statement: var_decorations var_definition_statement | var_definition_statement | identifier_assignment;
-decorated_var_definition_statements: decorated_var_definition_statement | decorated_var_definition_statement decorated_var_definition_statements;
+decorated_var_definition_statements: decorated_var_definition_statement+;
 
 datum_decorator: universal_decorator | SEALED | PARTIAL;
-datum_decorators: datum_decorator | datum_decorator datum_decorators;
-datum_decorator_set: datum_decorators SLASH | SLASH;
+datum_decorator_set: datum_decorator+ SLASH | SLASH;
 implements_statement: IMPLEMENTS extended_identifier SEMI;
-implements_statements: implements_statement | implements_statement implements_statements;
+implements_statements: implements_statement+;
 datum_block_interior: implements_statements decorated_var_definition_statements | implements_statements | decorated_var_definition_statements;
 datum_block: LCURL datum_block_interior RCURL | LCURL RCURL;
 datum_def: datum_decorator_set extended_identifier datum_block;
@@ -241,11 +241,9 @@ precedence: PRECEDENCE LPAREN INTEGER RPAREN;
 universal_decorator: EXPLICIT | INLINE | ABSTRACT;
 proc_decorator: precedence | access | universal_decorator | VIRTUAL | FINAL | STATIC;
 
-proc_decorators: proc_decorator | proc_decorator proc_decorators;
-proc_decorator_set: proc_decorators SLASH | SLASH;
+proc_decorator_set: proc_decorator+ SLASH | SLASH;
 
-global_proc_decorators: universal_decorator | universal_decorator global_proc_decorators;
-global_proc_decorator_set: global_proc_decorators SLASH | SLASH;
+global_proc_decorator_set: universal_decorator+ SLASH | SLASH;
 
 global_proc: global_proc_decorator_set PROC proc_definition proc_block;
 
@@ -256,8 +254,7 @@ interface_type: INTERFACE fully_extended_identifier;
 
 proc_interface: PROC proc_definition SEMI;
 interface_definition: var_definition_only SEMI | proc_interface;
-interface_definitions: interface_definition | interface_definition interface_definitions;
-interface_block: LCURL RCURL | LCURL interface_definitions RCURL;
+interface_block: LCURL RCURL | LCURL interface_definition+ RCURL;
 interface: SLASH interface_type interface_block;
 
 enum_value: INTEGER | const_string;
