@@ -33,8 +33,8 @@ enum_type: SLASH ENUM SLASH IDENTIFIER;
 concrete_path: PATH SLASH CONCRETE;
 path_type: concrete_path | PATH;
 
-string_content: CHAR_INSIDE | STRING_INSIDE;
-string_body: string_content | string_content EMBED_START expression RBRACE string_body | EMBED_START expression RBRACE string_content | EMBED_START expression RBRACE;
+string_content: CHAR_INSIDE | STRING_INSIDE | MULTI_STRING_INSIDE;
+string_body: string_content+ | string_content+ EMBED_START expression RBRACE string_body | EMBED_START expression RBRACE string_content+ | EMBED_START expression RBRACE;
 
 multi_string: MULTI_STRING_START string_body MULTI_STRING_CLOSE;
 line_string: STRING_START string_body STRING_CLOSE;
