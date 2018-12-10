@@ -33,20 +33,17 @@ enum_type: SLASH ENUM SLASH IDENTIFIER;
 concrete_path: PATH SLASH CONCRETE;
 path_type: concrete_path | PATH;
 
-/* //TODO: embedded expressions
-
 string_content: CHAR_INSIDE | STRING_INSIDE;
-string_body: string_content | string_content string_body;
+string_body: string_content | string_content EMBED_START expression RBRACE string_body | EMBED_START expression RBRACE string_content | EMBED_START expression RBRACE;
 
 multi_string: MULTI_STRING_START string_body MULTI_STRING_CLOSE;
 line_string: STRING_START string_body STRING_CLOSE;
 dynamic_string: line_string | multi_string;
-*/
+
 const_string: VERBATIUM_STRING | MULTILINE_VERBATIUM_STRING;
 string
 	: const_string 
-	//TODO: embedded expressions
-	//| dynamic_string
+	| dynamic_string
 	;
 
 dict_type: DICT SLASH nullable_type BSLASH nullable_type;
@@ -204,7 +201,7 @@ identifier_assignment: basic_identifier EQUALS expression SEMI;
 set_assignment_statement: SET identifier_assignment;
 set_statement: set_assignment_statement | SET in_expression SEMI;
 
-unsafe_block: UNSAFE statement_block;
+unsafe_block: UNSAFE unsafe_statement | UNSAFE LCURL unsafe_statement+ RCURL;
 push_pull: expression PUSH expression | expression PULL expression;
 
 spawn_block: SPAWN LPAREN number RPAREN statement_block;
@@ -212,8 +209,9 @@ spawn_block: SPAWN LPAREN number RPAREN statement_block;
 try_block: TRY statement_block CATCH LPAREN EXCEPTION SLASH IDENTIFIER RPAREN statement_block;
 
 semicolonless_statement: push_pull | assignment | invocation | BREAK | CONTINUE;
-statement: var_definition_statement | set_statement | return_statement | flow_control | unsafe_block | try_block | semicolonless_statement SEMI;
-statement_block: statement | LCURL statement+ RCURL;
+unsafe_statement: var_definition_statement | set_statement | return_statement | flow_control | try_block | semicolonless_statement SEMI;
+safe_statement: unsafe_block | unsafe_statement;
+statement_block: safe_statement | LCURL safe_statement+ RCURL;
 proc_block: statement_block | unsafe_block;
 
 var_decorations: access | access READONLY | READONLY | STATIC READONLY | access STATIC READONLY | access STATIC | STATIC;

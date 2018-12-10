@@ -1,6 +1,7 @@
 ﻿using Antlr4.Runtime;
 using System;
 using System.IO;
+using System.Linq;
 using Typemaker.Parser;
 
 namespace Typemaker.Compiler
@@ -9,15 +10,13 @@ namespace Typemaker.Compiler
     {
         public static void Main(string[] args)
 		{
-			using (FileStream fs = new FileStream("../../../libdm/1458/public/client.tm", FileMode.Open, FileAccess.Read))
+			using (FileStream fs = new FileStream("../../../../Typemaker.Compiler/test.tm", FileMode.Open, FileAccess.Read))
 			{
 				var input = new AntlrInputStream(fs);
 				var lexer = new TypemakerLexer(input);
-				var tokens = new CommonTokenStream(lexer);
-				var parser = new TypemakerParser(tokens);
-				var tree = parser.compilation_unit();
-				var allTokens = lexer.GetAllTokens();
-				Console.WriteLine(tree.ToStringTree());
+				var tokens = lexer.GetAllTokens();
+				var tokenNames = String.Join(" ", tokens.Select(x => lexer.Vocabulary.GetDisplayName(x.Type)));
+				Console.WriteLine(tokenNames);
 				Console.ReadKey();
 			}
         }

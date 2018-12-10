@@ -4,9 +4,7 @@ using System.Text;
 
 namespace Typemaker.Ast
 {
-	interface ITypemakerFile
+	interface IDeclaration : ISyntaxNode
 	{
-		string FilePath { get; set; }
-		List<INode> Nodes { get; set; }
 	}
 }

@@ -4,6 +4,8 @@ namespace Typemaker.CodeTree
 {
 	public interface ILocatable
 	{
-		IFileLocation FileLocation { get; }
+		string FilePath { get; }
+
+		ILocation Location { get; }
 	}
 }

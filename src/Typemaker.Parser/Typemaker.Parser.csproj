@@ -17,10 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Typemaker.Ast\Typemaker.Ast.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="TypemakerParser.g4">
       <Generator>MSBuild:Compile</Generator>
     </None>
