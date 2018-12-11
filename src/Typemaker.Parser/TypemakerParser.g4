@@ -47,9 +47,8 @@ string
 	;
 
 dict_type: DICT SLASH nullable_type BSLASH nullable_type;
-root_type: enum_type | path_type | interface_type | dict_type | LIST | INT | RESOURCE | BOOL | FLOAT | EXCEPTION;
+root_type: enum_type | path_type | interface_type | dict_type | INT | RESOURCE | BOOL | FLOAT | EXCEPTION;
 list_identifier: IDENTIFIER | LIST;
-extended_list_type: SLASH list_identifier | list_identifier SLASH extended_list_type;
 extended_identifier: IDENTIFIER | IDENTIFIER fully_extended_identifier;
 fully_extended_identifier: SLASH extended_identifier;
 
@@ -69,10 +68,12 @@ var_definition_statement: var_definition SEMI;
 
 inc_dec: INC | DEC;
 
-list_declaration: string EQUALS expression | expression;
-list_declarations: list_declaration | list_declaration COMMA list_declarations;
-list_declaration_list: LPAREN RPAREN | LPAREN list_declarations RPAREN;
-list_definition: LIST list_declaration_list;
+dict_declaration: string EQUALS expression;
+dict_declarations: dict_declaration | dict_declaration COMMA dict_declarations;
+dict_definition: DICT LPAREN RPAREN | DICT LPAREN dict_declarations RPAREN;
+
+list_declarations: expression | expression COMMA list_declarations;
+list_definition: LIST LPAREN RPAREN | LIST LPAREN list_declarations RPAREN;
 
 nameof_expression: NAMEOF LPAREN target RPAREN;
 
@@ -84,6 +85,20 @@ new_expression
 	| NEW argument_list
 	| NEW
 	;
+
+input_interior
+	: expression COMMA expression COMMA expression
+	| expression COMMA expression COMMA expression COMMA expression
+	;
+
+input_expression
+	: input_start AS nullable_type IN expression
+	| input_start AS nullable_type
+	| input_start IN expression
+	| input_start
+	;
+
+input_start: INPUT LPAREN input_interior RPAREN;
 
 accessor
 	: nonoptional_accessor
@@ -114,8 +129,8 @@ expression
 	| expression BAND expression
 	| expression BOR expression
 	| expression XOR expression
-	| expression PUSH expression
-	| expression PULL expression
+	| expression LSHIFT expression
+	| expression RSHIFT expression
 	| INVERT expression
 	| MINUS expression
 	| inc_dec expression
@@ -130,6 +145,7 @@ expression
 	| expression NEQUALS expression
 	| expression QUESTION expression COLON expression
 	| new_expression
+	| input_expression
 	;
 
 invocation
@@ -141,6 +157,7 @@ target
 	: bracketed_expression
 	| fully_extended_identifier
 	| list_definition
+	| dict_definition
 	| nameof_expression	
 	| invocation
 	| target accessor invocation
@@ -163,6 +180,7 @@ basic_identifier
 	: IDENTIFIER
 	| DOTDOT
 	| SRC
+	| USR
 	| DOT
 	;
 
@@ -174,6 +192,9 @@ assignment
 	| target TEQUALS expression
 	| target SEQUALS expression
 	| target IEQUALS expression
+	| target DEQUALS expression
+	| target LEQUALS expression
+	| target REQUALS expression
 	| target EQUALS expression;
 
 target_var: target | var_definition_only;
@@ -219,13 +240,13 @@ set_assignment_statement: SET identifier_assignment;
 set_statement: set_assignment_statement | SET in_expression SEMI;
 
 unsafe_block: UNSAFE unsafe_statement | UNSAFE LCURL unsafe_statement+ RCURL;
-push_pull: expression PUSH expression | expression PULL expression;
+target_shift: expression LSHIFT expression | expression RSHIFT expression;
 
 spawn_block: SPAWN LPAREN number RPAREN statement_block;
 
 try_block: TRY statement_block CATCH LPAREN EXCEPTION SLASH IDENTIFIER RPAREN statement_block;
 
-semicolonless_statement: push_pull | assignment | invocation | BREAK | CONTINUE;
+semicolonless_statement: target_shift | assignment | invocation | BREAK | CONTINUE;
 unsafe_statement: var_definition_statement | set_statement | return_statement | flow_control | try_block | semicolonless_statement SEMI;
 safe_statement: unsafe_block | unsafe_statement;
 statement_block: safe_statement | LCURL safe_statement+ RCURL;

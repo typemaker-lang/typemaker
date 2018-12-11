@@ -4,10 +4,7 @@ using System.Text;
 
 namespace Typemaker.Ast
 {
-	interface ITypedIdentifier : ISyntaxNode, IIdentifiable
+	public interface ITypedIdentifier : ISyntaxNode, IIdentifiable, INullableType
 	{
-		RootType RootType { get; }
-
-		bool IsNullable { get; }
 	}
 }
