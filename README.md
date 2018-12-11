@@ -36,7 +36,7 @@ New prefixes: `/file`, `/resource`, `/bool`, `/string`, `/path`, `/int`, `/float
 
 `/list/<another path>` now allows accessing an indexed list strongly
 
-`/dict` is a `/list` keyed by something. The format is `/dict/<key_type>\\<value_type>` They cannot be keyed by `/dict`s, `/bool`s, `/int`s, or `/float`s
+`/dict` is a `/list` keyed by something. The format is `/dict/<key_type>\\<value_type>` They cannot be keyed by `/dict`s, `/bool`s, `/int`s, or `/float`s. Dicts are initialized with the `dict()` proc, which is identical to the `list()` proc in dm except all entries must be keyed.
 
 No default initialization for `/string` and `/path`
 
@@ -222,15 +222,17 @@ final /datum/foo/bar/MustBeOverridden(int/x = 4, datum/enforced_on_children = ne
 
 `var/interface/x;` is an invalid variable declaration.
 
-interfaces inherit from child interfaces
+interfaces do not have single inheritance and only have one identifier
 
 `implements` must be in a declaration block of a datum to bind it to the contract
 
 ```dm
 /interface/IEmptyInterfacesAreValidAndStillTypeChecked {}
 
-/interface/IExample/IExtendedExample
+/interface/IExtendedExample
 {
+	implements IExample;
+
     var/string/must_have_this_public_var;
 }
 
@@ -462,6 +464,28 @@ The `tm_langserv` and `tm_lint` binaries are to be included in the install bin f
 ## Folder Based Compilation
 
 Automatically include all `.tm` files in a project root
+
+### File Restrictions
+
+A `.tm` file can only be one of a Typemaker File, a declaration file, or a map file
+
+Map files can only contain map statements
+
+Declaration files can only contain declarations
+
+Typemaker files cannot contain declarations or map statements
+
+There is a standard declaration order that must be followed for Typemaker files as well as declaration files where applicable:
+
+1. Global Variables
+
+2. Enums and Interfaces
+
+3. Global Procs
+
+4. Datum Declarations
+
+5. Datum Proc Definitions
 
 # `typemaker.json` Format
 

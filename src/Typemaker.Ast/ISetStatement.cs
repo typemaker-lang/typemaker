@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Typemaker.Ast
 {
-	public interface IAssignStatement : ISyntaxNode
+	public interface IAssignStatement : IStatement
 	{
 		bool IsSet { get; }
 	}

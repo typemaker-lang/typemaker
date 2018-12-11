@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Typemaker.Ast
 {
-	interface IProcDefinition : ISyntaxNode
+	public interface IProcDefinition : ISyntaxNode
 	{
+		bool IsInline { get; }
 	}
 }

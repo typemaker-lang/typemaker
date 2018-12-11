@@ -18,10 +18,7 @@ datum_declaration: DECLARE datum_decorator_set fully_extended_identifier datum_d
 
 declaration_file: global_var_declaration* generic_declaration* global_proc_declaration* datum_declaration* EOF;
 
-typemaker_file: datum_file | globals_file;
-
-globals_file: global_var* generic_declaration* global_proc* EOF;
-datum_file: generic_declaration* datum_def+ datum_proc* EOF;
+typemaker_file: global_var* generic_declaration* global_proc* datum_def* datum_proc* EOF;
 generic_declaration: enum | interface;
 
 map: MAP LPAREN RES RPAREN SEMI;
@@ -258,9 +255,8 @@ decorated_var_definition_statements: decorated_var_definition_statement+;
 
 datum_decorator: universal_decorator | SEALED | PARTIAL;
 datum_decorator_set: datum_decorator+ SLASH | SLASH;
-implements_statement: IMPLEMENTS extended_identifier SEMI;
-implements_statements: implements_statement+;
-datum_block_interior: implements_statements decorated_var_definition_statements | implements_statements | decorated_var_definition_statements;
+implements_statement: IMPLEMENTS IDENTIFIER SEMI;
+datum_block_interior: implements_statement+ decorated_var_definition_statements | implements_statement+ | decorated_var_definition_statements;
 datum_block: LCURL datum_block_interior RCURL | LCURL RCURL;
 datum_def: datum_decorator_set extended_identifier datum_block;
 
@@ -287,7 +283,7 @@ global_proc: global_proc_decorator_set proc_type proc_definition proc_block;
 proc_type: PROC | VERB;
 datum_proc: proc_decorator_set extended_identifier proc_type? proc_definition proc_block;
 
-interface_type: INTERFACE fully_extended_identifier;
+interface_type: INTERFACE SLASH IDENTIFIER;
 
 proc_interface: PROC proc_definition SEMI;
 interface_definition: var_definition_only SEMI | proc_interface;

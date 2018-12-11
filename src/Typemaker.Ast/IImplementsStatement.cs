@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Typemaker.Ast
 {
-	interface IImplementsStatement : ISyntaxNode
+	public interface IImplementsStatement : ISyntaxNode
 	{
+		string InterfaceName { get; }
 	}
 }

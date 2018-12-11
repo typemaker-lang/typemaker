@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Typemaker.Ast
 {
-	interface IGlobalDeclaration
+	public interface IGlobalDeclaration : ISyntaxNode
 	{
 		bool IsDeclared { get; }
 	}

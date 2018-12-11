@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Typemaker.Ast
 {
-	interface IObjectDeclaration : ISyntaxNode, IGlobalDeclaration, IIdentifiable
+	public interface IObjectDeclaration : IGlobalDeclaration, IInterfaceImplementer
 	{
 		bool IsPartial { get; }
 

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Typemaker.Ast.Expressions
 {
-	public interface IAssignment : IExpression
+	public interface IAssignment : IExpression, IStatement
 	{
 		IExpression LeftHandSide { get; }
 		AssignmentOperator Operator { get; }

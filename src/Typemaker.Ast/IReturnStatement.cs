@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Typemaker.Ast
 {
-	interface IReturnStatement : ISyntaxNode
+	public interface IReturnStatement : IStatement
 	{
 	}
 }

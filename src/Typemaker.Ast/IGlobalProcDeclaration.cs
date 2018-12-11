@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Typemaker.Ast
 {
-	interface IGlobalProcDeclaration : IGlobalDeclaration, IIdentifiable
+	public interface IGlobalProcDeclaration : IGlobalDeclaration, IIdentifiable
 	{
-
+		IProcDefinition ProcDefinition { get; }
 	}
 }
