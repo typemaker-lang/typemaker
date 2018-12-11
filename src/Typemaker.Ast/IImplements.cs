@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Typemaker.Ast
 {
-	public interface IBlock : ISyntaxNode
+	public interface IImplements : ISyntaxNode
 	{
-		IReadOnlyList<IStatement> Statements { get; }
+		string InterfaceName { get; }
 	}
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Typemaker.Ast.Expressions
 {
-	public interface IPathExpression : IExpression, IObjectPath
+	public interface INullExpression : IExpression
 	{
 	}
 }

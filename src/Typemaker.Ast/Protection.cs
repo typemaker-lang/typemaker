@@ -2,7 +2,7 @@
 {
 	public enum Protection
 	{
-		Implicit,
+		Implicit,	//generally private
 		Protected,
 		Public
 	}

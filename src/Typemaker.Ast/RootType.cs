@@ -3,6 +3,7 @@
 	public enum RootType
 	{
 		Unknown,
+		Known,
 		Resource,
 		Int,
 		Float,

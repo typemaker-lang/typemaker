@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Typemaker.Ast.Expressions
 {
-	interface IInputExpression : IExpression
+	interface IInputExpression : IStatementExpression
 	{
 		IExpression Target { get; }
 		IExpression Message { get; }

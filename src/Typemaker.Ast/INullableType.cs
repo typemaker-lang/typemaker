@@ -6,6 +6,6 @@
 
 		bool IsNullable { get; }
 
-		string ObjectPath { get; }
+		IObjectPath ObjectPath { get; }
 	}
 }

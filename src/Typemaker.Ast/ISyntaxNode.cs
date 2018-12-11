@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Typemaker.Ast.Trivia;
 
 namespace Typemaker.Ast
 {
@@ -7,9 +7,6 @@ namespace Typemaker.Ast
 	{
 		ISyntaxTree Tree { get; }
 		ISyntaxNode Parent { get; }
-
-		ILocation Start { get; }
-		ILocation End { get; }
 
 		IReadOnlyList<ISyntaxNode> Children { get; }
 

@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Typemaker.Ast
 {
-	interface IObjectPath : ISyntaxNode
+	public interface IObjectPath
 	{
-		string ExtendedPath { get; }
+		string Path { get; }
 	}
 }

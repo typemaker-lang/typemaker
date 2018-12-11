@@ -4,6 +4,6 @@ namespace Typemaker.Ast
 {
 	public interface IInterfaceImplementer : IIdentifiable
 	{
-		IReadOnlyList<IImplementsStatement> Implements { get; }
+		IReadOnlyList<IImplements> Implements { get; }
 	}
 }

@@ -1,4 +1,4 @@
-﻿namespace Typemaker.Ast
+﻿namespace Typemaker.Ast.Trivia
 {
 	public enum TriviaType
 	{

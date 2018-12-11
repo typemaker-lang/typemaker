@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Typemaker.Ast
+namespace Typemaker.Ast.Trivia
 {
 	public interface ICommentTrivia : ITrivia
 	{

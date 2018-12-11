@@ -6,6 +6,10 @@ namespace Typemaker.Ast
 {
 	public interface IObjectProcDefinition : IProcDefinition
 	{
-		new IObjectDeclaration Declaration { get; }
+		bool IsFinal { get; }
+
+		int Precedence { get; }
+
+		new IObjectProcDeclaration Declaration { get; }
 	}
 }

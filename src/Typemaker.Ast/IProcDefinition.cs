@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Typemaker.Ast.Statements;
 
 namespace Typemaker.Ast
 {
@@ -10,6 +8,6 @@ namespace Typemaker.Ast
 
 		IProcDeclaration Declaration { get; }
 
-		IBlock Body { get; }
+		IStatement Body { get; }
 	}
 }

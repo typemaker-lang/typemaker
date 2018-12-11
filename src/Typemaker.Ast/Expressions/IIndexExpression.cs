@@ -4,7 +4,9 @@ using System.Text;
 
 namespace Typemaker.Ast.Expressions
 {
-	public interface IPathExpression : IExpression, IObjectPath
+	public interface IIndexExpression : IExpression
 	{
+		IExpression Target { get; }
+		IExpression Index { get; }
 	}
 }

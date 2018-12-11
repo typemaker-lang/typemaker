@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Typemaker.Ast.Expressions
 {
-	public interface IPathExpression : IExpression, IObjectPath
+	interface IBooleanExpression : IExpression
 	{
+		bool True { get; }
 	}
 }

@@ -2,7 +2,7 @@ parser grammar TypemakerParser;
 
 options { tokenVocab=TypemakerLexer; }
 
-compilation_unit: global_var_declaration* global_var* generic_declaration* global_proc_declaration* global_proc* datum_declaration*  datum_def* datum_proc* EOF;
+compilation_unit: global_var_declaration* var_definition_statement* generic_declaration* global_proc_declaration* global_proc* datum_declaration*  datum_def* datum_proc* EOF;
 
 proc_declaration: SLASH proc_type? proc_definition SEMI;
 global_proc_declaration: DECLARE proc_declaration;
@@ -159,7 +159,6 @@ target
 	| basic_identifier
 	| fully_extended_identifier
 	| path_type
-	| GLOBAL
 	| RES
 	| TRUE
 	| FALSE
@@ -171,6 +170,7 @@ target
 basic_identifier
 	: IDENTIFIER
 	| DOTDOT
+	| GLOBAL
 	| SRC
 	| USR
 	| DOT
@@ -290,5 +290,3 @@ enum_definition: IDENTIFIER EQUALS enum_value | IDENTIFIER;
 enum_definitions: enum_definition | enum_definition COMMA enum_definitions;
 enum_block: LCURL RCURL | LCURL enum_definitions RCURL;
 enum: enum_type enum_block;
-
-global_var: var_definition_statement;

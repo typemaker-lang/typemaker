@@ -8,8 +8,6 @@ namespace Typemaker.Ast
 	{
 		bool IsVerb { get; }
 
-		bool IsVoid { get; }
-
 		bool IsConstructor { get; }
 
 		IReadOnlyList<ITypedIdentifier> Arguments { get; }

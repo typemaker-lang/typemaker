@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Typemaker.Ast.Expressions
 {
-	interface IBinaryExpression : IExpression
+	interface IBinaryExpression : IStatementExpression
 	{
 		IExpression LeftHandSide { get; }
 

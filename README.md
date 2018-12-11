@@ -28,7 +28,7 @@ All vars are implicitly prefixed. Manual prefixing is required if type deduction
 
 Proc parameters forced to follow the `type/name` syntax without leading slash and are validated at the call site if no default values exist
 
-New prefixes: `/file`, `/resource`, `/bool`, `/string`, `/path`, `/int`, `/float`, `/dict`, `/interface`, `/enum`. `/nullable` comes before any prefix if the variable may be `null`.
+New prefixes: `/resource`, `/bool`, `/string`, `/path`, `/int`, `/float`, `/dict`, `/interface`, `/enum`. `/nullable` comes before any prefix if the variable may be `null`.
 
 `/path/concrete` limits to non-abstract paths and is the only `/path` type usable in `new` statements.
 
@@ -218,13 +218,13 @@ final /datum/foo/bar/MustBeOverridden(int/x = 4, datum/enforced_on_children = ne
 
 `/interface` is a declarative only type that describes a set of public variables and procs a non-abstract datum must implement. Datums that implement interfaces are implicitly castable to interface vars of that type. 
 
-`/interface` paths cannot be cast to `/path/concrete`
+`/interface` paths cannot be used as literals
 
 `var/interface/x;` is an invalid variable declaration.
 
-interfaces do not have single inheritance and only have one identifier
+interfaces use multiple inheritance and only have one identifier
 
-`implements` must be in a declaration block of a datum to bind it to the contract
+`implements` must be in a declaration block of a datum or interface to bind it to the contract
 
 ```dm
 /interface/IEmptyInterfacesAreValidAndStillTypeChecked {}
