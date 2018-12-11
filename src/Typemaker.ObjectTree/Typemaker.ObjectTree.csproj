@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Typemaker.Ast\Typemaker.Ast.csproj" />
+    <ProjectReference Include="..\Typemaker.Ast\Typemaker.Ast.csproj" />
   </ItemGroup>
 
 </Project>
