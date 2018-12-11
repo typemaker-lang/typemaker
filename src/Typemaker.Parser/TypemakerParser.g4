@@ -76,7 +76,7 @@ list_definition: LIST list_declaration_list;
 
 nameof_expression: NAMEOF LPAREN target RPAREN;
 
-new_type: true_type | accessed_target;
+new_type: true_type | accessed_target | DOT;
 
 new_expression
 	: NEW new_type
