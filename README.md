@@ -453,13 +453,13 @@ Compiler named `tmc`
 
 Projects specify exactly which BYOND version to use for compilation in `typemaker.json` file. `tmc` handles downloading and installing versions in `~/.typemaker/byond` as necessary.
 
-## Language Server and Linting
+### Other Executables
 
-The `tm_langserv` and `tm_lint` binaries are to be included in the install bin folder
+`tm_langserv` is a [langserver protocol](https://langserver.org) executable
 
-`tm_langserv` is a [langserver protocol](https://langserver.org/) executable
+`tm_edit` launches DreamMaker's icon and map editor for all `.dmi` and `.dmm` files in the code tree after transpiling
 
-`tm_lint` automatically formats `.tm` files
+`tm_vm` handles upgrading, downgrading, and uninstalling the typemaker installation
 
 ## Folder Based Compilation
 

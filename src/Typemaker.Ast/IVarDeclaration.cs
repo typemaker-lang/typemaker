@@ -5,12 +5,8 @@ using Typemaker.Ast.Expressions;
 
 namespace Typemaker.Ast
 {
-	public interface IVarDeclaration : IStatement, IIdentifiable
+	public interface IVarDeclaration : IStatement, ITypedIdentifier
 	{
 		bool IsConst { get; }
-
-		INullableType Type { get; }
-
-		IExpression Initializer { get; }
 	}
 }

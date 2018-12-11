@@ -8,6 +8,18 @@ namespace Typemaker.Ast
 	{
 		public string FilePath => throw new NotImplementedException();
 
+		public IReadOnlyList<IMapDeclaration> Maps => throw new NotImplementedException();
+
+		public IReadOnlyList<IGlobalVarDeclaration> Globals => throw new NotImplementedException();
+
+		public IReadOnlyList<IGenericDeclaration> EnumsAndInterfaces => throw new NotImplementedException();
+
+		public IReadOnlyList<IGlobalProcDeclaration> Procs => throw new NotImplementedException();
+
+		public IReadOnlyList<IObjectDeclaration> Datums => throw new NotImplementedException();
+
+		public IReadOnlyList<IObjectProcDefinition> DatumProcs => throw new NotImplementedException();
+
 		public ISyntaxTree Tree => throw new NotImplementedException();
 
 		public ISyntaxNode Parent => throw new NotImplementedException();
@@ -20,10 +32,10 @@ namespace Typemaker.Ast
 
 		public string Syntax => throw new NotImplementedException();
 
+		public TriviaType TriviaType => throw new NotImplementedException();
+
 		public ITrivia Lead => throw new NotImplementedException();
 
 		public ITrivia Trail => throw new NotImplementedException();
-
-		public TriviaType TriviaType => throw new NotImplementedException();
 	}
 }

@@ -1,6 +1,6 @@
 ﻿namespace Typemaker.Ast
 {
-	public interface IGenericDeclaration
+	public interface IGenericDeclaration: IIdentifiable
 	{
 	}
 }

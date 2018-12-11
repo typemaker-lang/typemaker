@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Typemaker.Ast
 {
-	public interface IInterface : IInterfaceImplementer
+	public interface IInterface : IGenericDeclaration, IInterfaceImplementer
 	{
 		IReadOnlyList<IVarDeclaration> VarDeclarations { get; }
 		IReadOnlyList<IProcDeclaration> ProcDeclarations { get; }

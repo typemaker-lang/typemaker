@@ -11,5 +11,9 @@ namespace Typemaker.Ast
 		bool IsAbstract { get; }
 
 		bool IsSealed { get; }
+
+		IReadOnlyList<IFieldDeclaration> Fields { get; }
+
+		IReadOnlyList<IObjectProcDeclaration> DeclaredProcs { get; }
 	}
 }

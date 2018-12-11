@@ -119,6 +119,8 @@ IMPLEMENTS: 'implements';
 
 SPAWN: 'spawn';
 
+BANNED_MOJO: 'operator';
+
 TRY: 'try';
 CATCH: 'catch';
 

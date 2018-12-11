@@ -4,14 +4,15 @@ using System.Text;
 
 namespace Typemaker.Ast
 {
-	public interface IProcDeclaration : ISyntaxNode, IIdentifiable
+	public interface IProcDeclaration : IIdentifiable
 	{
-		Protection ProtectionLevel { get; }
-		bool IsStatic { get; }
-		bool IsVirtual { get; }
 		bool IsVerb { get; }
 
 		bool IsVoid { get; }
+
+		bool IsConstructor { get; }
+
+		IReadOnlyList<ITypedIdentifier> Arguments { get; }
 
 		INullableType ReturnType { get; }
 	}

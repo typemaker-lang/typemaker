@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Typemaker.Ast
 {
-	public interface IGlobalVarDeclaration : IGlobalDeclaration, IVarDeclaration
+	public interface IEnum : IGenericDeclaration
 	{
+		IReadOnlyList<IEnumItem> Items { get; }
 	}
 }

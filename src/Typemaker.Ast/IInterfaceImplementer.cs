@@ -2,7 +2,7 @@
 
 namespace Typemaker.Ast
 {
-	public interface IInterfaceImplementer : ISyntaxNode, IIdentifiable
+	public interface IInterfaceImplementer : IIdentifiable
 	{
 		IReadOnlyList<IImplementsStatement> Implements { get; }
 	}

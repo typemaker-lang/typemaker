@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Typemaker.Ast
 {
-	interface IDeclaration : ISyntaxNode
+	public interface IObjectProcDefinition : IProcDefinition
 	{
+		new IObjectDeclaration Declaration { get; }
 	}
 }
