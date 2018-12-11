@@ -119,8 +119,6 @@ IMPLEMENTS: 'implements';
 
 SPAWN: 'spawn';
 
-BANNED_MOJO: 'operator';
-
 TRY: 'try';
 CATCH: 'catch';
 
@@ -152,6 +150,8 @@ SET: 'set';
 
 MAP: 'map';
 
+BANNED_MOJO_OPERATOR: 'operator';
+
 IDENTIFIER: [_a-zA-Z][_a-zA-Z0-9]*;
 
 mode INTERPOLATION_STRING;
@@ -176,4 +176,5 @@ MULTI_STRING_CLOSE: {multiString.Peek()}? '"}' { multiString.Pop(); PopMode(); }
 STRING_CLOSE: {!multiString.Peek()}? '"' { multiString.Pop(); PopMode(); };
 
 STRING_INSIDE: {!multiString.Peek()}? ~('[' | '\\' | '"' | '\r' | '\n')+;
+MULTI_STRING_QUOTE: {multiString.Peek()}? '"';
 MULTI_STRING_INSIDE: {multiString.Peek()}? ~('[' | '\\' | '"')+;

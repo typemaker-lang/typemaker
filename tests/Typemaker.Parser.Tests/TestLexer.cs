@@ -77,8 +77,7 @@ a very[""very""]
  				TypemakerLexer.STRING_CLOSE,
  				TypemakerLexer.RBRACE,
  				TypemakerLexer.MULTI_STRING_INSIDE,
-				//The quote breaks the token in two
-				//nbd since the parser eats them all anyway
+				TypemakerLexer.MULTI_STRING_QUOTE,
  				TypemakerLexer.MULTI_STRING_INSIDE,
  				TypemakerLexer.CHAR_INSIDE,
  				TypemakerLexer.MULTI_STRING_INSIDE,

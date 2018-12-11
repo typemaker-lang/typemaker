@@ -1,4 +1,5 @@
 ﻿using Typemaker.Ast;
+using Typemaker.Ast.Trivia;
 
 namespace Typemaker.CodeTree
 {

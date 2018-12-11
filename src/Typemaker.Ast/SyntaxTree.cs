@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Antlr4.Runtime;
+using System;
 using System.Collections.Generic;
-using Typemaker.Ast.Trivia;
 
 namespace Typemaker.Ast
 {
-	public sealed class SyntaxTree : ISyntaxTree
+	sealed class SyntaxTree : SyntaxNode, ISyntaxTree
 	{
-		public string FilePath => throw new NotImplementedException();
+		public string FilePath { get; }
 
 		public IReadOnlyList<IMapDeclaration> Maps => throw new NotImplementedException();
 
@@ -20,22 +20,11 @@ namespace Typemaker.Ast
 
 		public IReadOnlyList<IObjectProcDefinition> DatumProcs => throw new NotImplementedException();
 
-		public ISyntaxTree Tree => throw new NotImplementedException();
+		public SyntaxTree(string filePath, ParserRuleContext context) : base(context)
+		{
+			FilePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
+		}
 
-		public ISyntaxNode Parent => throw new NotImplementedException();
-
-		public ILocation Start => throw new NotImplementedException();
-
-		public ILocation End => throw new NotImplementedException();
-
-		public IReadOnlyList<ISyntaxNode> Children => throw new NotImplementedException();
-
-		public string Syntax => throw new NotImplementedException();
-
-		public TriviaType TriviaType => throw new NotImplementedException();
-
-		public ITrivia Lead => throw new NotImplementedException();
-
-		public ITrivia Trail => throw new NotImplementedException();
+		public void Build(IList<IToken> tokens) => Build(null, null, this, tokens);
 	}
 }

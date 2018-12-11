@@ -25,11 +25,11 @@ enum_type: SLASH ENUM SLASH IDENTIFIER;
 concrete_path: PATH SLASH CONCRETE;
 path_type: concrete_path | PATH;
 
-string_content: CHAR_INSIDE | STRING_INSIDE | MULTI_STRING_INSIDE;
-string_body: string_content+ | string_content+ EMBED_START expression RBRACE string_body | EMBED_START expression RBRACE string_content+ | EMBED_START expression RBRACE;
+string_content: CHAR_INSIDE | STRING_INSIDE | MULTI_STRING_INSIDE | MULTI_STRING_QUOTE;
+string_body: string_content | EMBED_START expression RBRACE;
 
-multi_string: MULTI_STRING_START string_body MULTI_STRING_CLOSE;
-line_string: STRING_START string_body STRING_CLOSE;
+multi_string: MULTI_STRING_START string_body+ MULTI_STRING_CLOSE | MULTI_STRING_START MULTI_STRING_CLOSE;
+line_string: STRING_START string_body+ STRING_CLOSE | STRING_START STRING_CLOSE;
 dynamic_string: line_string | multi_string;
 
 const_string: VERBATIUM_STRING | MULTILINE_VERBATIUM_STRING;
@@ -39,7 +39,7 @@ string
 	;
 
 dict_type: DICT SLASH nullable_type BSLASH nullable_type;
-root_type: enum_type | path_type | interface_type | dict_type | INT | RESOURCE | BOOL | FLOAT | EXCEPTION;
+root_type: enum_type | path_type | interface_type | dict_type | INT | RESOURCE | BOOL | FLOAT | EXCEPTION | STRING;
 list_identifier: IDENTIFIER | LIST;
 extended_identifier: IDENTIFIER | IDENTIFIER fully_extended_identifier;
 fully_extended_identifier: SLASH extended_identifier;

@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Typemaker.Parser\Typemaker.Parser.csproj" />
+    <ProjectReference Include="..\Typemaker.Ast\Typemaker.Ast.csproj" />
   </ItemGroup>
 
 </Project>

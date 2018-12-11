@@ -1,24 +1,18 @@
-﻿using Antlr4.Runtime;
-using System;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using Typemaker.Parser;
+using Typemaker.Ast;
 
 namespace Typemaker.Compiler
 {
-    public class TestParser
-    {
-        public static void Main(string[] args)
+	public class TestParser
+	{
+		public static void Main(string[] args)
 		{
-			using (FileStream fs = new FileStream("../../../../Typemaker.Compiler/test.tm", FileMode.Open, FileAccess.Read))
-			{
-				var input = new AntlrInputStream(fs);
-				var lexer = new TypemakerLexer(input);
-				var tokens = lexer.GetAllTokens();
-				var tokenNames = String.Join(" ", tokens.Select(x => lexer.Vocabulary.GetDisplayName(x.Type)));
-				Console.WriteLine(tokenNames);
-				Console.ReadKey();
-			}
-        }
-    }
+			const string Path = "../../../../Typemaker.Compiler/test.tm";
+			ISyntaxTree tree;
+			IReadOnlyList<ParseError> errors;
+			using (FileStream fs = new FileStream(Path, FileMode.Open, FileAccess.Read))
+				tree = SyntaxTreeFactory.CreateSyntaxTree(fs, Path, out errors);
+		}
+	}
 }

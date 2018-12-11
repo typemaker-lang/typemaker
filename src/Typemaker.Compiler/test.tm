@@ -1,4 +1,6 @@
-﻿/proc/main() -> void {
+﻿	 //test comment potentially ignore
+
+/proc/main() -> void {
 
 	var/string/test = "I ["["am"] [{"
 	a very ["very"]
