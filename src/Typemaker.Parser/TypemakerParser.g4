@@ -76,7 +76,29 @@ list_definition: LIST list_declaration_list;
 
 nameof_expression: NAMEOF LPAREN target RPAREN;
 
-new_expression: NEW true_type | NEW true_type argument_list | NEW argument_list | NEW;
+new_type: true_type | accessed_target;
+
+new_expression
+	: NEW new_type
+	| NEW new_type argument_list
+	| NEW argument_list
+	| NEW
+	;
+
+accessor
+	: nonoptional_accessor
+	| QUESTION nonoptional_accessor
+	;
+
+nonoptional_accessor
+	: DOT	// x.y
+	| COLON	// x:y
+	;
+
+accessed_target
+	: accessed_target accessor IDENTIFIER
+	| IDENTIFIER
+	;
 
 in_expression: target IN expression;
 
@@ -94,6 +116,7 @@ expression
 	| expression XOR expression
 	| expression PUSH expression
 	| expression PULL expression
+	| INVERT expression
 	| MINUS expression
 	| inc_dec expression
 	| expression inc_dec
@@ -136,13 +159,6 @@ target
 	| NULL
 	;
 
-accessor
-	: DOT	// x.y
-	| QUESTION DOT	// x?.y
-	| COLON	// x:y
-	| QUESTION COLON	// x?:y
-	;
-
 basic_identifier
 	: IDENTIFIER
 	| DOTDOT
@@ -157,6 +173,7 @@ assignment
 	| target MEQUALS expression
 	| target TEQUALS expression
 	| target SEQUALS expression
+	| target IEQUALS expression
 	| target EQUALS expression;
 
 target_var: target | var_definition_only;
