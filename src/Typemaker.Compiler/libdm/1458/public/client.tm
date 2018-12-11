@@ -1,4 +1,4 @@
-﻿declar partial /client {
+﻿declare partial /client {
 	public readonly var/string/address;
 	public readonly var/bool/authenticate;
 	//TODO: bounds
