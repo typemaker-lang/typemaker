@@ -467,25 +467,25 @@ Automatically include all `.tm` files in a project root
 
 ### File Restrictions
 
-A `.tm` file can only be one of a Typemaker File, a declaration file, or a map file
+There is a standard declaration order that must be followed for Typemaker files:
 
-Map files can only contain map statements
+1. Map declarations
 
-Declaration files can only contain declarations
-
-Typemaker files cannot contain declarations or map statements
-
-There is a standard declaration order that must be followed for Typemaker files as well as declaration files where applicable:
+1. Declared Global Variables
 
 1. Global Variables
 
-2. Enums and Interfaces
+1. Enums and Interfaces
 
-3. Global Procs
+1. Declared Global Procs
 
-4. Datum Declarations
+1. Global Procs
 
-5. Datum Proc Definitions
+1. Declared Datums
+
+1. True Datum Declarations
+
+1. Datum Proc Definitions
 
 # `typemaker.json` Format
 

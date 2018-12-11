@@ -2,9 +2,7 @@ parser grammar TypemakerParser;
 
 options { tokenVocab=TypemakerLexer; }
 
-compilation_unit: typemaker_file | map_file | declaration_file;
-
-map_file: map+ EOF;
+compilation_unit: global_var_declaration* global_var* generic_declaration* global_proc_declaration* global_proc* datum_declaration*  datum_def* datum_proc* EOF;
 
 proc_declaration: SLASH proc_type? proc_definition SEMI;
 global_proc_declaration: DECLARE proc_declaration;
@@ -16,9 +14,6 @@ datum_declaration_items: datum_declaration_item+;
 datum_declaration_block: LCURL RCURL | LCURL datum_declaration_items RCURL;
 datum_declaration: DECLARE datum_decorator_set fully_extended_identifier datum_declaration_block;
 
-declaration_file: global_var_declaration* generic_declaration* global_proc_declaration* datum_declaration* EOF;
-
-typemaker_file: global_var* generic_declaration* global_proc* datum_def* datum_proc* EOF;
 generic_declaration: enum | interface;
 
 map: MAP LPAREN RES RPAREN SEMI;
