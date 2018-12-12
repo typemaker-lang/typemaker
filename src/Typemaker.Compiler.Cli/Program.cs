@@ -36,6 +36,7 @@ namespace Typemaker.Compiler.Cli
 			catch (Newtonsoft.Json.JsonException e)
 			{
 				Console.WriteLine("Error deserializing typemaker.json. Error message: {0}. Quitting...", e.Message);
+				return -1;
 			}
 
 			if (options.DebugMode != null)
