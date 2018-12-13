@@ -4,6 +4,6 @@ namespace Typemaker.Ast.Visitors
 {
 	interface ISyntaxTreeVisitorFactory
 	{
-		ITypemakerParserVisitor<SyntaxTree> CreateSyntaxTreeVisitor(string filePath);
+		ISyntaxTreeVisitor CreateSyntaxTreeVisitor(string filePath);
 	}
 }

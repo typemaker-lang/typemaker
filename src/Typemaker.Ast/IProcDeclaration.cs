@@ -13,5 +13,7 @@ namespace Typemaker.Ast
 		IReadOnlyList<ITypedIdentifier> Arguments { get; }
 
 		INullableType ReturnType { get; }
+
+		IProcDefinition Definition { get; }
 	}
 }

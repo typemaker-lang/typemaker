@@ -6,6 +6,5 @@ namespace Typemaker.Ast
 {
 	public interface IGlobalProcDeclaration : IGlobalDeclaration, IProcDeclaration
 	{
-		IProcDefinition ProcDefinition { get; }
 	}
 }

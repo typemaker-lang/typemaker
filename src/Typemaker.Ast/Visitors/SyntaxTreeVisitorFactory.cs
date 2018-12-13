@@ -4,6 +4,6 @@ namespace Typemaker.Ast.Visitors
 {
 	sealed class SyntaxTreeVisitorFactory : ISyntaxTreeVisitorFactory
 	{
-		public ITypemakerParserVisitor<SyntaxTree> CreateSyntaxTreeVisitor(string filePath) => new CompilationUnitVisitor(filePath);
+		public ISyntaxTreeVisitor CreateSyntaxTreeVisitor(string filePath) => new CompilationUnitVisitor(filePath);
 	}
 }

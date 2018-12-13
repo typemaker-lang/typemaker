@@ -9,7 +9,8 @@ global_proc_declaration: DECLARE proc_declaration;
 global_var_declaration: DECLARE var_definition_only SEMI;
 
 datum_var_declaration: untyped_var_definition_only SEMI | var_decorations untyped_var_definition_only SEMI;
-datum_declaration_item: datum_var_declaration | set_assignment_statement | proc_decorator_set proc_interface | implements_statement;
+datum_proc_declaration: proc_decorator_set proc_interface | proc_decorator_set constructor_definition SEMI | constructor_definition SEMI;
+datum_declaration_item: datum_var_declaration | set_assignment_statement | datum_proc_declaration | implements_statement;
 datum_declaration_items: datum_declaration_item+;
 datum_declaration_block: LCURL RCURL | LCURL datum_declaration_items RCURL;
 datum_declaration: DECLARE datum_decorator_set fully_extended_identifier datum_declaration_block;
@@ -28,11 +29,21 @@ path_type: concrete_path | PATH;
 string_content: CHAR_INSIDE | STRING_INSIDE | MULTI_STRING_INSIDE | MULTI_STRING_QUOTE;
 string_body: string_content | EMBED_START expression RBRACE;
 
-multi_string: MULTI_STRING_START string_body+ MULTI_STRING_CLOSE | MULTI_STRING_START MULTI_STRING_CLOSE;
-line_string: STRING_START string_body+ STRING_CLOSE | STRING_START STRING_CLOSE;
-dynamic_string: line_string | multi_string;
+dynamic_string
+	: MULTI_STRING_START string_body+ MULTI_STRING_CLOSE
+	| STRING_START string_body+ STRING_CLOSE
+	;
 
-const_string: VERBATIUM_STRING | MULTILINE_VERBATIUM_STRING;
+const_string
+	:
+	| MULTI_STRING_START string_content+ MULTI_STRING_CLOSE
+	| STRING_START string_content+ STRING_CLOSE
+	| MULTI_STRING_START MULTI_STRING_CLOSE
+	| STRING_START STRING_CLOSE
+	| MULTILINE_VERBATIUM_STRING
+	| VERBATIUM_STRING 
+	;
+
 string
 	: const_string 
 	| dynamic_string
@@ -192,7 +203,7 @@ assignment
 target_var: target | var_definition_only;
 
 argument: expression | basic_identifier EQUALS expression;
-arguments: argument | argument arguments;
+arguments: argument | argument COMMA arguments;
 argument_list: LPAREN RPAREN | LPAREN arguments RPAREN;
 
 call_invocation: CALL argument_list | CALL LPAREN string RPAREN argument_list;
@@ -259,9 +270,9 @@ argument_declaration: untyped_identifier | untyped_identifier EQUALS expression;
 argument_declaration_list: argument_declaration | argument_declaration COMMA argument_declaration_list | VARARGS;
 
 proc_arguments: LPAREN RPAREN | LPAREN argument_declaration_list RPAREN;
-proc_identifier: IDENTIFIER | CONSTRUCTOR;
-proc_name_and_args: SLASH proc_identifier proc_arguments;
-proc_definition: proc_name_and_args RDEC return_type | proc_name_and_args;
+proc_args_and_ret: proc_arguments RDEC return_type | proc_arguments;
+proc_definition: SLASH IDENTIFIER proc_args_and_ret;
+constructor_definition: SLASH CONSTRUCTOR proc_args_and_ret; 
 
 access: PUBLIC | PROTECTED;
 precedence: PRECEDENCE LPAREN INTEGER RPAREN;

@@ -9,7 +9,5 @@ namespace Typemaker.Ast
 		bool IsFinal { get; }
 
 		int Precedence { get; }
-
-		new IObjectProcDeclaration Declaration { get; }
 	}
 }

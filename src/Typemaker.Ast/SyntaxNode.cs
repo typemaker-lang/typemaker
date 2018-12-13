@@ -15,8 +15,6 @@ namespace Typemaker.Ast
 		public ISyntaxNode Parent { get; private set; }
 
 		public IReadOnlyList<ISyntaxNode> Children => children;
-
-		public string Syntax { get; }
 		
 		public ILocation Start { get; }
 
@@ -38,9 +36,12 @@ namespace Typemaker.Ast
 			if (context == null)
 				throw new ArgumentNullException(nameof(context));
 
-			this.children = children?.ToList() ?? throw new ArgumentNullException(nameof(children));
-
-			Syntax = context.GetText();
+			this.children = children?.Select(x =>
+			{
+				if (x == null)
+					throw new InvalidOperationException("Attempted to add null child node!");
+				return x;
+			}).ToList() ?? throw new ArgumentNullException(nameof(children));
 
 			startTokenIndex = context.Start.TokenIndex;
 			stopTokenIndex = context.Stop.TokenIndex;
@@ -53,12 +54,13 @@ namespace Typemaker.Ast
 		{
 			Parent = parent ?? throw new ArgumentNullException(nameof(parent));
 			Tree = tree ?? throw new ArgumentNullException(nameof(tree));
-			Syntax = token?.Text ?? throw new ArgumentNullException(nameof(token));
 			Start = new Location(token, false);
 			End = new Location(token, true);
 
 			Trivia = true;
 		}
+
+		IEnumerable<TChildNode> SelectChildren<TChildNode>() where TChildNode : ISyntaxNode => children.Where(x => x is TChildNode).Select(x => (TChildNode)(object)x);
 
 		protected void BuildTrivia(SyntaxNode left, SyntaxNode right, ISyntaxTree tree, IList<IToken> tokens)
 		{
@@ -125,7 +127,7 @@ namespace Typemaker.Ast
 				++offset;
 			}
 		}
-
-		protected IReadOnlyList<TChildNode> ChildrenAs<TChildNode>() where TChildNode : ISyntaxNode => children.Where(x => x is TChildNode).Select(x => (TChildNode)(object)x).ToList();
+		protected TChildNode ChildAs<TChildNode>(int index = 0) where TChildNode : ISyntaxNode => SelectChildren<TChildNode>().ElementAt(index);
+		protected IReadOnlyList<TChildNode> ChildrenAs<TChildNode>() where TChildNode : ISyntaxNode => SelectChildren<TChildNode>().ToList();
 	}
 }

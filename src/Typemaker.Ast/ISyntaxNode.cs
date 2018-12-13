@@ -16,8 +16,6 @@ namespace Typemaker.Ast
 
 		IReadOnlyList<ISyntaxNode> Children { get; }
 
-		string Syntax { get; }
-
 		bool Trivia { get; }
 	}
 }

@@ -1,15 +1,15 @@
-﻿using Antlr4.Runtime;
-using System;
+﻿using System;
 using System.Linq;
+using Typemaker.Parser;
 
 namespace Typemaker.Ast
 {
 	sealed class MapDeclaration : SyntaxNode, IMapDeclaration
 	{
 		public string MapPath { get; }
-		public MapDeclaration(IToken resource, ParserRuleContext context) : base(context, Enumerable.Empty<SyntaxNode>())
+		public MapDeclaration(TypemakerParser.MapContext context) : base(context, Enumerable.Empty<SyntaxNode>())
 		{
-			MapPath = TokenFormatters.ExtractResource(resource ?? throw new ArgumentNullException(nameof(resource)));
+			MapPath = ParseTreeFormatters.ExtractResource(context.RES());
 		}
 	}
 }

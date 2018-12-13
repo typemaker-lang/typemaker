@@ -1,6 +1,7 @@
 ﻿using Antlr4.Runtime;
 using System;
 using System.Collections.Generic;
+using Typemaker.Parser;
 
 namespace Typemaker.Ast
 {
@@ -20,7 +21,7 @@ namespace Typemaker.Ast
 
 		public IReadOnlyList<IObjectProcDefinition> DatumProcs { get; set; }
 
-		public SyntaxTree(string filePath, ParserRuleContext context, IEnumerable<SyntaxNode> children) : base(context, children)
+		public SyntaxTree(string filePath, TypemakerParser.Compilation_unitContext context, IEnumerable<SyntaxNode> children) : base(context, children)
 		{
 			FilePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
 		}

@@ -6,8 +6,6 @@ namespace Typemaker.Ast
 	{
 		bool IsInline { get; }
 
-		IProcDeclaration Declaration { get; }
-
 		IStatement Body { get; }
 	}
 }

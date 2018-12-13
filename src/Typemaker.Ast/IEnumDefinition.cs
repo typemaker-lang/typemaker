@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Typemaker.Ast
 {
-	public interface IEnum : IGenericDeclaration
+	public interface IEnumDefinition : IGenericDeclaration
 	{
 		IReadOnlyList<IEnumItem> Items { get; }
 	}

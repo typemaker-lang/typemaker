@@ -1,11 +1,13 @@
-﻿namespace Typemaker.Ast
+﻿using Typemaker.Ast.Expressions;
+
+namespace Typemaker.Ast
 {
 	public interface IEnumItem : ISyntaxNode, IIdentifiable
 	{
 		bool AutoValue { get; }
 
-		string StringValue { get; }
+		IStringExpression StringExpression { get; }
 
-		int? IntValue { get; }
+		IIntegerExpression IntegerExpression { get; }
 	}
 }
