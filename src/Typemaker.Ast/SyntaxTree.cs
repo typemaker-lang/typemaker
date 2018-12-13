@@ -8,23 +8,23 @@ namespace Typemaker.Ast
 	{
 		public string FilePath { get; }
 
-		public IReadOnlyList<IMapDeclaration> Maps => throw new NotImplementedException();
+		public IReadOnlyList<IMapDeclaration> Maps => ChildrenAs<IMapDeclaration>();
 
-		public IReadOnlyList<IGlobalVarDeclaration> Globals => throw new NotImplementedException();
+		public IReadOnlyList<IGlobalVarDeclaration> Globals { get; set; }
 
-		public IReadOnlyList<IGenericDeclaration> EnumsAndInterfaces => throw new NotImplementedException();
+		public IReadOnlyList<IGenericDeclaration> EnumsAndInterfaces { get; set; }
 
-		public IReadOnlyList<IGlobalProcDeclaration> Procs => throw new NotImplementedException();
+		public IReadOnlyList<IGlobalProcDeclaration> Procs { get; set; }
 
-		public IReadOnlyList<IObjectDeclaration> Datums => throw new NotImplementedException();
+		public IReadOnlyList<IObjectDeclaration> Datums { get; set; }
 
-		public IReadOnlyList<IObjectProcDefinition> DatumProcs => throw new NotImplementedException();
+		public IReadOnlyList<IObjectProcDefinition> DatumProcs { get; set; }
 
-		public SyntaxTree(string filePath, ParserRuleContext context) : base(context)
+		public SyntaxTree(string filePath, ParserRuleContext context, IEnumerable<SyntaxNode> children) : base(context, children)
 		{
 			FilePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
 		}
 
-		public void Build(IList<IToken> tokens) => Build(null, null, this, tokens);
+		public void Build(IList<IToken> tokens) => BuildTrivia(null, null, this, tokens);
 	}
 }

@@ -2,7 +2,7 @@ parser grammar TypemakerParser;
 
 options { tokenVocab=TypemakerLexer; }
 
-compilation_unit: global_var_declaration* var_definition_statement* generic_declaration* global_proc_declaration* global_proc* datum_declaration*  datum_def* datum_proc* EOF;
+compilation_unit: map* global_var_declaration* var_definition_statement* generic_declaration* global_proc_declaration* global_proc* datum_declaration*  datum_def* datum_proc* EOF;
 
 proc_declaration: SLASH proc_type? proc_definition SEMI;
 global_proc_declaration: DECLARE proc_declaration;

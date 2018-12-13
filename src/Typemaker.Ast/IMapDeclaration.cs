@@ -1,6 +1,6 @@
 ﻿namespace Typemaker.Ast
 {
-	public interface IMapDeclaration
+	public interface IMapDeclaration : ISyntaxNode
 	{
 		string MapPath { get; }
 	}

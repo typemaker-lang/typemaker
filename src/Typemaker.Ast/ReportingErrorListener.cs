@@ -20,7 +20,13 @@ namespace Typemaker.Ast
 
 		void AddParseError(int line, int column, string message) => output.Add(new ParseError((ulong)line, (ulong)column, message));
 
-		public void SyntaxError([NotNull] IRecognizer recognizer, [Nullable] IToken offendingSymbol, int line, int charPositionInLine, [NotNull] string msg, [Nullable] RecognitionException e) => AddParseError(line, charPositionInLine, offendingSymbol == null ? msg : String.Format("Unexpected token {0} ({1})!", offendingSymbol.Text, vocabulary.GetSymbolicName(offendingSymbol.Type)));
+		public void SyntaxError([NotNull] IRecognizer recognizer, [Nullable] IToken offendingSymbol, int line, int charPositionInLine, [NotNull] string msg, [Nullable] RecognitionException e)
+		{
+			var readableError = offendingSymbol == null
+				|| msg.StartsWith("missing", StringComparison.Ordinal);
+			var message = readableError ? msg : String.Format("Unexpected token {0} ({1})!", offendingSymbol.Text, vocabulary.GetSymbolicName(offendingSymbol.Type));
+			AddParseError(line, charPositionInLine, message);
+		}
 
 		public void SyntaxError([NotNull] IRecognizer recognizer, [Nullable] int offendingSymbol, int line, int charPositionInLine, [NotNull] string msg, [Nullable] RecognitionException e)
 		{

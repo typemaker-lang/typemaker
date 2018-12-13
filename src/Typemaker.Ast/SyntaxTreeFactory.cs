@@ -1,35 +1,25 @@
-﻿using Antlr4.Runtime;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using Typemaker.Ast.Visitors;
-using Typemaker.Parser;
 
 namespace Typemaker.Ast
 {
 	public static class SyntaxTreeFactory
 	{
+		internal static ICompilationUnitContextFactory compilationUnitContextFactory = new CompilationUnitContextFactory();
+		internal static ISyntaxTreeVisitorFactory syntaxTreeVisitorFactory = new SyntaxTreeVisitorFactory();
+
 		public static ISyntaxTree CreateSyntaxTree(Stream file, string filePath, out IReadOnlyList<ParseError> parseErrors)
 		{
-			var input = new AntlrInputStream(file);
-			var lexer = new TypemakerLexer(input);
+			var compilationUnitContext = compilationUnitContextFactory.CreateCompilationUnitContext(file, out var tokensAccessor, out parseErrors);
 
-			var errors = new List<ParseError>();
-			var errorListener = new ReportingErrorListener(errors, lexer.Vocabulary);
-			lexer.AddErrorListener(errorListener);
-
-			var tokenStream = new CommonTokenStream(lexer);
-			var parser = new TypemakerParser(tokenStream);
-			parser.AddErrorListener(errorListener);
-
-			var compilationUnitContext = parser.compilation_unit();
-
-			parseErrors = errors;
-			if (errors.Count > 0)
+			if (parseErrors.Count > 0)
 				return null;
 
-			var visitor = new CompilationUnitVisitor(filePath);
+			var visitor = syntaxTreeVisitorFactory.CreateSyntaxTreeVisitor(filePath);
+
 			var tree = visitor.Visit(compilationUnitContext);
-			var tokens = tokenStream.GetTokens();
+			var tokens = tokensAccessor();
 			tree.Build(tokens);
 
 			return tree;

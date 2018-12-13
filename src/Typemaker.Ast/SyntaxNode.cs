@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Typemaker.Ast.Trivia;
 using Typemaker.Parser;
 
@@ -23,15 +24,22 @@ namespace Typemaker.Ast
 		
 		public bool Trivia { get; }
 
+		public IReadOnlyList<ICommentTrivia> Comments => ChildrenAs<ICommentTrivia>();
+
+		public IReadOnlyList<IWhitespaceTrivia> Whitespace => ChildrenAs<IWhitespaceTrivia>();
+
 		readonly List<SyntaxNode> children;
 
 		readonly int startTokenIndex;
 		readonly int stopTokenIndex;
 
-		protected SyntaxNode(ParserRuleContext context) : this()
+		protected SyntaxNode(ParserRuleContext context, IEnumerable<SyntaxNode> children)
 		{
 			if (context == null)
 				throw new ArgumentNullException(nameof(context));
+
+			this.children = children?.ToList() ?? throw new ArgumentNullException(nameof(children));
+
 			Syntax = context.GetText();
 
 			startTokenIndex = context.Start.TokenIndex;
@@ -41,7 +49,7 @@ namespace Typemaker.Ast
 			End = new Location(context.Stop, true);
 		}
 
-		protected SyntaxNode(SyntaxNode parent, ISyntaxTree tree, IToken token) : this()
+		protected SyntaxNode(SyntaxNode parent, ISyntaxTree tree, IToken token)
 		{
 			Parent = parent ?? throw new ArgumentNullException(nameof(parent));
 			Tree = tree ?? throw new ArgumentNullException(nameof(tree));
@@ -52,12 +60,7 @@ namespace Typemaker.Ast
 			Trivia = true;
 		}
 
-		SyntaxNode()
-		{
-			children = new List<SyntaxNode>();
-		}
-
-		protected void Build(SyntaxNode left, SyntaxNode right, ISyntaxTree tree, IList<IToken> tokens)
+		protected void BuildTrivia(SyntaxNode left, SyntaxNode right, ISyntaxTree tree, IList<IToken> tokens)
 		{
 			if (tree == null)
 				throw new ArgumentNullException(nameof(tree));
@@ -73,7 +76,7 @@ namespace Typemaker.Ast
 			{
 				var child = children[I];
 				var childRight = I < children.Count - 1 ? children[I + 1] : right;
-				child.Build(childLeft, childRight, tree, tokens);
+				child.BuildTrivia(childLeft, childRight, tree, tokens);
 				childLeft = child;
 			}
 			
@@ -123,10 +126,6 @@ namespace Typemaker.Ast
 			}
 		}
 
-		public virtual void AddChild(SyntaxNode child)
-		{
-			children.Add(child);
-			child.Parent = this;
-		}
+		protected IReadOnlyList<TChildNode> ChildrenAs<TChildNode>() where TChildNode : ISyntaxNode => children.Where(x => x is TChildNode).Select(x => (TChildNode)(object)x).ToList();
 	}
 }
