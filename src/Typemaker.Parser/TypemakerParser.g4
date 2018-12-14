@@ -93,44 +93,66 @@ accessed_target
 	| IDENTIFIER
 	;
 
-in_expression: target IN expression;
-
 expression
 	: target
-	| assignment
+	
+	| new_expression
+	| input_expression
+
 	| EXCLAIM expression
 	| INVERT expression
 	| MINUS expression
 	| inc_dec expression
 	| expression inc_dec
 
-// BINARY EXPRESSIONS
-// NEEDS PRECEDENCE ORDERING
+	// binary expressions sorted by precedence, highest first, same grouped
 
-	| expression LSHIFT expression 
-	| expression RSHIFT expression
 	| expression POW expression
+	
 	| expression STAR expression
 	| expression SLASH expression
+	| expression MOD expression
+
 	| expression PLUS expression 
 	| expression MINUS expression
-	| expression BAND expression
-	| expression BOR expression
-	| expression XOR expression
-	| expression LSHIFT expression
-	| expression RSHIFT expression
-	| expression LAND expression
-	| expression LOR expression
+	
 	| expression LESS expression
 	| expression GREATER expression
 	| expression LESSE expression
 	| expression GREATERE expression
-	| expression EEQUALS expression
-	| expression NEQUALS expression
+	
+	| expression LSHIFT expression 
+	| expression RSHIFT expression
+
+	| expression EQ_EQUALS expression
+	| expression NEQ_EQUALS expression
+	| expression INV_EQUALS expression
+
+	| expression BAND expression
+	| expression BOR expression
+	| expression XOR expression
+
+	| expression LAND expression
+
+	| expression LOR expression
+	
+	| expression EQUALS expression
+	| expression ADD_EQUALS expression
+	| expression SUB_EQUALS expression
+	| expression MUL_EQUALS expression
+	| expression DIV_EQUALS expression
+	| expression MOD_EQUALS expression
+	| expression AND_EQUALS expression
+	| expression OR_EQUALS expression
+	| expression XOR_EQUALS expression
+	| expression LS_EQUALS expression
+	| expression RS_EQUALS expression
+
+	| expression IN expression
+
+	//done
 
 	| expression QUESTION expression COLON expression
-	| new_expression
-	| input_expression
 	;
 
 invocation
@@ -147,11 +169,10 @@ target
 	| invocation
 	| target accessor invocation
 	| target accessor IDENTIFIER
-	| target LBRACE expression RBRACE	//list access
-	| string
-	| basic_identifier
+	| target LBRACE expression RBRACE
 	| fully_extended_identifier
-	| path_type
+	| basic_identifier
+	| string
 	| RES
 	| TRUE
 	| FALSE
@@ -168,19 +189,6 @@ basic_identifier
 	| USR
 	| DOT
 	;
-
-assignment
-	: target OEQUALS expression
-	| target AEQUALS expression
-	| target PEQUALS expression
-	| target MEQUALS expression
-	| target TEQUALS expression
-	| target SEQUALS expression
-	| target IEQUALS expression
-	| target DEQUALS expression
-	| target LEQUALS expression
-	| target REQUALS expression
-	| target EQUALS expression;
 
 target_var: target | var_definition_only;
 
@@ -227,7 +235,7 @@ flow_control: return_statement | while | do_while | for | switch | if;
 semicolonless_identifier_assignment: basic_identifier EQUALS expression;
 identifier_assignment: semicolonless_identifier_assignment SEMI;
 set_assignment_statement: SET identifier_assignment;
-set_statement: set_assignment_statement | SET in_expression SEMI;
+set_statement: set_assignment_statement | SET basic_identifier IN expression SEMI;
 
 spawn_block: SPAWN LPAREN number RPAREN block;
 
