@@ -26,12 +26,14 @@ string
 	| VERBATIUM_STRING 
 	;
 
-dict_type: DICT SLASH nullable_type BSLASH nullable_type;
-root_type: enum_type | path_type | interface_type | dict_type | INT | RESOURCE | BOOL | FLOAT | EXCEPTION | STRING;
+dict_type: DICT SLASH nullable_type BSLASH nullable_type | DICT SLASH nullable_type | DICT;
+list_type: LIST SLASH nullable_type | LIST;
+
+root_type: enum_type | interface_type | path_type | list_type | dict_type | INT | RESOURCE | BOOL | FLOAT | EXCEPTION | STRING;
 extended_identifier: IDENTIFIER | IDENTIFIER fully_extended_identifier;
 fully_extended_identifier: SLASH extended_identifier;
 
-true_type: root_type | extended_identifier | LIST SLASH nullable_type;
+true_type: root_type | extended_identifier;
 nullable_type: true_type | NULLABLE SLASH true_type;
 const_type: true_type | CONST SLASH true_type;
 type: const_type | nullable_type;

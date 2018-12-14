@@ -1,11 +1,7 @@
 ﻿namespace Typemaker.Ast
 {
-	public interface INullableType : ISyntaxNode
+	public interface INullableType : ITrueType
 	{
-		RootType RootType { get; }
-
 		bool IsNullable { get; }
-
-		IObjectPath ObjectPath { get; }
 	}
 }

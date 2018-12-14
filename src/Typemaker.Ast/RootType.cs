@@ -3,7 +3,6 @@
 	public enum RootType
 	{
 		Unknown,
-		Known,
 		Resource,
 		Int,
 		Float,
@@ -12,6 +11,9 @@
 		List,
 		Dict,
 		Path,
-		ConcretePath
+		ConcretePath,
+		Enum,
+		Interface,
+		Exception
 	}
 }

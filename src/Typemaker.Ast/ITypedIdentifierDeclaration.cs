@@ -2,8 +2,9 @@
 
 namespace Typemaker.Ast
 {
-	public interface ITypedIdentifierDeclaration : IIdentifiable, INullableType
+	public interface ITypedIdentifierDeclaration : IIdentifiable
 	{
+		INullableType Typepath { get; }
 		IExpression Initializer { get; }
 	}
 }

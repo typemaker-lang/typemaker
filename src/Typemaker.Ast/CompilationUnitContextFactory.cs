@@ -18,7 +18,10 @@ namespace Typemaker.Ast
 			lexer.AddErrorListener(errorListener);
 
 			var tokenStream = new CommonTokenStream(lexer);
-			var parser = new TypemakerParser(tokenStream);
+			var parser = new TypemakerParser(tokenStream)
+			{
+				BuildParseTree = true   //prevents reparsing when doing multiple visits
+			};
 			parser.AddErrorListener(errorListener);
 
 			var compilationUnitContext = parser.compilation_unit();

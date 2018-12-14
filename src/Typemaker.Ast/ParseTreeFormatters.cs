@@ -26,7 +26,7 @@ namespace Typemaker.Ast
 			return identifier.Symbol.Text;
 		}
 
-		public static string ExtractObjectPath(TypemakerParser.Extended_identifierContext extendedIdentifier, out ObjectPath baseType)
+		public static string ExtractObjectPath(TypemakerParser.Extended_identifierContext extendedIdentifier, bool includeLast, out ObjectPath baseType)
 		{
 			if (extendedIdentifier == null)
 				throw new ArgumentNullException(nameof(extendedIdentifier));
@@ -39,14 +39,16 @@ namespace Typemaker.Ast
 					yield return ExtractExtendedIdentifier();
 					extendedIdentifier = fullyExtendedIdentifier.extended_identifier();
 				}
+				if (includeLast)
+					yield return ExtractExtendedIdentifier();
 			}
 
 			var parts = BuildExtendedDeclaration().ToList();
 			baseType = parts.Count > 0 ? new ObjectPath(parts) : null;
-			return ExtractExtendedIdentifier();
+			return includeLast ? null : ExtractExtendedIdentifier();
 		}
 
-		public static string ExtractObjectPath(TypemakerParser.Fully_extended_identifierContext fullyExtendedIdentifier, out ObjectPath baseType) => ExtractObjectPath(fullyExtendedIdentifier.extended_identifier(), out baseType);
+		public static string ExtractObjectPath(TypemakerParser.Fully_extended_identifierContext fullyExtendedIdentifier, bool includeLast, out ObjectPath baseType) => ExtractObjectPath(fullyExtendedIdentifier.extended_identifier(), includeLast, out baseType);
 
 		public static long? ExtractInteger(ITerminalNode integer)
 		{
