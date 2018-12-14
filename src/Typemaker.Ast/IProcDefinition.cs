@@ -2,10 +2,8 @@
 
 namespace Typemaker.Ast
 {
-	public interface IProcDefinition : ISyntaxNode
+	public interface IProcDefinition : IProcDeclaration
 	{
-		bool IsInline { get; }
-
 		IStatement Body { get; }
 	}
 }

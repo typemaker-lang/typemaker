@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Typemaker.Ast.Statements;
+﻿using Typemaker.Ast.Statements;
 
 namespace Typemaker.Ast
 {
-	public interface IVarDeclaration : IStatement, ITypedIdentifier
+	public interface IVarDeclaration : IStatement, ITypedIdentifierDeclaration, IDecorated
 	{
 		bool IsConst { get; }
 	}

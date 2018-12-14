@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Typemaker.Ast.Expressions
 {
-	public interface IExpression : ISyntaxNode, INullableType
+	public interface IExpression : INullableType
 	{
 	}
 }

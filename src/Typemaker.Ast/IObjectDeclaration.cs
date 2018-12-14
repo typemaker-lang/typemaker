@@ -1,19 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Typemaker.Ast
 {
-	public interface IObjectDeclaration : IGlobalDeclaration, IInterfaceImplementer
+	public interface IObjectDeclaration : IGenericDeclaration, IDecorated
 	{
-		bool IsPartial { get; }
-
-		bool IsAbstract { get; }
-
-		bool IsSealed { get; }
-
-		IReadOnlyList<IFieldDeclaration> Fields { get; }
-
-		IReadOnlyList<IObjectProcDeclaration> DeclaredProcs { get; }
+		IReadOnlyList<IAssigmentStatement> VarOverrides { get; }
 	}
 }

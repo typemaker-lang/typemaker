@@ -1,6 +1,6 @@
 ﻿namespace Typemaker.Ast
 {
-	public interface INullableType
+	public interface INullableType : ISyntaxNode
 	{
 		RootType RootType { get; }
 

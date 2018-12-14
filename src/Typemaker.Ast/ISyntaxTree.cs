@@ -12,14 +12,16 @@ namespace Typemaker.Ast
 
 		IReadOnlyList<IMapDeclaration> Maps { get; }
 
-		IReadOnlyList<IGlobalVarDeclaration> Globals { get; }
+		IReadOnlyList<IVarDeclaration> GlobalVars { get; }
 
-		IReadOnlyList<IGenericDeclaration> EnumsAndInterfaces { get; }
+		IReadOnlyList<IEnumDefinition> Enums { get; }
 
-		IReadOnlyList<IGlobalProcDeclaration> Procs { get; }
+		IReadOnlyList<IInterface> Interfaces { get; }
 
-		IReadOnlyList<IObjectDeclaration> Datums { get; }
+		IReadOnlyList<IProcDeclaration> ProcDeclarations { get; }
 
-		IReadOnlyList<IObjectProcDefinition> DatumProcs { get; }
+		IReadOnlyList<IObjectDeclaration> Objects { get; }
+
+		IReadOnlyList<IProcDefinition> ProcDefinitions { get; }
 	}
 }

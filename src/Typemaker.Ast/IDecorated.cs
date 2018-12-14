@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Typemaker.Ast
 {
-	public interface IGlobalVarDeclaration : IGlobalDeclaration, IVarDeclaration
+	public interface IDecorated
 	{
+		IReadOnlyList<IDecorator> Decorators { get; }
 	}
 }

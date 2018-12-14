@@ -60,7 +60,7 @@ namespace Typemaker.Ast
 			Trivia = true;
 		}
 
-		IEnumerable<TChildNode> SelectChildren<TChildNode>() where TChildNode : ISyntaxNode => children.Where(x => x is TChildNode).Select(x => (TChildNode)(object)x);
+		protected IEnumerable<TChildNode> SelectChildren<TChildNode>() where TChildNode : ISyntaxNode => children.Where(x => x is TChildNode).Select(x => (TChildNode)(object)x);
 
 		protected void BuildTrivia(SyntaxNode left, SyntaxNode right, ISyntaxTree tree, IList<IToken> tokens)
 		{

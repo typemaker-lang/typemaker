@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Typemaker.Ast
 {
-	public interface IEnumDefinition : IGenericDeclaration
+	public interface IEnumDefinition : IIdentifiable
 	{
 		IReadOnlyList<IEnumItem> Items { get; }
 	}

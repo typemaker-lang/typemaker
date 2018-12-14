@@ -11,15 +11,17 @@ namespace Typemaker.Ast
 
 		public IReadOnlyList<IMapDeclaration> Maps => ChildrenAs<IMapDeclaration>();
 
-		public IReadOnlyList<IGlobalVarDeclaration> Globals { get; set; }
+		public IReadOnlyList<IVarDeclaration> GlobalVars => ChildrenAs<IVarDeclaration>();
 
-		public IReadOnlyList<IGenericDeclaration> EnumsAndInterfaces { get; set; }
+		public IReadOnlyList<IEnumDefinition> Enums => ChildrenAs<IEnumDefinition>();
 
-		public IReadOnlyList<IGlobalProcDeclaration> Procs { get; set; }
+		public IReadOnlyList<IInterface> Interfaces => ChildrenAs<IInterface>();
 
-		public IReadOnlyList<IObjectDeclaration> Datums { get; set; }
+		public IReadOnlyList<IProcDeclaration> ProcDeclarations => ChildrenAs<IProcDeclaration>();
 
-		public IReadOnlyList<IObjectProcDefinition> DatumProcs { get; set; }
+		public IReadOnlyList<IObjectDeclaration> Objects => ChildrenAs<IObjectDeclaration>();
+
+		public IReadOnlyList<IProcDefinition> ProcDefinitions => ChildrenAs<IProcDefinition>();
 
 		public SyntaxTree(string filePath, TypemakerParser.Compilation_unitContext context, IEnumerable<SyntaxNode> children) : base(context, children)
 		{

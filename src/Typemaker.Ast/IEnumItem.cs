@@ -6,8 +6,6 @@ namespace Typemaker.Ast
 	{
 		bool AutoValue { get; }
 
-		IStringExpression StringExpression { get; }
-
-		IIntegerExpression IntegerExpression { get; }
+		IExpression Expression { get; }
 	}
 }
