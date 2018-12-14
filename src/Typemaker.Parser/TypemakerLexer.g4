@@ -98,6 +98,7 @@ ELSE: 'else';
 SWITCH: 'switch';
 BREAK: 'break';
 CONTINUE: 'continue';
+THROW: 'throw';
 RETURN: 'return';
 DO: 'do';
 AS: 'as';

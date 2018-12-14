@@ -2,5 +2,6 @@
 {
 	public interface IStatement : ISyntaxNode
 	{
+		bool HasSideEffects { get; }
 	}
 }

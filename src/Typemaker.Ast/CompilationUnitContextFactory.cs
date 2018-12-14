@@ -20,7 +20,7 @@ namespace Typemaker.Ast
 			var tokenStream = new CommonTokenStream(lexer);
 			var parser = new TypemakerParser(tokenStream)
 			{
-				BuildParseTree = true   //prevents reparsing when doing multiple visits
+				BuildParseTree = true   //prevents reparsing when doing multiple visits, I tried to make the ast building efficient in this regard, but there are some things that need to be reaccessed in node/visitor
 			};
 			parser.AddErrorListener(errorListener);
 

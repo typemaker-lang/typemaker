@@ -240,9 +240,10 @@ set_statement: set_assignment_statement | SET basic_identifier IN expression SEM
 
 spawn_block: SPAWN LPAREN number RPAREN block;
 
-try_block: TRY block CATCH LPAREN EXCEPTION SLASH IDENTIFIER RPAREN block;
+try_block: TRY block CATCH LPAREN var_definition_only RPAREN block;
 
-semicolonless_statement: expression | BREAK | CONTINUE;
+jump_statement: BREAK | CONTINUE | THROW expression;
+semicolonless_statement: expression | jump_statement;
 statement: var_definition_statement | set_statement | return_statement | flow_control | try_block | unsafe_block | semicolonless_statement SEMI;
 block: statement | LCURL statement+ RCURL;
 unsafe_block: UNSAFE block;

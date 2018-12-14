@@ -5,8 +5,10 @@ using Typemaker.Ast.Statements.Expressions;
 
 namespace Typemaker.Ast.Statements
 {
-	public interface IReturnStatement : IStatement
+	public interface IJumpStatement : IStatement
 	{
-		IExpression Result { get; }
+		JumpType JumpType { get; }
+
+		IExpression Throw { get; }
 	}
 }

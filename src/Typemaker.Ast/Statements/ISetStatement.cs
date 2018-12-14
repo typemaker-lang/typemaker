@@ -5,7 +5,7 @@ using Typemaker.Ast.Statements.Expressions;
 
 namespace Typemaker.Ast.Statements
 {
-	public interface ISetStatement : ISyntaxNode
+	public interface ISetStatement : IStatement
 	{
 		bool IsAssignment { get; }
 

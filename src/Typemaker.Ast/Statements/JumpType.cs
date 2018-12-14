@@ -1,9 +1,9 @@
 ﻿namespace Typemaker.Ast.Statements
 {
-	public enum ControlFlowType
+	public enum JumpType
 	{
 		Break,
 		Continue,
-		Return
+		Throw
 	}
 }
