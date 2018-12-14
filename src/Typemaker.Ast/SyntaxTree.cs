@@ -1,6 +1,7 @@
 ﻿using Antlr4.Runtime;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Typemaker.Parser;
 
 namespace Typemaker.Ast
@@ -17,7 +18,7 @@ namespace Typemaker.Ast
 
 		public IReadOnlyList<IInterface> Interfaces => ChildrenAs<IInterface>();
 
-		public IReadOnlyList<IProcDeclaration> ProcDeclarations => ChildrenAs<IProcDeclaration>();
+		public IReadOnlyList<IProcDeclaration> ProcDeclarations => SelectChildren<IProcDeclaration>().Where(x => !(x is IProcDefinition)).ToList();
 
 		public IReadOnlyList<IObjectDeclaration> Objects => ChildrenAs<IObjectDeclaration>();
 
@@ -28,6 +29,6 @@ namespace Typemaker.Ast
 			FilePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
 		}
 
-		public void Build(IList<IToken> tokens) => BuildTrivia(null, null, this, tokens);
+		public void Build(IList<IToken> tokens) => Build(null, null, this, this, tokens);
 	}
 }

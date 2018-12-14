@@ -9,5 +9,7 @@ namespace Typemaker.Ast.Statements.Expressions
 		bool Verbatim { get; }
 		bool HasFormatters { get; }
 		string Formatter { get; }
+
+		IReadOnlyList<IExpression> FormatExpressions { get; }
 	}
 }

@@ -4,6 +4,6 @@ namespace Typemaker.Ast.Visitors
 {
 	interface ISyntaxTreeVisitor
 	{
-		SyntaxTree Visit(TypemakerParser.Compilation_unitContext context);
+		SyntaxTree ConstructSyntaxTree(TypemakerParser.Compilation_unitContext context);
 	}
 }

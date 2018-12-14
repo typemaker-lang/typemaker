@@ -2,6 +2,7 @@
 using Antlr4.Runtime.Tree;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -11,10 +12,12 @@ namespace Typemaker.Ast
 {
 	static class ParseTreeFormatters
 	{
-		static void CheckNodeType(ITerminalNode node, params int[] expectedTypes)
+		static int CheckNodeType(ITerminalNode node, params int[] expectedTypes)
 		{
-			if (!expectedTypes.Any(x => x == node.Symbol.Type))
+			var nodeType = node.Symbol.Type;
+			if (!expectedTypes.Any(x => x == nodeType))
 				throw new InvalidOperationException(String.Format(CultureInfo.InvariantCulture, "Passed token type is {0}!", node.Symbol.Type));
+			return nodeType;
 		}
 
 		public static string ExtractIdentifier(ITerminalNode identifier)
@@ -24,6 +27,48 @@ namespace Typemaker.Ast
 			CheckNodeType(identifier, TypemakerLexer.IDENTIFIER);
 
 			return identifier.Symbol.Text;
+		}
+
+		public static string ExtractStringFormatter(TypemakerParser.String_bodyContext[] context, out bool any)
+		{
+			Debug.Assert(context != null);  //remove this once you check the empty string doesn't null out
+
+			any = false;
+			if (context.Length == 0)
+				return String.Empty;
+
+			var builder = new StringBuilder();
+			var embedCount = 0;
+
+			foreach(var I in context)
+			{
+				var embed = I.expression();
+				if (embed != null)
+				{
+					builder.Append('{');
+					builder.Append(embedCount++);
+					builder.Append('}');
+					any = true;
+				}
+				else
+					builder.Append(I.string_content().GetText());
+			}
+
+			return builder.ToString();
+		}
+
+		public static string ExtractVerbatimString(ITerminalNode verbatimString)
+		{
+			if (verbatimString == null)
+				throw new ArgumentNullException(nameof(verbatimString));
+			var nodeType = CheckNodeType(verbatimString, TypemakerLexer.MULTILINE_VERBATIUM_STRING, TypemakerLexer.VERBATIUM_STRING);
+
+			var text = verbatimString.Symbol.Text;
+
+			if (nodeType == TypemakerLexer.MULTILINE_VERBATIUM_STRING)
+				return text.Substring(3, text.Length - 5);
+			else
+				return text.Substring(2, text.Length - 3);
 		}
 
 		public static string ExtractObjectPath(TypemakerParser.Extended_identifierContext extendedIdentifier, bool includeLast, out ObjectPath baseType)

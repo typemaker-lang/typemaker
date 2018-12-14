@@ -62,23 +62,28 @@ namespace Typemaker.Ast
 
 		protected IEnumerable<TChildNode> SelectChildren<TChildNode>() where TChildNode : ISyntaxNode => children.Where(x => x is TChildNode).Select(x => (TChildNode)(object)x);
 
-		protected void BuildTrivia(SyntaxNode left, SyntaxNode right, ISyntaxTree tree, IList<IToken> tokens)
+		protected void Build(SyntaxNode left, SyntaxNode right, SyntaxNode parent, ISyntaxTree tree, IList<IToken> tokens)
 		{
+			if (parent == null)
+				throw new ArgumentNullException(nameof(parent));
 			if (tree == null)
 				throw new ArgumentNullException(nameof(tree));
 			if (tokens == null)
 				throw new InvalidOperationException(nameof(tokens));
 			if (Tree != null)
 				throw new InvalidOperationException("Tree has already been set!");
+			if (Parent != null)
+				throw new InvalidOperationException("Parent has already been set!");
 
 			Tree = tree;
+			Parent = parent;
 
 			SyntaxNode childLeft = left;
 			for (var I = 0; I < children.Count; ++I)
 			{
 				var child = children[I];
 				var childRight = I < children.Count - 1 ? children[I + 1] : right;
-				child.BuildTrivia(childLeft, childRight, tree, tokens);
+				child.Build(childLeft, childRight, this, tree, tokens);
 				childLeft = child;
 			}
 			

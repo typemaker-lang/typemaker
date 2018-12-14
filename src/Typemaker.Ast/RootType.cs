@@ -13,6 +13,7 @@
 		Path,
 		ConcretePath,
 		Enum,
+		String,
 		Interface,
 		Exception
 	}

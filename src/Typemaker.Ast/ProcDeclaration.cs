@@ -16,8 +16,6 @@ namespace Typemaker.Ast
 
 		public INullableType ReturnType => isVoid ? null : SelectChildren<INullableType>().Last();
 
-		public IProcDefinition Definition => ChildAs<IProcDefinition>();
-
 		public IReadOnlyList<IDecorator> Decorators => ChildrenAs<IDecorator>();
 
 		readonly bool isVoid;

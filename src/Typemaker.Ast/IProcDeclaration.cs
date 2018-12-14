@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Typemaker.Ast
 {
@@ -13,7 +11,5 @@ namespace Typemaker.Ast
 		IReadOnlyList<IIdentifierDeclaration> Arguments { get; }
 
 		INullableType ReturnType { get; }
-
-		IProcDefinition Definition { get; }
 	}
 }

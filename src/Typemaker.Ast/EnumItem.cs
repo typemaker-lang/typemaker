@@ -11,7 +11,7 @@ namespace Typemaker.Ast
 
 		public bool AutoValue { get; }
 
-		public IExpression Expression => ChildAs<IExpression>();
+		public IExpression Expression => SelectChildren<IExpression>().FirstOrDefault();
 
 		public EnumItem(TypemakerParser.Enum_itemContext context, SyntaxNode initializer) : base(context, initializer != null ? new List<SyntaxNode>{ initializer } : Enumerable.Empty<SyntaxNode>())
 		{

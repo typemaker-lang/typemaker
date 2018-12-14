@@ -88,6 +88,9 @@ namespace Typemaker.Ast
 				case TypemakerLexer.EXCEPTION:
 					RootType = RootType.Exception;
 					break;
+				case TypemakerLexer.STRING:
+					RootType = RootType.String;
+					break;
 				case null:
 					throw new InvalidOperationException(String.Format(CultureInfo.InvariantCulture, "First parse tree child is of type {0}!", parseTreeChild.GetType()));
 				default:

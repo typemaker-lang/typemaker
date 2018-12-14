@@ -6,7 +6,7 @@ namespace Typemaker.Ast.Statements
 {
 	public interface IForStatement
 	{
-		IVarDeclaration Var { get; }
+		IVarDefinition Var { get; }
 		IStatement Body { get; }
 	}
 }

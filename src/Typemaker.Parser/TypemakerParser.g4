@@ -262,7 +262,7 @@ access_decorator: PUBLIC | PROTECTED;
 precedence_decorator: PRECEDENCE LPAREN integer RPAREN;
 decorator: access_decorator | precedence_decorator | SEALED | PARTIAL | READONLY | ABSTRACT | VIRTUAL | FINAL | STATIC | INLINE | EXPLICIT | DECLARE;
 
-proc_type: PROC | VERB;
+proc_type: SLASH PROC | SLASH VERB;
 proc: decorator* fully_extended_identifier? proc_type? identifier_or_constructor proc_arguments proc_return_declaration?;
 proc_declaration: proc SEMI;
 proc_definition: proc block;

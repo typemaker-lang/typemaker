@@ -5,7 +5,7 @@ using Typemaker.Parser;
 
 namespace Typemaker.Ast.Visitors
 {
-	abstract class TypemakerVisitor : TypemakerParserBaseVisitor<SyntaxNode>
+	abstract class TypemakerVisitor : TypemakerParserBaseVisitor<SyntaxNode>, ITypemakerVisitor
 	{
 		protected IEnumerable<SyntaxNode> Visit<TContext>(TContext[] contexts)
 			where TContext : ParserRuleContext => contexts.Select(context => Visit(context));

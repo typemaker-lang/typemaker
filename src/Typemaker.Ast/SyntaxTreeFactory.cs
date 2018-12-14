@@ -18,7 +18,7 @@ namespace Typemaker.Ast
 
 			var visitor = syntaxTreeVisitorFactory.CreateSyntaxTreeVisitor(filePath);
 
-			var tree = visitor.Visit(compilationUnitContext);
+			var tree = visitor.ConstructSyntaxTree(compilationUnitContext);
 			var tokens = tokensAccessor();
 			tree.Build(tokens);
 

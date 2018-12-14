@@ -9,7 +9,7 @@ namespace Typemaker.Ast.Statements
 	abstract class Statement : SyntaxNode, IStatement
 	{
 		public bool BlockBreaker { get; }
-		public virtual bool HasSideEffects => SelectChildren<IStatement>().Any(x => HasSideEffects);
+		public abstract bool HasSideEffects { get; }
 
 		protected Statement(ParserRuleContext context, IEnumerable<SyntaxNode> children, bool blockBreaker) : base(context, children)
 		{
