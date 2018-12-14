@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Typemaker.Ast.Statements;
 
-namespace Typemaker.Ast.Expressions
+namespace Typemaker.Ast.Statements.Expressions
 {
-	public interface IUnaryExpression : IStatementExpression
+	public interface IUnaryExpression : IExpression
 	{
 		IExpression Interior { get; }
 		UnaryOperator Operator { get; }

@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using Typemaker.Ast.Statements;
+using Typemaker.Ast.Statements.Expressions;
 using Typemaker.Parser;
 
 namespace Typemaker.Ast
 {
 	sealed class ObjectDeclaration : GenericDeclaration, IObjectDeclaration
 	{
-		public IReadOnlyList<IAssignmentStatement> VarOverrides => ChildrenAs<IAssignmentStatement>();
+		public IReadOnlyList<IAssignment> VarOverrides => ChildrenAs<IAssignment>();
 
 		public IReadOnlyList<IDecorator> Decorators => ChildrenAs<IDecorator>();
 

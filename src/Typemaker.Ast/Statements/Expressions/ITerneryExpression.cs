@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Typemaker.Ast.Expressions
+namespace Typemaker.Ast.Statements.Expressions
 {
-	interface ITerneryExpression : IStatementExpression
+	interface ITerneryExpression : IExpression
 	{
 		IExpression If { get; }
 		IExpression Then { get; }

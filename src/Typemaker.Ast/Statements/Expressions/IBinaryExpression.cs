@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Typemaker.Ast.Expressions
+namespace Typemaker.Ast.Statements.Expressions
 {
-	interface IBinaryExpression : IStatementExpression
+	interface IBinaryExpression : IExpression
 	{
 		IExpression LeftHandSide { get; }
 

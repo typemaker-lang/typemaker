@@ -1,4 +1,4 @@
-﻿namespace Typemaker.Ast.Expressions
+﻿namespace Typemaker.Ast.Statements.Expressions
 {
 	public enum IdentifierType
 	{

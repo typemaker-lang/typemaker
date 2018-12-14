@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Typemaker.Ast.Expressions;
 
-namespace Typemaker.Ast.Statements
+namespace Typemaker.Ast.Statements.Expressions
 {
-	public interface IAssignmentStatement : IStatementExpression
+	public interface IAssignment : IExpression
 	{
 		IExpression LeftHandSide { get; }
 		AssignmentOperator Operator { get; }

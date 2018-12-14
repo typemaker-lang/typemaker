@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Typemaker.Ast.Expressions;
+using Typemaker.Ast.Statements.Expressions;
 using Typemaker.Parser;
 
 namespace Typemaker.Ast

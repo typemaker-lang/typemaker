@@ -1,4 +1,4 @@
-﻿using Typemaker.Ast.Expressions;
+﻿using Typemaker.Ast.Statements.Expressions;
 
 namespace Typemaker.Ast
 {

@@ -232,7 +232,7 @@ if_continuation: elseif if_continuation | elseif | else;
 if_start: IF bracketed_expression block;
 if: if_start if_continuation | if_start;
 
-flow_control: return_statement | while | do_while | for | switch | if;
+flow_control: while | do_while | for | switch | if;
 
 semicolonless_identifier_assignment: basic_identifier EQUALS expression;
 identifier_assignment: semicolonless_identifier_assignment SEMI;
@@ -243,7 +243,7 @@ spawn_block: SPAWN LPAREN number RPAREN block;
 
 try_block: TRY block CATCH LPAREN EXCEPTION SLASH IDENTIFIER RPAREN block;
 
-semicolonless_statement: expression | invocation | BREAK | CONTINUE;
+semicolonless_statement: expression | BREAK | CONTINUE;
 statement: var_definition_statement | set_statement | return_statement | flow_control | try_block | unsafe_block | semicolonless_statement SEMI;
 block: statement | LCURL statement+ RCURL;
 unsafe_block: UNSAFE block;
