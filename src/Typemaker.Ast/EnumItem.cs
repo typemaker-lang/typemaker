@@ -13,7 +13,7 @@ namespace Typemaker.Ast
 
 		public IExpression Expression => ChildAs<IExpression>();
 
-		public EnumItem(TypemakerParser.Enum_itemContext context, SyntaxNode initializer) : base(context, initializer != null ? new List<SyntaxNode>{ initializer } : new List<SyntaxNode>())
+		public EnumItem(TypemakerParser.Enum_itemContext context, SyntaxNode initializer) : base(context, initializer != null ? new List<SyntaxNode>{ initializer } : Enumerable.Empty<SyntaxNode>())
 		{
 			Name = ParseTreeFormatters.ExtractIdentifier(context.IDENTIFIER());
 

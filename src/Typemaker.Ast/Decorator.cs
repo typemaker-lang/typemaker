@@ -16,7 +16,7 @@ namespace Typemaker.Ast
 
 		public bool? PublicProtection { get; }
 
-		public Decorator(TypemakerParser.DecoratorContext context) : base(context, new List<SyntaxNode>())
+		public Decorator(TypemakerParser.DecoratorContext context) : base(context, Enumerable.Empty<SyntaxNode>())
 		{
 			var precedence = context.precedence_decorator();
 			if(precedence != null)

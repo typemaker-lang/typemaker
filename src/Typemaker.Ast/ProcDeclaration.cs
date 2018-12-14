@@ -12,7 +12,7 @@ namespace Typemaker.Ast
 
 		public bool IsConstructor { get; }
 
-		public IReadOnlyList<ITypedIdentifierDeclaration> Arguments => ChildrenAs<ITypedIdentifierDeclaration>();
+		public IReadOnlyList<IIdentifierDeclaration> Arguments => ChildrenAs<IIdentifierDeclaration>();
 
 		public INullableType ReturnType => isVoid ? null : SelectChildren<INullableType>().Last();
 

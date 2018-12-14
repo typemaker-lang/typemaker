@@ -42,8 +42,7 @@ return_type: nullable_type | VOID | IDENTIFIER;
 typed_identifier: type SLASH IDENTIFIER | IDENTIFIER;
 
 var_definition_only: VAR SLASH typed_identifier;
-var_definition: var_definition_only | var_definition_only EQUALS expression;
-var_definition_statement: var_definition SEMI;
+var_definition_statement: var_definition_only SEMI | var_definition_only EQUALS expression SEMI;
 var_declaration: decorator* var_definition_statement;
 
 inc_dec: INC | DEC;

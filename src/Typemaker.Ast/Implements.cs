@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Typemaker.Parser;
 
 namespace Typemaker.Ast
@@ -7,7 +8,7 @@ namespace Typemaker.Ast
 	{
 		public string Name { get; }
 
-		public Implements(TypemakerParser.Implements_statementContext context) : base(context, new List<SyntaxNode>())
+		public Implements(TypemakerParser.Implements_statementContext context) : base(context, Enumerable.Empty<SyntaxNode>())
 		{
 			Name = ParseTreeFormatters.ExtractIdentifier(context.IDENTIFIER());
 		}

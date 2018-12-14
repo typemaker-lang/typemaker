@@ -2,7 +2,7 @@
 
 namespace Typemaker.Ast
 {
-	public interface IVarDeclaration : IStatement, ITypedIdentifierDeclaration, IDecorated
+	public interface IVarDeclaration : IStatement, IIdentifierDeclaration, IDecorated
 	{
 		bool IsConst { get; }
 	}
