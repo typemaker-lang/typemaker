@@ -4,7 +4,7 @@ using Typemaker.Parser;
 
 namespace Typemaker.Ast
 {
-	abstract class ProcDeclaration : SyntaxNode, IProcDeclaration
+	class ProcDeclaration : SyntaxNode, IProcDeclaration
 	{
 		public string Name { get; }
 
@@ -22,7 +22,7 @@ namespace Typemaker.Ast
 
 		readonly bool isVoid;
 
-		public ProcDeclaration(TypemakerParser.ProcContext context, IEnumerable<SyntaxNode> children) : base(context, children)
+		protected ProcDeclaration(TypemakerParser.ProcContext context, IEnumerable<SyntaxNode> children) : base(context, children)
 		{
 			isVoid = context.proc_return_declaration()?.return_type().VOID() != null;
 			IsVerb = context.proc_type().VERB() != null;
@@ -33,5 +33,8 @@ namespace Typemaker.Ast
 			else
 				Name = ParseTreeFormatters.ExtractIdentifier(identifier);
 		}
+
+		public ProcDeclaration(TypemakerParser.Proc_declarationContext context, IEnumerable<SyntaxNode> children) : this(context.proc(), children)
+		{ }
 	}
 }

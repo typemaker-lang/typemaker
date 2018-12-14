@@ -2,9 +2,9 @@
 {
 	public interface IDecorator : ISyntaxNode
 	{
-		Decorator Type { get; }
+		DecoratorType Type { get; }
 
-		int? Precedence { get; }
+		long? Precedence { get; }
 
 		bool? PublicProtection { get; }
 	}

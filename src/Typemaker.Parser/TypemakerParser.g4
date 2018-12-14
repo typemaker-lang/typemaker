@@ -8,7 +8,8 @@ top_level_declaration: map | var_declaration | proc_declaration | enum | interfa
 
 map: MAP LPAREN RES RPAREN SEMI;
 
-number: INTEGER | REAL | MINUS INTEGER | MINUS REAL;
+integer: INTEGER | MINUS INTEGER;
+number: integer | REAL | MINUS REAL;
 
 enum_type: SLASH ENUM SLASH IDENTIFIER;
 
@@ -248,8 +249,8 @@ proc_return_declaration: RDEC return_type;
 identifier_or_constructor: SLASH IDENTIFIER | SLASH CONSTRUCTOR;
 
 access_decorator: PUBLIC | PROTECTED;
-precedence_decorator: PRECEDENCE LPAREN INTEGER RPAREN;
-decorator: access_decorator | SEALED | PARTIAL | READONLY | ABSTRACT | VIRTUAL | FINAL | STATIC | INLINE | EXPLICIT | DECLARE;
+precedence_decorator: PRECEDENCE LPAREN integer RPAREN;
+decorator: access_decorator | precedence_decorator | SEALED | PARTIAL | READONLY | ABSTRACT | VIRTUAL | FINAL | STATIC | INLINE | EXPLICIT | DECLARE;
 
 proc_type: PROC | VERB;
 proc: decorator* fully_extended_identifier? proc_type? identifier_or_constructor proc_arguments proc_return_declaration?;

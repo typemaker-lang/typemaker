@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Typemaker.Ast
 {
 	public interface IObjectPath
 	{
-		string Path { get; }
+		IReadOnlyList<string> Parts { get; }
 	}
 }
