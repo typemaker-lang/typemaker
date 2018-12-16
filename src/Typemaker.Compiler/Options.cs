@@ -8,14 +8,6 @@ namespace Typemaker.Compiler
     {
         public static class JsonTree
         {
-            public class ByondVersion
-            {
-                [JsonProperty("major")]
-                public long Major { get; set; }
-
-                [JsonProperty("minor")]
-                public long Minor { get; set; }
-            }
 
             public class LinterSettings
             {
