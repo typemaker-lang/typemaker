@@ -13,6 +13,7 @@ namespace Typemaker.Compiler.Cli
 			/* TODO
              * Move this logic elsewhere
              */
+			 /*
 			CommandLineOptions options = null;
 
 			CommandLine.Parser.Default.ParseArguments<CommandLineOptions>(args).WithParsed(opt => options = opt).WithNotParsed(err =>
@@ -43,7 +44,7 @@ namespace Typemaker.Compiler.Cli
 			{
 				typemakerOptions.Debug = (bool)options.DebugMode;
 			}
-
+			*/
 			return 0;
 		}
 	}

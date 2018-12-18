@@ -1,14 +1,39 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
+using System.Linq;
 
 namespace Typemaker.Compiler.Settings
 {
 	public sealed class Version1 : TypemakerSettings
 	{
-		string Extends { get; set; }
-		string CodeRoot { get; set; }
-		string OutputDirectory { get; set; }
-		ByondVersionDefinition ByondVersion { get; set; }
+		public CodeSearchSettings Include { get; set; }
+		public string OutputDirectory { get; set; }
+		public ByondVersionDefinition ByondVersion { get; set; }
+		public bool? Library { get; set; }
+		public List<string> Libraries { get; set; }
+
+		[JsonProperty("strong_libdm")]
+		public bool? StrongLibDM { get; set; }
+
+		public bool? Debug { get; set; }
+
+		public ScriptSettings Scripts { get; set; }
+
+		public string Dme { get; }
+
+		public LinterSettings LinterSettings { get; set; }
+
+		public override void FixPaths(string relativePath)
+		{
+			base.FixPaths(relativePath);
+			Include.FixPaths(relativePath);
+			Scripts.FixPaths(relativePath);
+			if (OutputDirectory != null && !Path.IsPathRooted(OutputDirectory))
+				OutputDirectory = Path.GetFullPath(Path.Combine(relativePath, OutputDirectory));
+			if (Libraries != null)
+				Libraries = Libraries.Select(x => Path.IsPathRooted(x) ? x : Path.GetFullPath(Path.Combine(relativePath, x))).ToList();
+		}
 	}
 }

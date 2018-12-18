@@ -81,7 +81,9 @@ namespace Typemaker.Ast.Visitors
 		{
 			var definition = context.var_definition_only();
 			var initializer = context.expression();
-			return new VarDefinition(definition, initializer != null ? new List<SyntaxNode> { Visit(context. Visit(initializer) } : Enumerable.Empty<SyntaxNode>());
+			//TODO:
+			return null;
+			//return new VarDefinition(definition, initializer != null ? new List<SyntaxNode> { Visit(context. Visit(initializer) } : Enumerable.Empty<SyntaxNode>());
 		}
 
 		public override SyntaxNode VisitString([NotNull] TypemakerParser.StringContext context)

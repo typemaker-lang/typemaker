@@ -8,6 +8,8 @@ namespace Typemaker.Compiler
 	{
 		public static void Main(string[] args)
 		{
+			Settings.SettingsFactory.DeserializeSettings("../../../../Typemaker.Compiler/libdm/typemaker.1458.public.json", null).GetAwaiter().GetResult();
+
 			const string Path = "../../../../Typemaker.Compiler/test.tm";
 			ISyntaxTree tree;
 			IReadOnlyList<ParseError> errors;
