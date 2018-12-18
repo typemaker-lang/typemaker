@@ -1,15 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Typemaker.Ast.Visitors;
 
 namespace Typemaker.Ast
 {
-	public static class SyntaxTreeFactory
+	public sealed class SyntaxTreeFactory : ISyntaxTreeFactory
 	{
-		internal static ICompilationUnitContextFactory compilationUnitContextFactory = new CompilationUnitContextFactory();
-		internal static ISyntaxTreeVisitorFactory syntaxTreeVisitorFactory = new SyntaxTreeVisitorFactory();
+		public static readonly ISyntaxTreeFactory Default = new SyntaxTreeFactory(new CompilationUnitContextFactory(), new SyntaxTreeVisitorFactory());
 
-		public static ISyntaxTree CreateSyntaxTree(Stream file, string filePath, out IReadOnlyList<ParseError> parseErrors)
+		readonly ICompilationUnitContextFactory compilationUnitContextFactory;
+		readonly ISyntaxTreeVisitorFactory syntaxTreeVisitorFactory;
+
+		internal SyntaxTreeFactory(ICompilationUnitContextFactory compilationUnitContextFactory, ISyntaxTreeVisitorFactory syntaxTreeVisitorFactory)
+		{
+			this.compilationUnitContextFactory = compilationUnitContextFactory ?? throw new ArgumentNullException(nameof(compilationUnitContextFactory));
+			this.syntaxTreeVisitorFactory = syntaxTreeVisitorFactory ?? throw new ArgumentNullException(nameof(syntaxTreeVisitorFactory));
+		}
+
+		public ISyntaxTree CreateSyntaxTree(Stream file, string filePath, out IReadOnlyList<ParseError> parseErrors)
 		{
 			var compilationUnitContext = compilationUnitContextFactory.CreateCompilationUnitContext(file, out var tokensAccessor, out parseErrors);
 

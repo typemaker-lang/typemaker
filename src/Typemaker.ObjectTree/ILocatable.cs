@@ -1,5 +1,4 @@
 ﻿using Typemaker.Ast;
-using Typemaker.Ast.Trivia;
 
 namespace Typemaker.CodeTree
 {
@@ -7,6 +6,6 @@ namespace Typemaker.CodeTree
 	{
 		string FilePath { get; }
 
-		ILocation Location { get; }
+		Location Location { get; }
 	}
 }

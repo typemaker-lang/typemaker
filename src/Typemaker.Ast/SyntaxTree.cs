@@ -2,13 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Typemaker.Ast.Serialization;
 using Typemaker.Parser;
 
 namespace Typemaker.Ast
 {
 	sealed class SyntaxTree : SyntaxNode, ISyntaxTree
 	{
-		public string FilePath { get; }
+		public string FilePath { get; private set; }
 
 		public IReadOnlyList<IMapDeclaration> Maps => ChildrenAs<IMapDeclaration>();
 
@@ -29,6 +30,10 @@ namespace Typemaker.Ast
 			FilePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
 		}
 
-		public void Build(IList<IToken> tokens) => Build(null, null, this, this, tokens);
+		public void Build(IList<IToken> tokens)
+		{
+			LinkTree(this, this, false);
+			BuildTrivia(null, null, tokens);
+		}
 	}
 }

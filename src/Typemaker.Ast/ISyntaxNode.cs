@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using Typemaker.Ast.Trivia;
+using Typemaker.Ast.Serialization;
 
 namespace Typemaker.Ast
 {
 	public interface ISyntaxNode
 	{
-		ILocation Start { get; }
-		ILocation End { get; }
+		Location Start { get; }
+		Location End { get; }
 
 		IReadOnlyList<ICommentTrivia> Comments { get; }
 		IReadOnlyList<IWhitespaceTrivia> Whitespace { get; }
@@ -17,5 +17,9 @@ namespace Typemaker.Ast
 		IReadOnlyList<ISyntaxNode> Children { get; }
 
 		bool Trivia { get; }
+
+		SyntaxGraph Serialize();
+
+		void Transform(IEnumerable<SyntaxGraph> replacements);
 	}
 }

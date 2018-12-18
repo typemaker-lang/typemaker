@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Typemaker.Ast.Serialization;
 using Typemaker.Parser;
 
 namespace Typemaker.Ast.Statements.Expressions

@@ -1,13 +1,10 @@
 ﻿using System;
-using Typemaker.Ast.Trivia;
 
 namespace Typemaker.Ast
 {
-	public sealed class ParseError : ILocation
+	public sealed class ParseError
 	{
-		public ulong Line { get; }
-
-		public ulong Column { get; }
+		public Location Location { get; }
 
 		string Description { get; }
 
@@ -25,8 +22,11 @@ namespace Typemaker.Ast
 		{
 			if (description == null)
 				throw new ArgumentNullException(nameof(description));
-			Line = line;
-			Column = column;
+			Location = new Location
+			{
+				Line = line,
+				Column = column
+			};
 			Description = TranslateDescription(description);
 		}
 	}

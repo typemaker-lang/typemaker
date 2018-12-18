@@ -14,7 +14,7 @@ namespace Typemaker.Compiler
 			ISyntaxTree tree;
 			IReadOnlyList<ParseError> errors;
 			using (FileStream fs = new FileStream(Path, FileMode.Open, FileAccess.Read))
-				tree = SyntaxTreeFactory.CreateSyntaxTree(fs, Path, out errors);
+				tree = SyntaxTreeFactory.Default.CreateSyntaxTree(fs, Path, out errors);
 			int i = 0;
 		}
 	}

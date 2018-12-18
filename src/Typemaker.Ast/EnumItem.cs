@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Typemaker.Ast.Serialization;
 using Typemaker.Ast.Statements.Expressions;
 using Typemaker.Parser;
 
