@@ -11,6 +11,9 @@ namespace Typemaker.ObjectTree
 		InterfaceNameCollision,
 		EnumNameCollision,
 		GlobalVarNameCollision,
-		GlobalProcNameCollision
+		GlobalProcNameCollision,
+		StringInIntEnum,
+		IntInStringEnum,
+		EnumItemNameCollision
 	}
 }

@@ -1,6 +1,6 @@
 ﻿namespace Typemaker.ObjectTree
 {
-	public interface IEnumObject : IIdentifiable, ILocatable
+	public interface IEnumItem : IIdentifiable, ILocatable
 	{
 		string StringValue { get; }
 		int? IntValue { get; }
