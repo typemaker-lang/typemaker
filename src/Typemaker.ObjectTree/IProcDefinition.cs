@@ -1,6 +1,6 @@
 ﻿namespace Typemaker.ObjectTree
 {
-	public interface IProcDefinition : ILocatable
+	public interface IProcDefinition
 	{
 		bool IsInline { get; }
 

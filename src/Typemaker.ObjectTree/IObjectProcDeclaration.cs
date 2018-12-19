@@ -4,6 +4,10 @@
 	{
 		bool IsVirtual { get; }
 
+		IObject Owner { get; }
+
 		new IObjectProcDefinition Definition { get; }
+
+		IObjectProcDeclaration FixParentChainAfterFileRemoval(string filePath);
 	}
 }

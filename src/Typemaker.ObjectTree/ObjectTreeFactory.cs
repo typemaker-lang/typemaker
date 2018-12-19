@@ -6,6 +6,10 @@ namespace Typemaker.ObjectTree
 {
 	public static class ObjectTreeFactory
 	{
-		public static IObjectTree CreateObjectTree() => new ObjectTree();
+		public static IObjectTree CreateObjectTree() => new ObjectTree(new BaseObject());
+
+		public static void AddAstToObjectTree(IObjectTree objectTree)
+		{
+		}
 	}
 }

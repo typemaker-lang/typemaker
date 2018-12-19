@@ -2,7 +2,7 @@
 
 namespace Typemaker.ObjectTree
 {
-	public interface IObjectDeclarationHolder: IIdentifiable, IImplementer
+	public interface IObjectDeclarationHolder: IIdentifiable, IImplementer, IValidatable
 	{
 		IReadOnlyList<IObjectVariableDeclaration> Variables { get; }
 
