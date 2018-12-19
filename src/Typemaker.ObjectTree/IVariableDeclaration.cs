@@ -1,6 +1,6 @@
 ﻿namespace Typemaker.ObjectTree
 {
-	public interface IVariableDeclaration : IIdentifiable, ILocatable, IDeclarable
+	public interface IVariableDeclaration : IIdentifiable, ILocatable
 	{
 		bool IsConst { get; }
 

@@ -1,6 +1,6 @@
 ﻿namespace Typemaker.ObjectTree
 {
-	public interface IDeclarable
+	public interface IGlobalVariableDeclaration : IVariableDeclaration
 	{
 		bool IsDeclared { get; }
 	}

@@ -6,11 +6,9 @@ namespace Typemaker.ObjectTree
 	{
 		IObject RootObject { get; }
 
-		IReadOnlyList<IVariableDeclaration> Variables { get; }
+		IReadOnlyList<IGlobalVariableDeclaration> Variables { get; }
 
-		IReadOnlyList<IProcDeclaration> DeclaredProcs { get; }
-
-		IReadOnlyList<IProcDefinition> DefinedProcs { get; }
+		IReadOnlyList<IProcDeclaration> Procs { get; }
 
 		IReadOnlyList<IEnum> Enums { get; }
 

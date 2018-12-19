@@ -2,7 +2,7 @@
 
 namespace Typemaker.ObjectTree
 {
-	public interface IObject : IDeclarable, IIdentifiable, IImplementer
+	public interface IObject : IObjectDeclarationHolder
 	{
 		bool IsSealed { get; }
 
@@ -22,11 +22,5 @@ namespace Typemaker.ObjectTree
 		IReadOnlyList<ILocatable> DeclarationLocations { get; }
 
 		IReadOnlyList<IObject> Subtypes { get; }
-
-		IReadOnlyList<IObjectVariableDeclaration> Variables { get; }
-
-		IReadOnlyList<IObjectProcDeclaration> DeclaredProcs { get; }
-
-		IReadOnlyList<IObjectProcDefinition> DefinedProcs { get; }
 	}
 }

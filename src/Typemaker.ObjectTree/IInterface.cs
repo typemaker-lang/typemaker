@@ -2,10 +2,7 @@
 
 namespace Typemaker.ObjectTree
 {
-	public interface IInterface: IIdentifiable, IImplementer, ILocatable
+	public interface IInterface : IObjectDeclarationHolder, ILocatable
 	{
-		IReadOnlyList<IVariableDeclaration> VariableDeclarations { get; }
-
-		IReadOnlyList<IObjectProcDeclaration> ProcDeclarations { get; }
 	}
 }
