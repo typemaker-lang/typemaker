@@ -66,6 +66,7 @@ BOR: '|';
 BAND: '&';
 LBRACE: '[' { ++regularAccessLevel; };
 RBRACE: ']' { if(regularAccessLevel > 0) --regularAccessLevel; else if(multiString.Count > 0) { PopMode(); } };
+DOTDOTDOT: '...';
 DOTDOT: '..';
 DOT: '.';
 COLON: ':';
