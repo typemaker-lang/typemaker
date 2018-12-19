@@ -1,6 +1,6 @@
 ﻿using Typemaker.Ast;
 
-namespace Typemaker.CodeTree
+namespace Typemaker.ObjectTree
 {
 	public interface ILocatable
 	{

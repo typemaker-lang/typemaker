@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Typemaker.CodeTree
+namespace Typemaker.ObjectTree
 {
 	public interface IStatementBlock
 	{

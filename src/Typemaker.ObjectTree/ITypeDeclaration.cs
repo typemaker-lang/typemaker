@@ -1,4 +1,4 @@
-﻿namespace Typemaker.CodeTree
+﻿namespace Typemaker.ObjectTree
 {
 	public interface ITypeDeclaration
 	{
