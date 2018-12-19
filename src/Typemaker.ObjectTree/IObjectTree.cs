@@ -15,5 +15,7 @@ namespace Typemaker.ObjectTree
 		IReadOnlyList<IEnum> Enums { get; }
 
 		IReadOnlyList<IInterface> Interfaces { get; }
+
+		IObject LookupPath(string extendedIdentifier);
 	}
 }

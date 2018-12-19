@@ -1,6 +1,4 @@
-﻿using Typemaker.Ast;
-
-namespace Typemaker.ObjectTree
+﻿namespace Typemaker.ObjectTree
 {
 	public interface IEnumObject : IIdentifiable, ILocatable
 	{

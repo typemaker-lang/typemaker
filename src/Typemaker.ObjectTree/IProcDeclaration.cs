@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Typemaker.Ast;
 
 namespace Typemaker.ObjectTree
 {
@@ -8,6 +7,8 @@ namespace Typemaker.ObjectTree
 		bool IsVerb { get; }
 
 		ITypeDeclaration ReturnType { get; }
+
+		IProcDefinition Definition { get; }
 
 		IReadOnlyList<IArgumentDeclaration> Arguments { get; }
 	}

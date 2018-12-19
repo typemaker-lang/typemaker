@@ -3,11 +3,8 @@ using Typemaker.Ast.Serialization;
 
 namespace Typemaker.Ast
 {
-	public interface ISyntaxNode
+	public interface ISyntaxNode : ILocatable
 	{
-		Location Start { get; }
-		Location End { get; }
-
 		IReadOnlyList<ICommentTrivia> Comments { get; }
 		IReadOnlyList<IWhitespaceTrivia> Whitespace { get; }
 

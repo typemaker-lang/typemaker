@@ -1,11 +1,7 @@
-﻿using Typemaker.Ast;
-
-namespace Typemaker.ObjectTree
+﻿namespace Typemaker.ObjectTree
 {
-	public interface ILocatable
+	public interface ILocatable : Ast.ILocatable
 	{
 		string FilePath { get; }
-
-		Location Location { get; }
 	}
 }
