@@ -3,7 +3,7 @@ using Typemaker.Ast;
 
 namespace Typemaker.ObjectTree
 {
-	public interface IObjectTree : IRemovableChildren
+	public interface IObjectTree : IRemovableChildren, IValidatable
 	{
 		IObject RootObject { get; }
 
@@ -18,5 +18,10 @@ namespace Typemaker.ObjectTree
 		IReadOnlyList<IInterface> Interfaces { get; }
 
 		IObject LookupPath(ObjectPath path);
+
+		void AddVariable(IVariableDeclaration variable);
+		void AddProc(IProcDefinition proc);
+		void AddEnum(IEnumDeclaration enumDeclaration);
+		void AddInterface(IInterface interfaceDefinition);
 	}
 }

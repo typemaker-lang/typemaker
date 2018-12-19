@@ -2,7 +2,7 @@
 
 namespace Typemaker.ObjectTree
 {
-	public interface IEnumDeclaration : IIdentifiable, ILocatable, IRemovableChildren
+	public interface IEnumDeclaration : IIdentifiable, ILocatable, IRemovableChildren, IValidatable
 	{
 		IReadOnlyList<IEnumObject> Values { get; }
 	}

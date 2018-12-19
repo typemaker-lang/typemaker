@@ -2,7 +2,7 @@
 
 namespace Typemaker.ObjectTree
 {
-	public interface IInterface : IObjectDeclarationHolder, ILocatable
+	public interface IInterface : IObjectDeclarationHolder, ILocatable, IValidatable
 	{
 	}
 }

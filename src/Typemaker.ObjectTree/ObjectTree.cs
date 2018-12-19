@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Typemaker.Ast;
 
@@ -74,13 +75,65 @@ namespace Typemaker.ObjectTree
 			if (filePath == null)
 				throw new ArgumentNullException(nameof(filePath));
 
+			RootObject.RemoveFileItems(filePath);
+
 			void RemoveItems<TLocatable>(List<TLocatable> list) where TLocatable : ILocatable => list.RemoveAll(x => x.Location.FilePath == filePath);
 
-			RootObject.RemoveFileItems(filePath);
 			RemoveItems(variables);
 			RemoveItems(enums);
 			RemoveItems(interfaces);
 			RemoveItems(procs);
+		}
+
+		public void AddVariable(IVariableDeclaration variable) => variables.Add(variable ?? throw new ArgumentNullException(nameof(variable)));
+
+		public void AddProc(IProcDefinition proc) => procs.Add(proc ?? throw new ArgumentNullException(nameof(proc)));
+
+		public void AddEnum(IEnumDeclaration enumDeclaration) => enums.Add(enumDeclaration ?? throw new ArgumentNullException(nameof(enumDeclaration)));
+
+		public void AddInterface(IInterface interfaceDefinition) => interfaces.Add(interfaceDefinition ?? throw new ArgumentNullException(nameof(interfaceDefinition)));
+
+		public IEnumerable<ObjectTreeError> Validate()
+		{
+			ObjectTreeError CheckNameCollisions<TLocdentifiable>(string typeName, ObjectTreeErrorCode failCode, IEnumerable<TLocdentifiable> things, Func<TLocdentifiable, string> getThingName) where TLocdentifiable : ILocatable
+			{
+				var seenNames = new List<string>();
+				foreach (var I in things)
+				{
+					var thingsName = getThingName(I);
+					if (seenNames.Any(x => thingsName == x))
+						return new ObjectTreeError
+						{
+							Code = failCode,
+							Description = String.Format(CultureInfo.InvariantCulture, "Multiple definitions of {0} {1} exist", typeName, thingsName),
+							Location = I.Location
+						};
+					seenNames.Add(thingsName);
+				}
+				return null;
+			}
+
+			var result = CheckNameCollisions("interface", ObjectTreeErrorCode.InterfaceNameCollision, Interfaces, x => x.Name);
+			if (result != null)
+				yield return result;
+			result = CheckNameCollisions("enum", ObjectTreeErrorCode.EnumNameCollision, Enums, x => x.Name);
+			if (result != null)
+				yield return result;
+			result = CheckNameCollisions("global proc", ObjectTreeErrorCode.GlobalProcNameCollision, Procs, x => x.Declaration.Name);
+			if (result != null)
+				yield return result;
+			result = CheckNameCollisions("global variable", ObjectTreeErrorCode.GlobalVarNameCollision, Variables, x => x.Name);
+			if (result != null)
+				yield return result;
+
+			foreach (var I in Enums.SelectMany(x => x.Validate()))
+				yield return I;
+
+			foreach (var I in Interfaces.SelectMany(x => x.Validate()))
+				yield return I;
+
+			foreach (var I in RootObject.Validate())
+				yield return I;
 		}
 	}
 }

@@ -7,6 +7,10 @@ namespace Typemaker.ObjectTree
 	public enum ObjectTreeErrorCode
 	{
 		ImplementCycle,
-		PartialNonPartial
+		PartialNonPartial,
+		InterfaceNameCollision,
+		EnumNameCollision,
+		GlobalVarNameCollision,
+		GlobalProcNameCollision
 	}
 }
