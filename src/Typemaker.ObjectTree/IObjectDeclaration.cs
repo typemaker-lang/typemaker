@@ -1,6 +1,6 @@
 ﻿namespace Typemaker.ObjectTree
 {
-	public interface IObjectDeclaration
+	public interface IObjectDeclaration : ILocatable
 	{
 		IObject Object { get; }
 

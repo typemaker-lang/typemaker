@@ -18,14 +18,13 @@ namespace Typemaker.ObjectTree
 
 		IObject ParentType { get; }
 
-		IConstructor Constructor { get; }
-
-		IReadOnlyList<ILocatable> Locations { get; }
+		IReadOnlyList<Location> Locations { get; }
 
 		IReadOnlyList<IObject> Subtypes { get; }
 
-		void AddLocation(ILocatable location);
+		IReadOnlyList<IObjectProcDefinition> Procs { get; }
+
+		void AddLocation(Location location);
 		void AddSubtype(IObject subtype);
-		void AddConstructor(IConstructor constructor);
 	}
 }

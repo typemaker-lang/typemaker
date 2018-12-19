@@ -2,13 +2,11 @@
 
 namespace Typemaker.ObjectTree
 {
-	public interface IProcDeclaration : ILocatable, IIdentifiable
+	public interface IProcDeclaration : IIdentifiable
 	{
 		bool IsVerb { get; }
 
 		ITypeDeclaration ReturnType { get; }
-
-		IProcDefinition Definition { get; }
 
 		IReadOnlyList<IArgumentDeclaration> Arguments { get; }
 	}

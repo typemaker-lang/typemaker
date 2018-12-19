@@ -6,6 +6,6 @@ namespace Typemaker.ObjectTree
 	{
 		IReadOnlyList<IObjectVariableDeclaration> Variables { get; }
 
-		IReadOnlyList<IObjectProcDeclaration> Procs { get; }
+		IReadOnlyList<IObjectProcDeclaration> AbstractProcs { get; }
 	}
 }

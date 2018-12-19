@@ -2,7 +2,7 @@
 
 namespace Typemaker.Ast
 {
-	public sealed class Location
+	public class Location
 	{
 		public ulong Line { get; set; }
 

@@ -11,7 +11,7 @@ namespace Typemaker.ObjectTree
 
 		IReadOnlyList<IVariableDeclaration> Variables { get; }
 
-		IReadOnlyList<IProcDeclaration> Procs { get; }
+		IReadOnlyList<IProcDefinition> Procs { get; }
 
 		IReadOnlyList<IEnumDeclaration> Enums { get; }
 

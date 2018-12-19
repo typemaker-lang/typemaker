@@ -16,9 +16,7 @@ namespace Typemaker.ObjectTree
 
 		public IObject ParentType { get; }
 
-		public IConstructor Constructor { get; private set; }
-
-		public IReadOnlyList<ILocatable> Locations => locations;
+		public IReadOnlyList<Location> Locations => locations;
 
 		public IReadOnlyList<IObject> Subtypes => subtypes;
 
@@ -26,7 +24,10 @@ namespace Typemaker.ObjectTree
 
 		public string FullyQualifiedName => GetLongName(true);
 
-		readonly List<ILocatable> locations;
+		public IReadOnlyList<IObjectProcDefinition> Procs => procs;
+
+		readonly List<IObjectProcDefinition> procs;
+		readonly List<Location> locations;
 		readonly List<IObject> subtypes;
 
 		protected Object(string name, IObject parent, ObjectVirtuality objectVirtuality, bool rooted, bool partial) : base(name)
@@ -36,11 +37,12 @@ namespace Typemaker.ObjectTree
 			IsRooted = rooted;
 			IsPartial = partial;
 
-			locations = new List<ILocatable>();
+			procs = new List<IObjectProcDefinition>();
+			locations = new List<Location>();
 			subtypes = new List<IObject>();
 		}
 
-		public Object(string name, IObject parent, ILocatable initialLocation, ObjectVirtuality objectVirtuality, bool rooted, bool partial) : this(name, parent, objectVirtuality, rooted, partial)
+		public Object(string name, IObject parent, Location initialLocation, ObjectVirtuality objectVirtuality, bool rooted, bool partial) : this(name, parent, objectVirtuality, rooted, partial)
 		{
 			if (parent == null)
 				throw new ArgumentNullException(nameof(parent));
@@ -75,25 +77,14 @@ namespace Typemaker.ObjectTree
 				};
 		}
 
-		public void AddLocation(ILocatable location) => locations.Add(location ?? throw new ArgumentNullException(nameof(location)));
+		public void AddLocation(Location location) => locations.Add(location ?? throw new ArgumentNullException(nameof(location)));
 
 		public void AddSubtype(IObject subtype) => subtypes.Add(subtype ?? throw new ArgumentNullException(nameof(subtype)));
-
-		public void AddConstructor(IConstructor constructor)
-		{
-			if (constructor == null)
-				throw new ArgumentNullException(nameof(constructor));
-			if (Constructor != null)
-				throw new InvalidOperationException("Constructor has already been set!");
-			Constructor = constructor;
-		}
 
 		void IRemovableChildren.RemoveFileItems(string filePath)
 		{
 			RemoveFileItems(filePath);
-
-			Constructor = Constructor?.FixParentChainAfterFileRemoval(filePath);
-
+			
 			foreach (var I in Subtypes)
 				I.RemoveFileItems(filePath);
 

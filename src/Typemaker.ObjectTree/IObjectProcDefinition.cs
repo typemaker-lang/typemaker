@@ -9,5 +9,7 @@
 		new IObjectProcDeclaration Declaration { get; }
 
 		IObjectProcDefinition Parent { get; }
+
+		IObjectProcDefinition FixParentChainAfterFileRemoval(string filePath);
 	}
 }

@@ -11,12 +11,12 @@ namespace Typemaker.ObjectTree
 
 		public IReadOnlyList<IObjectVariableDeclaration> Variables => variables;
 
-		public IReadOnlyList<IObjectProcDeclaration> Procs => procs;
+		public IReadOnlyList<IObjectProcDeclaration> AbstractProcs => abstractProcs;
 
 		public IReadOnlyList<IInterface> Implements => implements;
 
 		readonly List<IObjectVariableDeclaration> variables;
-		readonly List<IObjectProcDeclaration> procs;
+		readonly List<IObjectProcDeclaration> abstractProcs;
 		readonly List<IInterface> implements;
 		
 		static ObjectTreeError ValidateImplements(IEnumerable<IInterface> interfaces, IInterface duplicate, List<IInterface> chain)
@@ -39,12 +39,12 @@ namespace Typemaker.ObjectTree
 			Name = name ?? throw new ArgumentNullException(nameof(name));
 
 			variables = new List<IObjectVariableDeclaration>();
-			procs = new List<IObjectProcDeclaration>();
+			abstractProcs = new List<IObjectProcDeclaration>();
 			implements = new List<IInterface>();
 		}
 
 		public void AddVariable(IObjectVariableDeclaration variable) => variables.Add(variable ?? throw new ArgumentNullException(nameof(variable)));
-		public void AddProc(IObjectProcDeclaration proc) => procs.Add(proc ?? throw new ArgumentNullException(nameof(proc)));
+		public void AddProc(IObjectProcDeclaration proc) => abstractProcs.Add(proc ?? throw new ArgumentNullException(nameof(proc)));
 		public void AddImplement(IInterface implement)
 		{
 			ValidateImplements(implements, implement ?? throw new ArgumentNullException(nameof(implement)), new List<IInterface>());
@@ -59,13 +59,9 @@ namespace Typemaker.ObjectTree
 			if (filePath == null)
 				throw new ArgumentNullException(nameof(filePath));
 
-			variables.RemoveAll(x => x.FilePath == filePath);
-			implements.RemoveAll(x => x.FilePath == filePath);
-
-			var newProcs = Procs.Select(x => x.FixParentChainAfterFileRemoval(filePath)).ToList();
-			procs.Clear();
-			procs.Capacity = newProcs.Count;
-			procs.AddRange(newProcs);
+			variables.RemoveAll(x => x.Location.FilePath == filePath);
+			implements.RemoveAll(x => x.Location.FilePath == filePath);
+			abstractProcs.RemoveAll(x => x.Location.FilePath == filePath);
 		}
 	}
 }

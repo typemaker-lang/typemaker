@@ -13,14 +13,14 @@ namespace Typemaker.ObjectTree
 
 		public IReadOnlyList<IVariableDeclaration> Variables => variables;
 
-		public IReadOnlyList<IProcDeclaration> Procs => procs;
+		public IReadOnlyList<IProcDefinition> Procs => procs;
 
 		public IReadOnlyList<IEnumDeclaration> Enums => enums;
 
 		public IReadOnlyList<IInterface> Interfaces => interfaces;
 
 		readonly List<IVariableDeclaration> variables;
-		readonly List<IProcDeclaration> procs;
+		readonly List<IProcDefinition> procs;
 		readonly List<IEnumDeclaration> enums;
 		readonly List<IInterface> interfaces;
 
@@ -29,7 +29,7 @@ namespace Typemaker.ObjectTree
 			RootObject = rootObject ?? throw new ArgumentNullException(nameof(rootObject));
 
 			variables = new List<IVariableDeclaration>();
-			procs = new List<IProcDeclaration>();
+			procs = new List<IProcDefinition>();
 			enums = new List<IEnumDeclaration>();
 			interfaces = new List<IInterface>();
 		}
@@ -74,7 +74,7 @@ namespace Typemaker.ObjectTree
 			if (filePath == null)
 				throw new ArgumentNullException(nameof(filePath));
 
-			void RemoveItems<TLocatable>(List<TLocatable> list) where TLocatable : ILocatable => list.RemoveAll(x => x.FilePath == filePath);
+			void RemoveItems<TLocatable>(List<TLocatable> list) where TLocatable : ILocatable => list.RemoveAll(x => x.Location.FilePath == filePath);
 
 			RootObject.RemoveFileItems(filePath);
 			RemoveItems(variables);
