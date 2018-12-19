@@ -2,8 +2,8 @@
 {
 	public interface IProcDefinition : ILocatable
 	{
-		IProcDeclaration Declaration { get; }
+		bool IsInline { get; }
 
-		IStatementBlock Body { get; }
+		IProcDeclaration Declaration { get; }
 	}
 }

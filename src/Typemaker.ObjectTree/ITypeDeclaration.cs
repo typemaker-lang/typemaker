@@ -1,13 +1,16 @@
-﻿namespace Typemaker.ObjectTree
+﻿using Typemaker.Ast;
+
+namespace Typemaker.ObjectTree
 {
 	public interface ITypeDeclaration
 	{
-		bool IsUnknown { get; }
-
 		bool IsNullable { get; }
 
 		RootType? RootType { get; }
 
-		string ObjectIdentifier { get; }
+		IObject Typepath { get; }
+
+		ITypeDeclaration IndexType { get; }
+		ITypeDeclaration MapType { get; }
 	}
 }

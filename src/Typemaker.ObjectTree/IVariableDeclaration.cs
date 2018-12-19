@@ -1,10 +1,10 @@
-﻿namespace Typemaker.ObjectTree
+﻿using Typemaker.Ast;
+
+namespace Typemaker.ObjectTree
 {
-	public interface IVariableDeclaration : INameable, ILocatable, IDeclarable
+	public interface IVariableDeclaration : IIdentifiable, ILocatable, IDeclarable
 	{
 		bool IsConst { get; }
-
-		IExpression Initializer { get; }
 
 		ITypeDeclaration TypeDeclaration { get; }
 	}

@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
+using Typemaker.Ast;
 
 namespace Typemaker.ObjectTree
 {
-	public interface IInterface: INameable, ILocatable
+	public interface IInterface: IIdentifiable, IImplementer, ILocatable
 	{
-		IInterface Parent { get; }
-
 		IReadOnlyList<IVariableDeclaration> VariableDeclarations { get; }
 
 		IReadOnlyList<IObjectProcDeclaration> ProcDeclarations { get; }

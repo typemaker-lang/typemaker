@@ -1,9 +1,7 @@
 ﻿namespace Typemaker.ObjectTree
 {
-	public interface IObjectProcDeclaration : IProcDeclaration, IProtectable
+	public interface IObjectProcDeclaration : IProcDeclaration, IObjectDeclaration
 	{
 		bool IsVirtual { get; }
-
-		bool IsStatic { get; }
 	}
 }

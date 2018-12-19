@@ -1,7 +1,9 @@
 ﻿namespace Typemaker.ObjectTree
 {
-	public interface IProtectable
+	public interface IObjectDeclaration
 	{
 		ProtectionLevel ProtectionLevel { get; }
+
+		bool IsStatic { get; }
 	}
 }
