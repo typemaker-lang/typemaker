@@ -16,7 +16,8 @@ fragment InputCharacter: ~[\r\n\u0085\u2028\u2029];
 
 SPACES: ' '+ -> channel(WHITESPACE_CHANNEL);
 TABS: '\t'+ -> channel(WHITESPACE_CHANNEL);
-NEWLINES: ('\r\n' | '\n')+ -> channel(WHITESPACE_CHANNEL);
+WINDOWS_NEWLINES: '\r\n'+ -> channel(WHITESPACE_CHANNEL);
+NEWLINES: '\n'+ -> channel(WHITESPACE_CHANNEL);
 
 VERBATIUM_STRING: '@"' (~["\r\n])* '"';
 MULTILINE_VERBATIUM_STRING: '@{"' (~'"')* '"}';

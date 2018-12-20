@@ -144,6 +144,9 @@ namespace Typemaker.Ast
 					case TypemakerLexer.NEWLINES:
 						newNode = new WhitespaceTrivia(WhitespaceType.Newlines, this, Tree, token);
 						break;
+					case TypemakerLexer.WINDOWS_NEWLINES:
+						newNode = new WhitespaceTrivia(WhitespaceType.WindowsNewlines, this, Tree, token);
+						break;
 					case TypemakerLexer.TABS:
 						newNode = new WhitespaceTrivia(WhitespaceType.Tabs, this, Tree, token);
 						break;

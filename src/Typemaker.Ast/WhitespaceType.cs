@@ -4,6 +4,7 @@
 	{
 		Tabs,
 		Spaces,
-		Newlines
+		Newlines,
+		WindowsNewlines
 	}
 }
