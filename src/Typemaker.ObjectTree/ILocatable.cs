@@ -2,6 +2,6 @@
 {
 	public interface ILocatable
 	{
-		Location Location { get; }
+		Highlight Location { get; }
 	}
 }

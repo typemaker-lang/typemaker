@@ -10,9 +10,9 @@ namespace Typemaker.ObjectTree
 
 		public IProcDeclaration Declaration { get; }
 
-		public Location Location { get; }
+		public Highlight Location { get; }
 
-		public ProcDefinition(IProcDeclaration declaration, Location location, bool inline)
+		public ProcDefinition(IProcDeclaration declaration, Highlight location, bool inline)
 		{
 			Declaration = declaration ?? throw new ArgumentNullException(nameof(declaration));
 			Location = location ?? throw new ArgumentNullException(nameof(location));

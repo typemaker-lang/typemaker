@@ -12,11 +12,15 @@ namespace Typemaker.ObjectTree
 
 		public bool IsPartial { get; }
 
+		public bool SelfMath { get; }
+
+		public bool AutoconvertResource { get; }
+
 		public ObjectVirtuality Virtuality { get; }
 
 		public IObject ParentType { get; }
 
-		public IReadOnlyList<Location> Locations => locations;
+		public IReadOnlyList<Highlight> Locations => locations;
 
 		public IReadOnlyList<IObject> Subtypes => subtypes;
 
@@ -27,7 +31,7 @@ namespace Typemaker.ObjectTree
 		public IReadOnlyList<IObjectProcDefinition> Procs => procs;
 
 		readonly List<IObjectProcDefinition> procs;
-		readonly List<Location> locations;
+		readonly List<Highlight> locations;
 		readonly List<IObject> subtypes;
 
 		protected Object(string name, IObject parent, ObjectVirtuality objectVirtuality, bool rooted, bool partial) : base(name)
@@ -38,16 +42,19 @@ namespace Typemaker.ObjectTree
 			IsPartial = partial;
 
 			procs = new List<IObjectProcDefinition>();
-			locations = new List<Location>();
+			locations = new List<Highlight>();
 			subtypes = new List<IObject>();
 		}
 
-		public Object(string name, IObject parent, Location initialLocation, ObjectVirtuality objectVirtuality, bool rooted, bool partial) : this(name, parent, objectVirtuality, rooted, partial)
+		public Object(string name, IObject parent, Highlight initialLocation, ObjectVirtuality objectVirtuality, bool rooted, bool partial, bool selfMath, bool autoconvertResource) : this(name, parent, objectVirtuality, rooted, partial)
 		{
 			if (parent == null)
 				throw new ArgumentNullException(nameof(parent));
 			if (initialLocation == null)
 				throw new ArgumentNullException(nameof(initialLocation));
+
+			SelfMath = selfMath;
+			AutoconvertResource = autoconvertResource;
 
 			parent.AddSubtype(this);
 
@@ -77,7 +84,7 @@ namespace Typemaker.ObjectTree
 				};
 		}
 
-		public void AddLocation(Location location) => locations.Add(location ?? throw new ArgumentNullException(nameof(location)));
+		public void AddLocation(Highlight location) => locations.Add(location ?? throw new ArgumentNullException(nameof(location)));
 
 		public void AddSubtype(IObject subtype) => subtypes.Add(subtype ?? throw new ArgumentNullException(nameof(subtype)));
 

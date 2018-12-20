@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Typemaker.Ast
 {
-	public interface IDecorated
+	public interface IDecorated : ISyntaxNode
 	{
 		IReadOnlyList<IDecorator> Decorators { get; }
 	}

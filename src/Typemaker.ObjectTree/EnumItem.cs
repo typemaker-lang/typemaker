@@ -12,20 +12,20 @@ namespace Typemaker.ObjectTree
 
 		public string Name { get; }
 
-		public Location Location { get; }
+		public Highlight Location { get; }
 
-		EnumItem(string name, Location location)
+		EnumItem(string name, Highlight location)
 		{
 			Name = name ?? throw new ArgumentNullException(nameof(name));
 			Location = location ?? throw new ArgumentNullException(nameof(location));
 		}
 
-		public EnumItem(string stringValue, string name, Location location) : this(name, location)
+		public EnumItem(string stringValue, string name, Highlight location) : this(name, location)
 		{
 			StringValue = stringValue;
 		}
 
-		public EnumItem(int intValue, string name, Location location) : this(name, location)
+		public EnumItem(int intValue, string name, Highlight location) : this(name, location)
 		{
 			IntValue = intValue;
 		}

@@ -2,5 +2,16 @@
 {
 	public enum ValidationErrorCode
 	{
+		UnorderedDecorator,
+		InvalidDecorator,
+		IncompatibleDecorator,
+		MissingDecoratorOrBody,
+		InvalidEnumExpression,
+		NonConstEnumStringItem,
+		DeclaredProcUndeclaredObject,
+		InvalidDeclarationSetTarget,
+		InvalidDeclarationSetExpression,
+		NonConstDeclarationSetExpression,
+		DeclarationSetUndeclaredObject
 	}
 }

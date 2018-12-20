@@ -251,8 +251,9 @@ unsafe_block: UNSAFE block;
 implements_statement: IMPLEMENTS IDENTIFIER SEMI;
 object_declaration: decorator* fully_extended_identifier declaration_block;
 
-argument_declaration: typed_identifier | typed_identifier EQUALS expression | nullable_type SLASH DOTDOTDOT | DOTDOTDOT;
-argument_declaration_list: argument_declaration | argument_declaration COMMA argument_declaration_list | VARARGS;
+var_args: nullable_type SLASH DOTDOTDOT | DOTDOTDOT;
+argument_declaration: typed_identifier | typed_identifier EQUALS expression;
+argument_declaration_list: argument_declaration | argument_declaration COMMA argument_declaration_list | var_args;
 
 proc_arguments: LPAREN RPAREN | LPAREN argument_declaration_list RPAREN;
 proc_return_declaration: RDEC return_type;

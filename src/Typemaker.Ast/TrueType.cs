@@ -80,7 +80,7 @@ namespace Typemaker.Ast
 					RootType = RootType.Resource;
 					break;
 				case TypemakerLexer.INT:
-					RootType = RootType.Int;
+					RootType = RootType.Integer;
 					break;
 				case TypemakerLexer.FLOAT:
 					RootType = RootType.Float;

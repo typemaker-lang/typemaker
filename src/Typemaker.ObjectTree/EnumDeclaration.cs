@@ -10,9 +10,9 @@ namespace Typemaker.ObjectTree
 		public string Name { get; }
 		public IReadOnlyList<IEnumItem> Values { get; }
 
-		public Location Location { get; }
+		public Highlight Location { get; }
 
-		public EnumDeclaration(string name, Location location, IEnumerable<IEnumItem> values)
+		public EnumDeclaration(string name, Highlight location, IEnumerable<IEnumItem> values)
 		{
 			Name = name ?? throw new ArgumentNullException(nameof(name));
 			Location = location ?? throw new ArgumentNullException(nameof(location));

@@ -10,6 +10,6 @@ namespace Typemaker.ObjectTree
 		public ObjectTreeErrorCode Code { get; set; }
 		public string Description { get; set; }
 
-		public Location Location { get; set; }
+		public Highlight Location { get; set; }
 	}
 }

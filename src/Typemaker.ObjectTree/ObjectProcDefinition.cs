@@ -14,7 +14,7 @@ namespace Typemaker.ObjectTree
 
 		public new IObjectProcDeclaration Declaration { get; }
 
-		public ObjectProcDefinition(IObjectProcDeclaration declaration, IObjectProcDefinition parent, Location location, int precedence, bool final, bool inline) : base(declaration, location, inline)
+		public ObjectProcDefinition(IObjectProcDeclaration declaration, IObjectProcDefinition parent, Highlight location, int precedence, bool final, bool inline) : base(declaration, location, inline)
 		{
 			Declaration = declaration;
 			Parent = parent;

@@ -25,7 +25,7 @@ namespace Typemaker.ObjectTree
 			var filePath = syntaxTree.FilePath;
 			objectTree.RemoveFileItems(filePath);
 
-			Location CreateLocation(Ast.ILocatable locatable) => new Location
+			Highlight CreateLocation(Ast.ILocatable locatable) => new Highlight
 			{
 				Start = locatable.Start,
 				End = locatable.End,

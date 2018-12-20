@@ -90,8 +90,6 @@ namespace Typemaker.Ast
 			return graph;
 		}
 
-		protected IEnumerable<TChildNode> SelectChildren<TChildNode>() where TChildNode : ISyntaxNode => children.Where(x => x is TChildNode).Select(x => (TChildNode)(object)x);
-
 		protected void LinkTree(SyntaxNode parent, ISyntaxTree tree, bool deserialize)
 		{
 			if (!deserialize && parent == null)
@@ -171,6 +169,8 @@ namespace Typemaker.Ast
 		protected IReadOnlyList<TChildNode> ChildrenAs<TChildNode>() where TChildNode : ISyntaxNode => SelectChildren<TChildNode>().ToList();
 
 		public SyntaxGraph Serialize() => BuildGraph(new SyntaxNodeDeserializer());
+
+		public IEnumerable<TChildNode> SelectChildren<TChildNode>() where TChildNode : ISyntaxNode => children.Where(x => x is TChildNode).Select(x => (TChildNode)(object)x);
 
 		public void Transform(IEnumerable<SyntaxGraph> replacements)
 		{

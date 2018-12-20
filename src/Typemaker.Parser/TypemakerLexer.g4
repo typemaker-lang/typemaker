@@ -31,7 +31,6 @@ BLOCKCOMMENT: '/*' .*? '*/' -> skip;
 LINECOMMENT: '//' ~[\r\n]* -> skip;
 
 CONSTRUCTOR: 'New';
-VARARGS: '...';
 INC: '++';
 DEC: '--';
 ADD_EQUALS: '+=';

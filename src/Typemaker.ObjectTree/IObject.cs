@@ -15,16 +15,18 @@ namespace Typemaker.ObjectTree
 		bool IsRooted { get; }
 
 		bool IsPartial { get; }
+		bool SelfMath { get; }
+		bool AutoconvertResource { get; }
 
 		IObject ParentType { get; }
 
-		IReadOnlyList<Location> Locations { get; }
+		IReadOnlyList<Highlight> Locations { get; }
 
 		IReadOnlyList<IObject> Subtypes { get; }
 
 		IReadOnlyList<IObjectProcDefinition> Procs { get; }
 
-		void AddLocation(Location location);
+		void AddLocation(Highlight location);
 		void AddSubtype(IObject subtype);
 	}
 }

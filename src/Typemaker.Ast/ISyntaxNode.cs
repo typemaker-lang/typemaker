@@ -18,5 +18,7 @@ namespace Typemaker.Ast
 		SyntaxGraph Serialize();
 
 		void Transform(IEnumerable<SyntaxGraph> replacements);
+
+		IEnumerable<TChildNode> SelectChildren<TChildNode>() where TChildNode : ISyntaxNode;
 	}
 }

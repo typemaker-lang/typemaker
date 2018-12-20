@@ -4,7 +4,7 @@
 	{
 		Unknown,
 		Resource,
-		Int,
+		Integer,
 		Float,
 		Bool,
 		Object,
