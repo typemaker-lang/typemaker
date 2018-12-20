@@ -26,7 +26,7 @@ MULTI_STRING_START: '{"' { multiString.Push(true); } -> pushMode(INTERPOLATION_S
 STRING_START: '"' { multiString.Push(false); } -> pushMode(INTERPOLATION_STRING);
 
 INTEGER: ('0'..'9')+;
-REAL: ('0'..'9')+ '.' ('0'..'9')+;
+REAL: ('0'..'9')* '.' ('0'..'9')+;
 
 BLOCKCOMMENT: '/*' .*? '*/' -> skip;
 LINECOMMENT: '//' ~[\r\n]* -> skip;
