@@ -37,7 +37,7 @@ true_type: root_type | extended_identifier;
 nullable_type: true_type | NULLABLE SLASH true_type;
 const_type: true_type | CONST SLASH true_type;
 type: const_type | nullable_type;
-return_type: nullable_type | VOID | IDENTIFIER;
+return_type: nullable_type | VOID;	//extended_identifier is expanded from nullable_type
 
 typed_identifier: type SLASH IDENTIFIER | IDENTIFIER;
 
@@ -91,7 +91,7 @@ nonoptional_accessor
 
 accessed_target
 	: accessed_target accessor IDENTIFIER
-	| IDENTIFIER
+	| basic_identifier
 	;
 
 expression

@@ -197,8 +197,30 @@ namespace Typemaker.Ast.Validation
 				{
 					if (declared)
 					{
+						if(!J.IsAssignment)
+						{
+							errors.Add(new ValidationError
+							{
+								Code = ValidationErrorCode.InvalidDeclarationSetType,
+								Description = "A set in statement is not valid here",
+								Location = J
+							});
+							continue;
+						}
+
 						var assignment = J.Assignment;
-						var identifier = ((IIdentifierExpression)assignment.LeftHandSide).CustomIdentifier;
+						if(!(assignment.LeftHandSide is IIdentifierExpression identifierExpression))
+						{
+							errors.Add(new ValidationError
+							{
+								Code = ValidationErrorCode.InvalidDeclarationSetTargetExpression,
+								Description = "Only an identifier may be used here",
+								Location = J
+							});
+							continue;
+						}
+
+						var identifier = identifierExpression.Name;
 						var rhs = assignment.RightHandSide;
 						var expressionRootType = rhs.EvaluateType();
 						if (!DeclarationSetTargets.Map.TryGetValue(identifier, out var targetRootType))

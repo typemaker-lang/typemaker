@@ -70,7 +70,6 @@ namespace Typemaker.Ast.Visitors
 		
 		public override SyntaxNode VisitVar_declaration([NotNull] TypemakerParser.Var_declarationContext context)
 		{
-
 			var definitionStatement = context.var_definition_statement();
 			var initializer = definitionStatement.expression();
 
@@ -142,6 +141,14 @@ namespace Typemaker.Ast.Visitors
 			}
 
 			return new StringExpression(context, StringEmbeds());
+		}
+
+		public override SyntaxNode VisitAccessed_target([NotNull] TypemakerParser.Accessed_targetContext context)
+		{
+			var accessedTarget = context.accessed_target();
+			if (accessedTarget == null)
+				return new IdentifierExpression(context.basic_identifier());
+			return new AccessExpression(context, new List<SyntaxNode> { Visit(accessedTarget) });
 		}
 	}
 }

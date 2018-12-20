@@ -2,6 +2,7 @@
 {
 	public enum IdentifierType
 	{
+		Custom,
 		Src,
 		Usr,
 		ParentProc,

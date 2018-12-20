@@ -15,6 +15,8 @@
 		DeclarationSetUndeclaredObject,
 		SetStatementInInterface,
 		NestedUnsafeBlock,
-		InvalidTriviaLocation
+		InvalidTriviaLocation,
+		InvalidDeclarationSetType,
+		InvalidDeclarationSetTargetExpression
 	}
 }
