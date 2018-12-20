@@ -14,13 +14,26 @@ namespace Typemaker.Ast
 
 		public IObjectPath ObjectPath { get; }
 
-		public INullableType IndexType => RootType == RootType.List || RootType == RootType.Dict ? ChildAs<INullableType>() : null;
+		public INullableType IndexType => mapDefinitionType == MapDefinitionType.IndexOnly || mapDefinitionType == MapDefinitionType.FullyDefined  ? ChildAs<INullableType>() : null;
 
-		public INullableType MapType => RootType == RootType.Dict ? SelectChildren<INullableType>().Last() : null;
+		public INullableType MapType => mapDefinitionType == MapDefinitionType.ValueOnly || mapDefinitionType == MapDefinitionType.FullyDefined ? SelectChildren<INullableType>().Last() : null;
+
+		readonly MapDefinitionType? mapDefinitionType;
 		
-		public TrueType(TypemakerParser.True_typeContext context, IEnumerable<SyntaxNode> children) : base(context, children)
+		public TrueType(TypemakerParser.True_typeContext context, IEnumerable<SyntaxNode> children, MapDefinitionType? mapDefinitionType) : base(context, children)
 		{
 			var rootTypeContext = context.root_type();
+			this.mapDefinitionType = mapDefinitionType;
+			void NeedMapDefinitionType(bool yes)
+			{
+				if (yes)
+				{
+					if (!mapDefinitionType.HasValue)
+						throw new ArgumentNullException(nameof(mapDefinitionType));
+				}
+				else if (mapDefinitionType.HasValue)
+					throw new InvalidOperationException("mapDefinitionType should not be present!");
+			}
 
 			//use an if chain here cause it's really complicated
 			if (rootTypeContext == null)
@@ -28,8 +41,25 @@ namespace Typemaker.Ast
 				RootType = RootType.Object;
 				ParseTreeFormatters.ExtractObjectPath(context.extended_identifier(), true, out var path);
 				ObjectPath = path;
+				NeedMapDefinitionType(false);
 				return;
 			}
+			
+			if (rootTypeContext.list_type() != null)
+			{
+				NeedMapDefinitionType(true);
+				RootType = RootType.List;
+				return;
+			}
+
+			if (rootTypeContext.dict_type() != null)
+			{
+				NeedMapDefinitionType(true);
+				RootType = RootType.Dict;
+				return;
+			}
+
+			NeedMapDefinitionType(false);
 
 			var enumType = rootTypeContext.enum_type();
 			if (enumType != null)
@@ -51,18 +81,6 @@ namespace Typemaker.Ast
 			if (pathType != null)
 			{
 				RootType = pathType.concrete_path() != null ? RootType.ConcretePath : RootType.Path;
-				return;
-			}
-			
-			if(rootTypeContext.list_type() != null)
-			{
-				RootType = RootType.List;
-				return;
-			}
-
-			if(rootTypeContext.dict_type() != null)
-			{
-				RootType = RootType.Dict;
 				return;
 			}
 

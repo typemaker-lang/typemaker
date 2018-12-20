@@ -11,7 +11,6 @@ namespace Typemaker.Ast.Visitors
 	sealed class TopLevelVisitor : TypemakerVisitor, ISyntaxTreeVisitor
 	{
 		readonly string filePath;
-		
 
 		public TopLevelVisitor(string filePath)
 		{
@@ -22,29 +21,72 @@ namespace Typemaker.Ast.Visitors
 
 		public override SyntaxNode VisitMap([NotNull] TypemakerParser.MapContext context) => new MapDeclaration(context);
 
-		public override SyntaxNode VisitNullable_type([NotNull] TypemakerParser.Nullable_typeContext context)
+		IReadOnlyList<SyntaxNode> GetMapChildren(TypemakerParser.True_typeContext context, out MapDefinitionType? definitionType)
 		{
-			//TODO: Child list and dict types
-			return new NullableType(context, Enumerable.Empty<SyntaxNode>());
+			var results = new List<SyntaxNode>();
+			var rootType = context.root_type();
+			if (rootType != null)
+			{
+				var listType = rootType.list_type();
+				if (listType != null)
+				{
+					var nullableType = listType.nullable_type();
+					if (nullableType != null)
+					{
+						definitionType = MapDefinitionType.FullyDefined;
+						results.Add(Visit(nullableType));
+					}
+					else
+						definitionType = MapDefinitionType.Undefined;
+				}
+				else
+				{
+					var dictType = rootType.dict_type();
+					if (dictType != null)
+					{
+						var nullableType = dictType.nullable_type();
+						if (nullableType.Length == 0)
+							definitionType = MapDefinitionType.Undefined;
+						else if (nullableType.Length == 2)
+							definitionType = MapDefinitionType.FullyDefined;
+						else if (dictType.BSLASH() != null)
+							definitionType = MapDefinitionType.ValueOnly;
+						else
+							definitionType = MapDefinitionType.IndexOnly;
+						results.AddRange(Visit(nullableType));
+					}
+					else
+						definitionType = null;
+				}
+			}
+			else
+				definitionType = null;
+			return results;
 		}
 
+		public override SyntaxNode VisitNullable_type([NotNull] TypemakerParser.Nullable_typeContext context) => new NullableType(context, GetMapChildren(context.true_type(), out var definitionType), definitionType);
+
+		public override SyntaxNode VisitTrue_type([NotNull] TypemakerParser.True_typeContext context) => new TrueType(context, GetMapChildren(context, out var definitionType), definitionType);
+		
 		public override SyntaxNode VisitVar_declaration([NotNull] TypemakerParser.Var_declarationContext context)
 		{
 
 			var definitionStatement = context.var_definition_statement();
 			var initializer = definitionStatement.expression();
 
+			SyntaxNode VisitTypedIdentifier() => Visit(definitionStatement.var_definition_only().typed_identifier());
+
 			IEnumerable<SyntaxNode> children;
 			if (initializer != null)
 				children = ConcatNodes(
 					Visit(context.decorator()),
-					new List<SyntaxNode> { Visit(definitionStatement.var_definition_only().typed_identifier()) }
+					new List<SyntaxNode> { VisitTypedIdentifier() }
 				);
 			else
 				children = ConcatNodes(
 					Visit(context.decorator()),
 					new List<SyntaxNode> {
-						Visit(definitionStatement.var_definition_only().typed_identifier()),
+						VisitTypedIdentifier(),
 						Visit(initializer)
 					}
 				);
@@ -74,6 +116,7 @@ namespace Typemaker.Ast.Visitors
 		public override SyntaxNode VisitProc_definition([NotNull] TypemakerParser.Proc_definitionContext context) => new ProcDefinition(context, new List<SyntaxNode> { Visit(context.block()) });
 
 
+		public override SyntaxNode VisitUnsafe_block([NotNull] TypemakerParser.Unsafe_blockContext context) => new Block(context, Visit(context.block().statement()));
 
 		public override SyntaxNode VisitBlock([NotNull] TypemakerParser.BlockContext context) => new Block(context, Visit(context.statement()));
 
@@ -81,9 +124,8 @@ namespace Typemaker.Ast.Visitors
 		{
 			var definition = context.var_definition_only();
 			var initializer = context.expression();
-			//TODO:
-			return null;
-			//return new VarDefinition(definition, initializer != null ? new List<SyntaxNode> { Visit(context. Visit(initializer) } : Enumerable.Empty<SyntaxNode>());
+			var children = initializer != null ? new List<SyntaxNode> { Visit(initializer) } : Enumerable.Empty<SyntaxNode>();
+			return new VarDefinition(definition, children);
 		}
 
 		public override SyntaxNode VisitString([NotNull] TypemakerParser.StringContext context)

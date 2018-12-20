@@ -26,7 +26,7 @@ string
 	| VERBATIUM_STRING 
 	;
 
-dict_type: DICT SLASH nullable_type BSLASH nullable_type | DICT SLASH nullable_type | DICT;
+dict_type: DICT SLASH nullable_type BSLASH nullable_type | DICT SLASH nullable_type | DICT BSLASH nullable_type | DICT;
 list_type: LIST SLASH nullable_type | LIST;
 
 root_type: enum_type | interface_type | path_type | list_type | dict_type | INT | RESOURCE | BOOL | FLOAT | EXCEPTION | STRING;
