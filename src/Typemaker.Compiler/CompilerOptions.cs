@@ -7,6 +7,7 @@ namespace Typemaker.Compiler
 {
 	public sealed class CompilerOptions
 	{
+
 		TypemakerSettings Settings { get; set; }
 	}
 }
