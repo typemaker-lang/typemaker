@@ -7,7 +7,6 @@ namespace Typemaker.Ast
 {
 	public interface IExpressionReducer
 	{
-		TRootType ReduceR<TRootType>(IExpression expression) where TRootType : class;
-		TRootType? ReduceS<TRootType>(IExpression expression) where TRootType : struct;
+		TRootType Reduce<TRootType>(IExpression expression);
 	}
 }
