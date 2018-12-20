@@ -4,8 +4,7 @@ using System.Text;
 
 namespace Typemaker.Ast.Statements
 {
-	public interface IIfBase : IBranch
+	public interface IIfBase : IBranch, IBodiedStatement
 	{
-		IStatement Body { get; }
 	}
 }

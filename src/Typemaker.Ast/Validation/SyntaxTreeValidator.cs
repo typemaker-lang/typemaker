@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using Typemaker.Ast.Statements;
 using Typemaker.Ast.Statements.Expressions;
 
 namespace Typemaker.Ast.Validation
@@ -16,7 +17,7 @@ namespace Typemaker.Ast.Validation
 		 * 
 		 * Full list:
 		 * Decorator types, ordering, and duplication
-		 * Set assignment statements in interfaces and objects (banned in intefaces, only allowed in object declarations, and only a certain list of valid identifiers)
+		 * Set assignment statements in interfaces and objects (banned in intefaces, only allowed in object declarations, and only a certain list of valid identifiers with const expressions)
 		 * Enum assignments are const strings or ints
 		 * Nested unsafe blocks
 		 * 
@@ -150,7 +151,16 @@ namespace Typemaker.Ast.Validation
 
 		void ValidateInterfaces(ISyntaxTree syntaxTree, List<ValidationError> errors)
 		{
-			throw new NotImplementedException();
+			foreach(var I in syntaxTree.Interfaces)
+			{
+				foreach (var J in I.SelectChildren<ISetStatement>())
+					errors.Add(new ValidationError
+					{
+						Code = ValidationErrorCode.SetStatementInInterface,
+						Description = "Interfaces cannot have set statements",
+						Location = J
+					});
+			}
 		}
 
 		void ValidateObjects(ISyntaxTree syntaxTree, List<ValidationError> errors)
@@ -224,6 +234,37 @@ namespace Typemaker.Ast.Validation
 					});
 			}
 		}
+		void CheckBlock(IStatement body, List<ValidationError> errors, bool nested = false)
+		{
+			if (body is IBlock block)
+				if (nested && block.Unsafe)
+					errors.Add(new ValidationError
+					{
+						Code = ValidationErrorCode.NestedUnsafeBlock,
+						Description = "An unsafe block cannot appear inside another unsafe block",
+						Location = block
+					});
+				else
+					foreach (var I in block.Statements)
+						CheckBlock(I, errors, nested || block.Unsafe);
+			else if (body is ISwitchStatement switchStatement)
+			{
+				foreach (var I in switchStatement.Cases)
+					CheckBlock(I.Body, errors, nested);
+				if(switchStatement.Default != null)
+					CheckBlock(switchStatement.Default, errors, nested);
+			}
+			else if (body is IIfStatement ifStatement)
+			{
+				foreach (var I in ifStatement.ElseIfs)
+					CheckBlock(I.Body, errors, nested);
+				CheckBlock(ifStatement.Body, errors, nested);
+				if(ifStatement.Else != null)
+					CheckBlock(ifStatement.Else, errors, nested);
+			}
+			else if (body is IBodiedStatement bodiedStatement)
+				CheckBlock(bodiedStatement.Body, errors, nested);
+		}
 
 		public SyntaxTreeValidationResult ValidateSyntaxTree(ISyntaxTree syntaxTree)
 		{
@@ -256,6 +297,8 @@ namespace Typemaker.Ast.Validation
 			foreach(var I in syntaxTree.ProcDefinitions)
 			{
 				errors.AddRange(CheckDecorators("proc definition", I, DecoratorType.Explicit, DecoratorType.Final, DecoratorType.Virtual, DecoratorType.Inline, DecoratorType.Precedence, DecoratorType.Protection));
+
+				CheckBlock(I.Body, errors);
 			}
 			
 			return new SyntaxTreeValidationResult
@@ -264,5 +307,6 @@ namespace Typemaker.Ast.Validation
 				SyntaxTree = errors.Count == 0 ? new ValidSyntaxTree(syntaxTree) : null
 			};
 		}
+
 	}
 }

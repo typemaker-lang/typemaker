@@ -5,10 +5,8 @@ using Typemaker.Ast.Statements.Expressions;
 
 namespace Typemaker.Ast.Statements
 {
-	public interface ISpawnStatement : IStatement
+	public interface ISpawnStatement : IBodiedStatement
 	{
 		IExpression Duration { get; }
-
-		IBlock Body { get; }
 	}
 }

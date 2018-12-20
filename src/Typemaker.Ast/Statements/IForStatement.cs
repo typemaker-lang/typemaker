@@ -4,9 +4,8 @@ using System.Text;
 
 namespace Typemaker.Ast.Statements
 {
-	public interface IForStatement
+	public interface IForStatement : IBodiedStatement
 	{
 		IVarDefinition Var { get; }
-		IStatement Body { get; }
 	}
 }

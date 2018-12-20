@@ -12,6 +12,8 @@
 		InvalidDeclarationSetTarget,
 		InvalidDeclarationSetExpression,
 		NonConstDeclarationSetExpression,
-		DeclarationSetUndeclaredObject
+		DeclarationSetUndeclaredObject,
+		SetStatementInInterface,
+		NestedUnsafeBlock
 	}
 }
