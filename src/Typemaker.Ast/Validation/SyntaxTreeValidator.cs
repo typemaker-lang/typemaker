@@ -20,6 +20,7 @@ namespace Typemaker.Ast.Validation
 		 * Set assignment statements in interfaces and objects (banned in intefaces, only allowed in object declarations, and only a certain list of valid identifiers with const expressions)
 		 * Enum assignments are const strings or ints
 		 * Nested unsafe blocks
+		 * Types and extended identifiers cannot have trivias in them
 		 * 
 		 */
 
@@ -125,6 +126,8 @@ namespace Typemaker.Ast.Validation
 		IEnumerable<ValidationError> ValidateEnums(ISyntaxTree syntaxTree)
 		{
 			foreach (var I in syntaxTree.Enums)
+			{
+
 				foreach (var J in I.Items)
 				{
 					var expression = J.Expression;
@@ -147,6 +150,7 @@ namespace Typemaker.Ast.Validation
 							Location = J
 						};
 				}
+			}
 		}
 
 		void ValidateInterfaces(ISyntaxTree syntaxTree, List<ValidationError> errors)
@@ -300,6 +304,23 @@ namespace Typemaker.Ast.Validation
 
 				CheckBlock(I.Body, errors);
 			}
+
+			IEnumerable<ISyntaxNode> WalkTree(ISyntaxNode syntaxNode)
+			{
+				yield return syntaxNode;
+				foreach (var I in syntaxNode.Children)
+					foreach (var J in WalkTree(I))
+						yield return J;
+			}
+
+			foreach (var I in WalkTree(syntaxTree))
+				if (I.TriviaRestrictionViolation != null)
+					errors.Add(new ValidationError
+					{
+						Code = ValidationErrorCode.InvalidTriviaLocation,
+						Description = "Invalid location for comment/whitespace",
+						Location = I.TriviaRestrictionViolation
+					});
 			
 			return new SyntaxTreeValidationResult
 			{

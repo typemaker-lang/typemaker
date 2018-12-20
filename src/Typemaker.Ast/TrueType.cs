@@ -22,6 +22,7 @@ namespace Typemaker.Ast
 		
 		public TrueType(TypemakerParser.True_typeContext context, IEnumerable<SyntaxNode> children, MapDefinitionType? mapDefinitionType) : base(context, children)
 		{
+			AntiTriviaContext(context);
 			var rootTypeContext = context.root_type();
 			this.mapDefinitionType = mapDefinitionType;
 			void NeedMapDefinitionType(bool yes)

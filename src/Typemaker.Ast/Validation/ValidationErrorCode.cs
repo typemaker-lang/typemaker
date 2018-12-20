@@ -14,6 +14,7 @@
 		NonConstDeclarationSetExpression,
 		DeclarationSetUndeclaredObject,
 		SetStatementInInterface,
-		NestedUnsafeBlock
+		NestedUnsafeBlock,
+		InvalidTriviaLocation
 	}
 }

@@ -15,6 +15,8 @@ namespace Typemaker.Ast
 
 		bool Trivia { get; }
 
+		ILocatable TriviaRestrictionViolation { get; }
+
 		SyntaxGraph Serialize();
 
 		void Transform(IEnumerable<SyntaxGraph> replacements);

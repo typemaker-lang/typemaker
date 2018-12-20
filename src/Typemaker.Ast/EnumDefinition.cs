@@ -19,7 +19,9 @@ namespace Typemaker.Ast
 		/// <param name="children">The child <see cref="SyntaxNode"/>s</param>
 		public EnumDefinition(TypemakerParser.EnumContext context, IEnumerable<SyntaxNode> children) : base(context, children)
 		{
-			Name = context.enum_type().IDENTIFIER().Symbol.Text;
+			var enumType = context.enum_type();
+			Name = enumType.IDENTIFIER().Symbol.Text;
+			AntiTriviaContext(enumType);
 		}
 	}
 }

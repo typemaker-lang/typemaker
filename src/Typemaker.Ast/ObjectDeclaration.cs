@@ -20,6 +20,7 @@ namespace Typemaker.Ast
 		public ObjectDeclaration(TypemakerParser.Object_declarationContext context, IEnumerable<SyntaxNode> children) : base(ParseTreeFormatters.ExtractObjectPath(context.fully_extended_identifier(), false, out var baseType), context.declaration_block(), children)
 		{
 			DeclaredParentPath = baseType;
+			AntiTriviaContext(context.fully_extended_identifier());
 		}
 	}
 }

@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Typemaker.Ast.Statements.Expressions
 {
-	public interface IPathExpression : IExpression, IObjectPath
+	public interface IPathExpression : IExpression
 	{
+		IObjectPath ObjectPath { get; }
 	}
 }

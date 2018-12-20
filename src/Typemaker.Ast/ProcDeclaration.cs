@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Antlr4.Runtime;
+using System.Collections.Generic;
 using System.Linq;
 using Typemaker.Parser;
 
@@ -30,6 +31,7 @@ namespace Typemaker.Ast
 				Name = TypemakerLexer.DefaultVocabulary.GetLiteralName(TypemakerLexer.CONSTRUCTOR);
 			else
 				Name = ParseTreeFormatters.ExtractIdentifier(identifier);
+			AntiTriviaContext((ParserRuleContext)context.fully_extended_identifier() ?? context.proc_type(), context.identifier_or_constructor());
 		}
 
 		public ProcDeclaration(TypemakerParser.Proc_declarationContext context, IEnumerable<SyntaxNode> children) : this(context.proc(), children)

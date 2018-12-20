@@ -13,6 +13,7 @@ namespace Typemaker.Ast
 		/// <param name="children">The child <see cref="SyntaxNode"/>s</param>
 		public Interface(TypemakerParser.InterfaceContext context, IEnumerable<SyntaxNode> children) : base(ParseTreeFormatters.ExtractIdentifier(context.interface_type().IDENTIFIER()), context.declaration_block(), children)
 		{
+			AntiTriviaContext(context.interface_type());
 		}
 	}
 }

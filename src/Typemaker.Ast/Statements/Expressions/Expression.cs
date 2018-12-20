@@ -11,6 +11,8 @@ namespace Typemaker.Ast.Statements.Expressions
 	{
 		public virtual bool IsConstant => ChildrenAs<IExpression>().All(x => x.IsConstant);
 
+		public virtual bool IsCompileTime => IsConstant || ChildrenAs<IExpression>().All(x => x.IsCompileTime);
+
 		public abstract RootType? EvaluateType();
 
 		protected Expression(ParserRuleContext context, IEnumerable<SyntaxNode> children) : base(context, children, false) { }

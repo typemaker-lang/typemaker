@@ -23,10 +23,15 @@ namespace Typemaker.Ast
 
 		public IReadOnlyList<IWhitespaceTrivia> Whitespace => ChildrenAs<IWhitespaceTrivia>();
 
+		public ILocatable TriviaRestrictionViolation { get; private set; }
+
 		readonly List<SyntaxNode> children;
 
 		readonly int? startTokenIndex;
 		readonly int? stopTokenIndex;
+
+		int? antiTriviaStartTokenIndex;
+		int? antiTriviaStopTokenIndex;
 
 		SyntaxNode parent;
 
@@ -127,6 +132,27 @@ namespace Typemaker.Ast
 			int RecheckSkipRange() => offset >= children.Count ? rightmost : children[offset].startTokenIndex.Value;
 			var check = RecheckSkipRange();
 
+			SyntaxNode BuildTriviaNode(IToken token)
+			{
+				switch (token.Type)
+				{
+					case TypemakerLexer.NEWLINES:
+						return new WhitespaceTrivia(WhitespaceType.Newlines, this, Tree, token);
+					case TypemakerLexer.WINDOWS_NEWLINES:
+						return new WhitespaceTrivia(WhitespaceType.WindowsNewlines, this, Tree, token);
+					case TypemakerLexer.TABS:
+						return new WhitespaceTrivia(WhitespaceType.Tabs, this, Tree, token);
+					case TypemakerLexer.SPACES:
+						return new WhitespaceTrivia(WhitespaceType.Spaces, this, Tree, token);
+					case TypemakerLexer.SINGLE_LINE_COMMENT:
+						return new CommentTrivia(this, Tree, token, false);
+					case TypemakerLexer.DELIMITED_COMMENT:
+						return new CommentTrivia(this, Tree, token, true);
+					default:
+						return null;
+				}
+			}
+
 			for(var I = leftmost; I < rightmost; ++I)
 			{
 				if(I == check)
@@ -137,37 +163,46 @@ namespace Typemaker.Ast
 					continue;
 				}
 
-				SyntaxNode newNode;
 				var token = tokens[I];
-				switch (token.Type)
-				{
-					case TypemakerLexer.NEWLINES:
-						newNode = new WhitespaceTrivia(WhitespaceType.Newlines, this, Tree, token);
-						break;
-					case TypemakerLexer.WINDOWS_NEWLINES:
-						newNode = new WhitespaceTrivia(WhitespaceType.WindowsNewlines, this, Tree, token);
-						break;
-					case TypemakerLexer.TABS:
-						newNode = new WhitespaceTrivia(WhitespaceType.Tabs, this, Tree, token);
-						break;
-					case TypemakerLexer.SPACES:
-						newNode = new WhitespaceTrivia(WhitespaceType.Spaces, this, Tree, token);
-						break;
-					case TypemakerLexer.SINGLE_LINE_COMMENT:
-						newNode = new CommentTrivia(this, Tree, token, false);
-						break;
-					case TypemakerLexer.DELIMITED_COMMENT:
-						newNode = new CommentTrivia(this, Tree, token, true);
-						break;
-					default:
-						continue;
-						throw new InvalidOperationException(String.Format(CultureInfo.InvariantCulture, "Invalid trivia token {0} ({1})!", token.Type, token.Text));
-				}
+				var newNode = BuildTriviaNode(token);
+				if(newNode == null)
+					throw new InvalidOperationException(String.Format(CultureInfo.InvariantCulture, "Invalid trivia token {0} ({1})!", token.Type, token.Text));
 
 				children.Insert(offset, newNode);
 				++offset;
 			}
+
+			if (antiTriviaStartTokenIndex.HasValue)
+			{
+				int? startLoc = null, endLoc = null;
+				for (var I = antiTriviaStartTokenIndex.Value; I < antiTriviaStopTokenIndex.Value; ++I)
+					if (BuildTriviaNode(tokens[I]) != null)
+					{
+						if (!startLoc.HasValue)
+							startLoc = I;
+						endLoc = I;
+					}
+					else if (endLoc.HasValue)
+						break;
+				if (startLoc.HasValue)
+					TriviaRestrictionViolation = new Highlight
+					{
+						Start = BuildLocation(tokens[startLoc.Value], false),
+						End = BuildLocation(tokens[endLoc.Value], true)
+					};
+			}
 		}
+
+		protected void AntiTriviaContext(ParserRuleContext startContext, ParserRuleContext endContext = null)
+		{
+			if (startContext == null)
+				throw new ArgumentNullException(nameof(startContext));
+			if (antiTriviaStartTokenIndex.HasValue)
+				throw new InvalidOperationException("Anti trivia range already set!");
+			antiTriviaStartTokenIndex = startContext.Start.TokenIndex;
+			antiTriviaStopTokenIndex = (endContext ?? startContext).Stop.TokenIndex;
+		}
+
 		protected TChildNode ChildAs<TChildNode>(int index = 0) where TChildNode : ISyntaxNode => SelectChildren<TChildNode>().ElementAt(index);
 		protected IReadOnlyList<TChildNode> ChildrenAs<TChildNode>() where TChildNode : ISyntaxNode => SelectChildren<TChildNode>().ToList();
 
