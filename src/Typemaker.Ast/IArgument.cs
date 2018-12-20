@@ -1,13 +1,12 @@
-﻿using Typemaker.Ast.Statements.Expressions;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Typemaker.Ast.Statements.Expressions;
 
 namespace Typemaker.Ast
 {
-	public interface IArgument : ISyntaxNode
+	public interface IArgument : ISyntaxNode, IIdentifiable
 	{
-		INullableType VariadicType { get; }
-
-		IIdentifierDeclaration IdentifierDeclaration { get; }
-
-		IExpression Initializer { get; }
+		IExpression Value { get; }
 	}
 }

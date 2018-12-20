@@ -150,5 +150,27 @@ namespace Typemaker.Ast.Visitors
 				return new IdentifierExpression(context.basic_identifier());
 			return new AccessExpression(context, new List<SyntaxNode> { Visit(accessedTarget) });
 		}
+
+		public override SyntaxNode VisitDecorator([NotNull] TypemakerParser.DecoratorContext context) => new Decorator(context);
+
+		public override SyntaxNode VisitNew_expression([NotNull] TypemakerParser.New_expressionContext context)
+		{
+			var children = new List<SyntaxNode>();
+			var newType = context.new_type();
+			if (newType != null)
+				children.Add(Visit(newType));
+			var argumentList = context.argument_list();
+			if (argumentList != null)
+				children.Add(Visit(argumentList));
+			return new NewExpression(context, children);
+		}
+
+		public override SyntaxNode VisitArgument([NotNull] TypemakerParser.ArgumentContext context)
+		{
+			var expression = context.expression();
+			if(expression != null)
+				return new Argument(context, new List<SyntaxNode> { Visit(expression) });
+			return new Argument(context, Enumerable.Empty<SyntaxNode>());
+		}
 	}
 }

@@ -37,7 +37,7 @@ true_type: root_type | extended_identifier;
 nullable_type: true_type | NULLABLE SLASH true_type;
 const_type: true_type | CONST SLASH true_type;
 type: const_type | nullable_type;
-return_type: nullable_type | VOID;	//extended_identifier is expanded from nullable_type
+return_type: nullable_type | VOID;	//extended_identifier is expanded from nullable
 
 typed_identifier: type SLASH IDENTIFIER | IDENTIFIER;
 
@@ -193,7 +193,7 @@ basic_identifier
 
 target_var: target | var_definition_only;
 
-argument: expression | semicolonless_identifier_assignment;
+argument: expression | IDENTIFIER EQUALS expression;
 arguments: argument | argument COMMA arguments;
 argument_list: LPAREN RPAREN | LPAREN arguments* RPAREN;
 
