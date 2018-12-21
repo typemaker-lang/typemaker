@@ -8,8 +8,10 @@ namespace Typemaker.Ast
 
 		bool IsConstructor { get; }
 
-		IReadOnlyList<IArgumentDeclaration> Arguments { get; }
+		IObjectPath ObjectPath { get; }
 
 		INullableType ReturnType { get; }
+
+		IReadOnlyList<IArgumentDeclaration> Arguments { get; }
 	}
 }

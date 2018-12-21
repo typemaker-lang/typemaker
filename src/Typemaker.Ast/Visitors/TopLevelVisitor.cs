@@ -16,11 +16,7 @@ namespace Typemaker.Ast.Visitors
 		{
 			this.filePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
 		}
-
-		public SyntaxTree ConstructSyntaxTree(TypemakerParser.Compilation_unitContext context) => new SyntaxTree(filePath, context, ConcatNodes(Visit(context.top_level_declaration())));
-
-		public override SyntaxNode VisitMap([NotNull] TypemakerParser.MapContext context) => new MapDeclaration(context);
-
+		
 		IReadOnlyList<SyntaxNode> GetMapChildren(TypemakerParser.True_typeContext context, out MapDefinitionType? definitionType)
 		{
 			var results = new List<SyntaxNode>();
@@ -63,6 +59,21 @@ namespace Typemaker.Ast.Visitors
 				definitionType = null;
 			return results;
 		}
+
+		IEnumerable<SyntaxNode> VisitProcChildren(TypemakerParser.ProcContext context)
+		{
+			foreach (var I in Visit(context.decorator()))
+				yield return I;
+			for (var I = context.proc_arguments().argument_declaration_list(); I != null; I = I.argument_declaration_list())
+				yield return Visit(I.argument_declaration());
+			var retType = context.proc_return_declaration()?.return_type();
+			if (retType != null)
+				yield return Visit(retType.nullable_type());
+		}
+
+		public SyntaxTree ConstructSyntaxTree(TypemakerParser.Compilation_unitContext context) => new SyntaxTree(filePath, context, ConcatNodes(Visit(context.top_level_declaration())));
+
+		public override SyntaxNode VisitMap([NotNull] TypemakerParser.MapContext context) => new MapDeclaration(context);
 
 		public override SyntaxNode VisitNullable_type([NotNull] TypemakerParser.Nullable_typeContext context) => new NullableType(context, GetMapChildren(context.true_type(), out var definitionType), definitionType);
 
@@ -112,7 +123,7 @@ namespace Typemaker.Ast.Visitors
 
 		public override SyntaxNode VisitInterface([NotNull] TypemakerParser.InterfaceContext context) => new Interface(context, ConcatNodes(Visit(context.declaration_block().declaration())));
 
-		public override SyntaxNode VisitProc_definition([NotNull] TypemakerParser.Proc_definitionContext context) => new ProcDefinition(context, new List<SyntaxNode> { Visit(context.block()) });
+		public override SyntaxNode VisitProc_definition([NotNull] TypemakerParser.Proc_definitionContext context) => new ProcDefinition(context, ConcatNodes(VisitProcChildren(context.proc()), new List<SyntaxNode> { Visit(context.block()) }));
 
 
 		public override SyntaxNode VisitUnsafe_block([NotNull] TypemakerParser.Unsafe_blockContext context) => new Block(context, Visit(context.block().statement()));
@@ -167,10 +178,22 @@ namespace Typemaker.Ast.Visitors
 
 		public override SyntaxNode VisitArgument([NotNull] TypemakerParser.ArgumentContext context)
 		{
+			var identifier = context.IDENTIFIER();
 			var expression = context.expression();
-			if(expression != null)
-				return new Argument(context, new List<SyntaxNode> { Visit(expression) });
-			return new Argument(context, Enumerable.Empty<SyntaxNode>());
+			if(identifier != null)
+				return new Argument(context, new List<SyntaxNode> { Visit(identifier), Visit(expression) });
+			return new Argument(context, new List<SyntaxNode> { Visit(expression) });
 		}
+
+		public override SyntaxNode VisitArgument_declaration([NotNull] TypemakerParser.Argument_declarationContext context)
+		{
+			var identifier = context.typed_identifier();
+			var initializer = context.expression();
+			if (initializer != null)
+				return new ArgumentDeclaration(context, new List<SyntaxNode> { Visit(identifier), Visit(initializer) });
+			return new ArgumentDeclaration(context, new List<SyntaxNode> { Visit(identifier) });
+		}
+
+		public override SyntaxNode VisitProc_declaration([NotNull] TypemakerParser.Proc_declarationContext context) => new ProcDeclaration(context, VisitProcChildren(context.proc()));
 	}
 }
