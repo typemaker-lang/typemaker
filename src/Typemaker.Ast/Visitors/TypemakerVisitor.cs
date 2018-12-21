@@ -209,5 +209,7 @@ namespace Typemaker.Ast.Visitors
 		}
 
 		public override SyntaxNode VisitProc_declaration([NotNull] TypemakerParser.Proc_declarationContext context) => new ProcDeclaration(context, VisitProcChildren(context.proc()));
+
+		public override SyntaxNode VisitObject_declaration([NotNull] TypemakerParser.Object_declarationContext context) => new ObjectDeclaration(context, ConcatNodes(Visit(context.decorator()), Visit(context.declaration_block().declaration())));
 	}
 }
