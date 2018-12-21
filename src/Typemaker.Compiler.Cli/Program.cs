@@ -8,8 +8,6 @@ namespace Typemaker.Compiler.Cli
 	{
 		static int Main(string[] args)
 		{
-			TestParser.Main(args);
-
 			/* TODO
              * Move this logic elsewhere
              */

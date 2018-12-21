@@ -80,9 +80,9 @@ namespace Typemaker.Ast.Visitors
 				yield return I;
 			for (var I = context.proc_arguments().argument_declaration_list(); I != null; I = I.argument_declaration_list())
 				yield return Visit(I.argument_declaration());
-			var retType = context.proc_return_declaration()?.return_type();
+			var retType = context.proc_return_declaration()?.return_type()?.nullable_type();
 			if (retType != null)
-				yield return Visit(retType.nullable_type());
+				yield return Visit(retType);
 		}
 
 		public SyntaxTree ConstructSyntaxTree(TypemakerParser.Compilation_unitContext context) => new SyntaxTree(filePath, context, ConcatNodes(Visit(context.top_level_declaration())));

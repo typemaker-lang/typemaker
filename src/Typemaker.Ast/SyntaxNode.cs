@@ -108,6 +108,9 @@ namespace Typemaker.Ast
 
 			Tree = tree;
 			this.parent = parent;
+
+			foreach (var I in children)
+				I.LinkTree(this, tree, deserialize);
 		}
 
 		protected void BuildTrivia(SyntaxNode left, SyntaxNode right, IList<IToken> tokens)

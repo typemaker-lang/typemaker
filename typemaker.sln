@@ -24,7 +24,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typemaker.ObjectTree", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typemaker.Anaylsis", "src\Typemaker.Anaylsis\Typemaker.Anaylsis.csproj", "{C124C25F-6AE3-4B52-B7EF-00A06A61CE79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typemaker.Emitters", "src\Typemaker.Emitters\Typemaker.Emitters.csproj", "{0DD7A2F7-DCBF-43C3-9246-0B2BFB35AA24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typemaker.Emitters", "src\Typemaker.Emitters\Typemaker.Emitters.csproj", "{0DD7A2F7-DCBF-43C3-9246-0B2BFB35AA24}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typemaker.Ast.Tests", "tests\Typemaker.Ast.Tests\Typemaker.Ast.Tests.csproj", "{85962951-8EA1-4563-9AFB-80802E852713}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -64,6 +66,10 @@ Global
 		{0DD7A2F7-DCBF-43C3-9246-0B2BFB35AA24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DD7A2F7-DCBF-43C3-9246-0B2BFB35AA24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0DD7A2F7-DCBF-43C3-9246-0B2BFB35AA24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85962951-8EA1-4563-9AFB-80802E852713}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85962951-8EA1-4563-9AFB-80802E852713}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85962951-8EA1-4563-9AFB-80802E852713}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85962951-8EA1-4563-9AFB-80802E852713}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

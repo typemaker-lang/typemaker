@@ -6,7 +6,7 @@ namespace Typemaker.Ast
 	{
 		public Location Location { get; }
 
-		string Description { get; }
+		public string Description { get; }
 
 		/// <summary>
 		/// Translate specific parser error into human understandable sentences. i.e. Declaration ordering
