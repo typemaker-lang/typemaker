@@ -17,6 +17,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Antlr4 Update="TypemakerParser.g4">
+      <Listener>false</Listener>
+    </Antlr4>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="TypemakerParser.g4">
       <Generator>MSBuild:Compile</Generator>
     </None>

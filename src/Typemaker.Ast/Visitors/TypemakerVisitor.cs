@@ -9,6 +9,9 @@ using Typemaker.Parser;
 
 namespace Typemaker.Ast.Visitors
 {
+	/// <summary>
+	/// Visitor to convert <see cref="Parser"/> <see cref="ParserRuleContext"/>s into <see cref="SyntaxNode"/>s
+	/// </summary>
 	sealed class TypemakerVisitor : TypemakerParserBaseVisitor<SyntaxNode>, ISyntaxTreeVisitor
 	{
 		static IEnumerable<SyntaxNode> ConcatNodes(params IEnumerable<SyntaxNode>[] nodes)
