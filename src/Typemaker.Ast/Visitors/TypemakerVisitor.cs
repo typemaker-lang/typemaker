@@ -56,11 +56,18 @@ namespace Typemaker.Ast.Visitors
 		IEnumerable<ITrivia> Visit<TContext>(TContext[] contexts)
 			where TContext : ParserRuleContext => contexts.SelectMany(context => Visit(context)).Select(x => Trivialize(x));
 
-		IEnumerable<ITrivia> SelectAndVisitContextTokens(ParserRuleContext context)
+		IEnumerable<ITrivia> SelectAndVisitContextTokens(ParserRuleContext context, params ParserRuleContext[] tokenizeOnly)
 		{
+			var tokenizeIndex = 0;
 			foreach (var I in context.children)
 			{
-				if (I is ITerminalNode asTerminal)
+				if (tokenizeOnly.Length > tokenizeIndex && I == tokenizeOnly[tokenizeIndex])
+				{
+					foreach (var J in GetContextTokensOnly((ParserRuleContext)I))
+						yield return J;
+					++tokenizeIndex;
+				}
+				else if (I is ITerminalNode asTerminal)
 					yield return new Trivia(asTerminal.Symbol);
 				else
 					foreach (var J in Visit(I))
@@ -137,6 +144,14 @@ namespace Typemaker.Ast.Visitors
 			}
 
 			yield return new Decorator(decoratorType, SelectAndVisitContextTokens(context));
+		}
+
+		public override IEnumerable<SyntaxNode> VisitEnum([NotNull] TypemakerParser.EnumContext context)
+		{
+			var enumType = context.enum_type();
+			var identifier = enumType.IDENTIFIER();
+
+			yield return new EnumDefinition(ParseTreeFormatters.ExtractIdentifier(identifier), SelectAndVisitContextTokens(context, enumType));
 		}
 	}
 }

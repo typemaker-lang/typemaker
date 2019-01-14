@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Typemaker.Parser;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Typemaker.Ast
 {
@@ -15,12 +15,11 @@ namespace Typemaker.Ast
 		/// <summary>
 		/// Construct an <see cref="EnumDefinition"/>
 		/// </summary>
-		/// <param name="context">The <see cref="TypemakerParser.EnumContext"/></param>
+		/// <param name="name">The value of <see cref="Name"/></param>
 		/// <param name="children">The child <see cref="ITrivia"/>s</param>
-		public EnumDefinition(TypemakerParser.EnumContext context, IEnumerable<ITrivia> children) : base(children)
+		public EnumDefinition(string name, IEnumerable<ITrivia> children) : base(children)
 		{
-			var enumType = context.enum_type();
-			Name = enumType.IDENTIFIER().Symbol.Text;
+			Name = name ?? throw new ArgumentNullException(nameof(name));
 		}
 	}
 }
