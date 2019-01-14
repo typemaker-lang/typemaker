@@ -12,7 +12,7 @@ namespace Typemaker.Ast.Statements
 
 		public IExpression Throw => ChildAs<IExpression>();
 		
-		public JumpStatement(TypemakerParser.Jump_statementContext context, IEnumerable<IInternalTrivia> children) : base(context, children, true)
+		public JumpStatement(TypemakerParser.Jump_statementContext context, IEnumerable<ITrivia> children) : base(context, children, true)
 		{
 			if (context.BREAK() != null)
 				JumpType = JumpType.Break;

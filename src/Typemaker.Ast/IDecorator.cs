@@ -1,10 +1,12 @@
-﻿namespace Typemaker.Ast
+﻿using Typemaker.Ast.Statements.Expressions;
+
+namespace Typemaker.Ast
 {
 	public interface IDecorator : ISyntaxNode
 	{
 		DecoratorType Type { get; }
 
-		long? Precedence { get; }
+		IIntegerExpression Precedence { get; }
 
 		bool? PublicProtection { get; }
 	}

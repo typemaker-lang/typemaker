@@ -17,7 +17,7 @@ namespace Typemaker.Ast
 
 		public IObjectPath DeclaredParentPath { get; }
 
-		public ObjectDeclaration(TypemakerParser.Object_declarationContext context, IEnumerable<IInternalTrivia> children) : base(ParseTreeFormatters.ExtractObjectPath(context.fully_extended_identifier(), false, out var baseType), context.declaration_block(), children)
+		public ObjectDeclaration(TypemakerParser.Object_declarationContext context, IEnumerable<ITrivia> children) : base(ParseTreeFormatters.ExtractObjectPath(context.fully_extended_identifier(), false, out var baseType), context.declaration_block(), children)
 		{
 			DeclaredParentPath = baseType;
 		}

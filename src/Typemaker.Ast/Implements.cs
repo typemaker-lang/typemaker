@@ -8,7 +8,7 @@ namespace Typemaker.Ast
 	{
 		public string Name { get; }
 
-		public Implements(TypemakerParser.Implements_statementContext context, IEnumerable<IInternalTrivia> children) : base(context, children)
+		public Implements(TypemakerParser.Implements_statementContext context, IEnumerable<ITrivia> children) : base(children)
 		{
 			Name = ParseTreeFormatters.ExtractIdentifier(context.IDENTIFIER());
 		}

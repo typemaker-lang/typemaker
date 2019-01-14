@@ -9,31 +9,24 @@ namespace Typemaker.Ast
 	{
 		public ISyntaxTree Tree { get; private set; }
 
-		public ISyntaxNode Parent => parent;
+		public ISyntaxNode Parent { get; private set; }
 
-		public IEnumerable<ITrivia> Trivia => childTrivia.Select(x => x);
+		public IReadOnlyList<ITrivia> Trivia { get; }
 
-		public IEnumerable<ISyntaxNode> Children => childTrivia.Where(x => x.Node != null).Select(x => x.Node);
+		public IEnumerable<ISyntaxNode> Children => Trivia.Where(x => x.Node != null).Select(x => x.Node);
 
 		public ILocatable TriviaRestrictionViolation { get; private set; }
 
-		public Location Start => childTrivia.First().Start;
+		public Location Start => Trivia.First().Start;
 
-		public Location End => childTrivia.Last().End;
+		public Location End => Trivia.Last().End;
 
-		readonly List<IInternalTrivia> childTrivia;
-
-		SyntaxNode parent;
-
-		protected SyntaxNode(ParserRuleContext context, IEnumerable<IInternalTrivia> childTrivia)
+		protected SyntaxNode(IEnumerable<ITrivia> trivia)
 		{
-			if (context == null)
-				throw new ArgumentNullException(nameof(context));
-
-			this.childTrivia = childTrivia?.ToList() ?? throw new ArgumentNullException(nameof(childTrivia));
+			Trivia = trivia?.ToList() ?? throw new ArgumentNullException(nameof(trivia));
 		}
 
-		protected void LinkTree(SyntaxNode parent, ISyntaxTree tree)
+		public void LinkTree(ISyntaxNode parent, ISyntaxTree tree)
 		{
 			if (parent == null)
 				throw new ArgumentNullException(nameof(parent));
@@ -45,9 +38,9 @@ namespace Typemaker.Ast
 				throw new InvalidOperationException("Parent has already been set!");
 
 			Tree = tree;
-			this.parent = parent;
+			Parent = parent;
 
-			foreach (var I in childTrivia.Where(x => x.Node != null).Select(x => x.Node))
+			foreach (var I in Trivia.Where(x => x.Node != null).Select(x => x.Node))
 				I.LinkTree(this, tree);
 		}
 

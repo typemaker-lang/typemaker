@@ -7,7 +7,7 @@ namespace Typemaker.Ast
 	{
 		public bool IsNullable { get; }
 
-		public NullableType(TypemakerParser.Nullable_typeContext context, IEnumerable<IInternalTrivia> children, MapDefinitionType? mapDefinitionType) : base(context.true_type(), children, mapDefinitionType)
+		public NullableType(TypemakerParser.Nullable_typeContext context, IEnumerable<ITrivia> children, MapDefinitionType? mapDefinitionType) : base(context.true_type(), children, mapDefinitionType)
 		{
 			IsNullable = context.NULLABLE() != null;
 		}

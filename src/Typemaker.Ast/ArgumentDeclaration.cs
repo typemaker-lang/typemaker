@@ -19,9 +19,8 @@ namespace Typemaker.Ast
 		/// <summary>
 		/// Construct an <see cref="ArgumentDeclaration"/>
 		/// </summary>
-		/// <param name="context">The <see cref="TypemakerParser.Argument_declarationContext"/></param>
-		/// <param name="children">The child <see cref="IInternalTrivia"/>s</param>
-		public ArgumentDeclaration(TypemakerParser.Argument_declarationContext context, IEnumerable<IInternalTrivia> children) : base(context, children)
+		/// <param name="children">The child <see cref="ITrivia"/>s</param>
+		public ArgumentDeclaration(IEnumerable<ITrivia> children) : base(children)
 		{
 		}
 	}

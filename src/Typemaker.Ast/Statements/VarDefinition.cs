@@ -18,7 +18,7 @@ namespace Typemaker.Ast.Statements
 
 		public override bool HasSideEffects => Initializer?.HasSideEffects ?? false;
 
-		public VarDefinition(TypemakerParser.Var_definition_onlyContext context, IEnumerable<IInternalTrivia> children) : base(context, children, false)
+		public VarDefinition(TypemakerParser.Var_definition_onlyContext context, IEnumerable<ITrivia> children) : base(context, children, false)
 		{
 			var typedIdentifier = context.typed_identifier();
 			Name = ParseTreeFormatters.ExtractIdentifier(typedIdentifier.IDENTIFIER());

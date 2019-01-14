@@ -2,7 +2,7 @@
 
 namespace Typemaker.Ast
 {
-	class Trivia : ITrivia
+	sealed class Trivia : ITrivia
 	{
 		public IToken Token { get; }
 
@@ -16,6 +16,8 @@ namespace Typemaker.Ast
 		{
 			Token = token ?? throw new ArgumentNullException(nameof(token));
 		}
+
+		public Trivia(Antlr4.Runtime.IToken token) : this(new Token(token ?? throw new ArgumentNullException(nameof(token)))) { }
 
 		public Trivia(ISyntaxNode syntaxNode)
 		{

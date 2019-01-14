@@ -9,8 +9,10 @@ namespace Typemaker.Ast
 
 		IEnumerable<ISyntaxNode> Children { get; }
 
-		IEnumerable<ITrivia> Trivia { get; }
+		IReadOnlyList<ITrivia> Trivia { get; }
 
 		IEnumerable<TChildNode> ChildrenAs<TChildNode>() where TChildNode : ISyntaxNode;
+
+		void LinkTree(ISyntaxNode parent, ISyntaxTree tree);
 	}
 }

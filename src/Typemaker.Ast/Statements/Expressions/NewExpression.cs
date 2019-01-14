@@ -19,7 +19,7 @@ namespace Typemaker.Ast.Statements.Expressions
 
 		public override RootType? EvaluateType() => RootType.Object;
 
-		public NewExpression(TypemakerParser.New_expressionContext context, IEnumerable<IInternalTrivia> children): base(context, children)
+		public NewExpression(TypemakerParser.New_expressionContext context, IEnumerable<ITrivia> children): base(context, children)
 		{
 		}
 	}

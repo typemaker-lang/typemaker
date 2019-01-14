@@ -23,7 +23,7 @@ namespace Typemaker.Ast
 
 		readonly bool isVoid;
 
-		protected ProcDeclaration(TypemakerParser.ProcContext context, IEnumerable<IInternalTrivia> children) : base(context, children)
+		protected ProcDeclaration(TypemakerParser.ProcContext context, IEnumerable<ITrivia> children) : base(children)
 		{
 			isVoid = context.proc_return_declaration()?.return_type().VOID() != null;
 			IsVerb = context.proc_type().VERB() != null;
@@ -44,7 +44,7 @@ namespace Typemaker.Ast
 				Name = ParseTreeFormatters.ExtractIdentifier(identifier);
 		}
 
-		public ProcDeclaration(TypemakerParser.Proc_declarationContext context, IEnumerable<IInternalTrivia> children) : this(context.proc(), children)
+		public ProcDeclaration(TypemakerParser.Proc_declarationContext context, IEnumerable<ITrivia> children) : this(context.proc(), children)
 		{ }
 	}
 }

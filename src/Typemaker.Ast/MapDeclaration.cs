@@ -8,7 +8,7 @@ namespace Typemaker.Ast
 	sealed class MapDeclaration : SyntaxNode, IMapDeclaration
 	{
 		public string MapPath { get; }
-		public MapDeclaration(TypemakerParser.MapContext context, IEnumerable<IInternalTrivia> children) : base(context, children)
+		public MapDeclaration(TypemakerParser.MapContext context, IEnumerable<ITrivia> children) : base(children)
 		{
 			MapPath = ParseTreeFormatters.ExtractResource(context.RES());
 		}

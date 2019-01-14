@@ -14,8 +14,8 @@ namespace Typemaker.Ast.Statements
 
 		public override bool HasSideEffects => ChildrenAs<IStatement>().Any(x => x.HasSideEffects);
 		
-		public Block(TypemakerParser.BlockContext context, IEnumerable<IInternalTrivia> children) : base(context, children, false) { }
-		public Block(TypemakerParser.Unsafe_blockContext context, IEnumerable<IInternalTrivia> children) : base(context, children, false)
+		public Block(TypemakerParser.BlockContext context, IEnumerable<ITrivia> children) : base(context, children, false) { }
+		public Block(TypemakerParser.Unsafe_blockContext context, IEnumerable<ITrivia> children) : base(context, children, false)
 		{
 			Unsafe = true;
 		}

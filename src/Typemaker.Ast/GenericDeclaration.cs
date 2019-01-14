@@ -22,8 +22,8 @@ namespace Typemaker.Ast
 		/// </summary>
 		/// <param name="name">The value of <see cref="Name"/></param>
 		/// <param name="context">The <see cref="TypemakerParser.InterfaceContext"/></param>
-		/// <param name="children">The child <see cref="IInternalTrivia"/>s</param>
-		protected GenericDeclaration(string name, TypemakerParser.Declaration_blockContext context, IEnumerable<IInternalTrivia> children) : base(context, children)
+		/// <param name="children">The child <see cref="ITrivia"/>s</param>
+		protected GenericDeclaration(string name, TypemakerParser.Declaration_blockContext context, IEnumerable<ITrivia> children) : base(children)
 		{
 			Name = name ?? throw new ArgumentNullException(nameof(name));
 		}

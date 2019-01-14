@@ -13,7 +13,7 @@ namespace Typemaker.Ast
 
 		public IExpression Expression => ChildrenAs<IExpression>().FirstOrDefault();
 
-		public EnumItem(TypemakerParser.Enum_itemContext context, IEnumerable<IInternalTrivia> children) : base(context, children)
+		public EnumItem(TypemakerParser.Enum_itemContext context, IEnumerable<ITrivia> children) : base(children)
 		{
 			Name = ParseTreeFormatters.ExtractIdentifier(context.IDENTIFIER());
 

@@ -1,5 +1,4 @@
-﻿using Antlr4.Runtime;
-using Antlr4.Runtime.Tree;
+﻿using Antlr4.Runtime.Tree;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -20,7 +19,7 @@ namespace Typemaker.Ast
 
 		readonly MapDefinitionType? mapDefinitionType;
 		
-		public TrueType(TypemakerParser.True_typeContext context, IEnumerable<IInternalTrivia> children, MapDefinitionType? mapDefinitionType) : base(context, children)
+		public TrueType(TypemakerParser.True_typeContext context, IEnumerable<ITrivia> children, MapDefinitionType? mapDefinitionType) : base(children)
 		{
 			var rootTypeContext = context.root_type();
 			this.mapDefinitionType = mapDefinitionType;

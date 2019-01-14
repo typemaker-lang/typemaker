@@ -20,7 +20,7 @@ namespace Typemaker.Ast.Statements.Expressions
 
 		public override bool HasSideEffects => ChildrenAs<IExpression>().Any(x => x.HasSideEffects);
 
-		public StringExpression(TypemakerParser.StringContext context, IEnumerable<IInternalTrivia> children) : base(context, children)
+		public StringExpression(TypemakerParser.StringContext context, IEnumerable<ITrivia> children) : base(context, children)
 		{
 			var verbatimNode = context.VERBATIUM_STRING() ?? context.MULTILINE_VERBATIUM_STRING();
 			Verbatim = verbatimNode != null;

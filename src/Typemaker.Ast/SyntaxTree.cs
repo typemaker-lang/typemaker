@@ -1,14 +1,12 @@
-﻿using Antlr4.Runtime;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Typemaker.Parser;
 
 namespace Typemaker.Ast
 {
 	sealed class SyntaxTree : SyntaxNode, ISyntaxTree
 	{
-		public string FilePath { get; private set; }
+		public string FilePath { get; }
 
 		public IEnumerable<IMapDeclaration> Maps => ChildrenAs<IMapDeclaration>();
 
@@ -24,7 +22,7 @@ namespace Typemaker.Ast
 
 		public IEnumerable<IProcDefinition> ProcDefinitions => ChildrenAs<IProcDefinition>();
 
-		public SyntaxTree(string filePath, TypemakerParser.Compilation_unitContext context, IEnumerable<IInternalTrivia> children) : base(context, children)
+		public SyntaxTree(string filePath, IEnumerable<ITrivia> children) : base(children)
 		{
 			FilePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
 		}

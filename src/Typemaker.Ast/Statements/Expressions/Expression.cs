@@ -14,6 +14,6 @@ namespace Typemaker.Ast.Statements.Expressions
 
 		public abstract RootType? EvaluateType();
 
-		protected Expression(ParserRuleContext context, IEnumerable<IInternalTrivia> children) : base(context, children, false) { }
+		protected Expression(ParserRuleContext context, IEnumerable<ITrivia> children) : base(context, children, false) { }
 	}
 }
