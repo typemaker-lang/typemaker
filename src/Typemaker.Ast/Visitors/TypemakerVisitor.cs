@@ -16,13 +16,6 @@ namespace Typemaker.Ast.Visitors
 	/// </summary>
 	sealed class TypemakerVisitor : TypemakerParserBaseVisitor<IEnumerable<SyntaxNode>>, ISyntaxTreeVisitor
 	{
-		static IEnumerable<ITrivia> ConcatNodes(params IEnumerable<ITrivia>[] nodes)
-		{
-			foreach (var I in nodes)
-				foreach (var J in I)
-					yield return J;
-		}
-
 		static IEnumerable<ITrivia> GetAllContextTokens(ParserRuleContext context)
 		{
 			foreach (var I in context.children)
@@ -77,7 +70,7 @@ namespace Typemaker.Ast.Visitors
 
 		protected override IEnumerable<SyntaxNode> AggregateResult(IEnumerable<SyntaxNode> aggregate, IEnumerable<SyntaxNode> nextResult) => Enumerable.Concat(aggregate, nextResult);
 
-		public SyntaxTree ConstructSyntaxTree(TypemakerParser.Compilation_unitContext context) => new SyntaxTree(filePath, ConcatNodes(Visit(context.top_level_declaration())));
+		public SyntaxTree ConstructSyntaxTree(TypemakerParser.Compilation_unitContext context) => new SyntaxTree(filePath, Visit(context.top_level_declaration()));
 
 		public override IEnumerable<SyntaxNode> VisitArgument([NotNull] TypemakerParser.ArgumentContext context)
 		{
@@ -152,6 +145,14 @@ namespace Typemaker.Ast.Visitors
 			var identifier = enumType.IDENTIFIER();
 
 			yield return new EnumDefinition(ParseTreeFormatters.ExtractIdentifier(identifier), SelectAndVisitContextTokens(context, enumType));
+		}
+
+		public override IEnumerable<SyntaxNode> VisitEnum_item([NotNull] TypemakerParser.Enum_itemContext context)
+		{
+			var identifier = context.IDENTIFIER();
+			var name = ParseTreeFormatters.ExtractIdentifier(identifier);
+			var auto = context.expression() != null;
+			yield return new EnumItem(name, auto, SelectAndVisitContextTokens(context));
 		}
 	}
 }

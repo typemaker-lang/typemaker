@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Typemaker.Ast.Statements.Expressions;
 using Typemaker.Parser;
@@ -13,11 +14,10 @@ namespace Typemaker.Ast
 
 		public IExpression Expression => ChildrenAs<IExpression>().FirstOrDefault();
 
-		public EnumItem(TypemakerParser.Enum_itemContext context, IEnumerable<ITrivia> children) : base(children)
+		public EnumItem(string name, bool autoValue, IEnumerable<ITrivia> children) : base(children)
 		{
-			Name = ParseTreeFormatters.ExtractIdentifier(context.IDENTIFIER());
-
-			AutoValue = !(context.ChildCount > 1);
+			Name = name ?? throw new ArgumentNullException(nameof(name));
+			AutoValue = autoValue;
 		}
 	}
 }

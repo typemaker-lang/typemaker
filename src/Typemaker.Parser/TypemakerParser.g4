@@ -233,8 +233,7 @@ if: if_start if_continuation | if_start;
 
 flow_control: while | do_while | for | switch | if;
 
-semicolonless_identifier_assignment: basic_identifier EQUALS expression;
-identifier_assignment: semicolonless_identifier_assignment SEMI;
+identifier_assignment: basic_identifier EQUALS expression SEMI;
 set_assignment_statement: SET identifier_assignment;
 set_statement: set_assignment_statement | SET basic_identifier IN expression SEMI;
 
@@ -271,7 +270,7 @@ proc_definition: proc block;
 interface_type: SLASH INTERFACE SLASH IDENTIFIER;
 interface: interface_type declaration_block;
 
-enum_item: semicolonless_identifier_assignment | IDENTIFIER;
+enum_item: IDENTIFIER EQUALS expression | IDENTIFIER;
 enum_items: enum_item | enum_item COMMA enum_items;
 enum_block: LCURL enum_items? RCURL;
 enum: enum_type enum_block;
