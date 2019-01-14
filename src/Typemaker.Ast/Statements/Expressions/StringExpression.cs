@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Typemaker.Ast.Serialization;
 using Typemaker.Parser;
 
 namespace Typemaker.Ast.Statements.Expressions
@@ -17,11 +16,11 @@ namespace Typemaker.Ast.Statements.Expressions
 
 		public string Formatter { get; }
 
-		public IReadOnlyList<IExpression> FormatExpressions => ChildrenAs<IExpression>();
+		public IEnumerable<IExpression> FormatExpressions => ChildrenAs<IExpression>();
 
-		public override bool HasSideEffects => SelectChildren<IExpression>().Any(x => x.HasSideEffects);
+		public override bool HasSideEffects => ChildrenAs<IExpression>().Any(x => x.HasSideEffects);
 
-		public StringExpression(TypemakerParser.StringContext context, IEnumerable<SyntaxNode> children) : base(context, children)
+		public StringExpression(TypemakerParser.StringContext context, IEnumerable<IInternalTrivia> children) : base(context, children)
 		{
 			var verbatimNode = context.VERBATIUM_STRING() ?? context.MULTILINE_VERBATIUM_STRING();
 			Verbatim = verbatimNode != null;

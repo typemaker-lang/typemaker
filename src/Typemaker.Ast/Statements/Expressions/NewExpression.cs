@@ -15,11 +15,11 @@ namespace Typemaker.Ast.Statements.Expressions
 
 		public IExpression AccessedType => ChildAs<IExpression>();
 
-		public IReadOnlyList<IArgument> Arguments => ChildrenAs<IArgument>();
+		public IEnumerable<IArgument> Arguments => ChildrenAs<IArgument>();
 
 		public override RootType? EvaluateType() => RootType.Object;
 
-		public NewExpression(TypemakerParser.New_expressionContext context, IEnumerable<SyntaxNode> children): base(context, children)
+		public NewExpression(TypemakerParser.New_expressionContext context, IEnumerable<IInternalTrivia> children): base(context, children)
 		{
 		}
 	}

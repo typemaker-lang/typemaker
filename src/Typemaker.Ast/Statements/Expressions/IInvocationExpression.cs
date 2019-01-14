@@ -8,6 +8,6 @@ namespace Typemaker.Ast.Statements.Expressions
 	{
 		bool IsNewExpression { get; }
 		IExpression Target { get; }
-		IReadOnlyList<IArgument> Arguments { get; }
+		IEnumerable<IArgument> Arguments { get; }
 	}
 }

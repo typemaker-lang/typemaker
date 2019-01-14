@@ -20,7 +20,7 @@ namespace Typemaker.Ast
 
 		public ISyntaxTree CreateSyntaxTree(Stream file, string filePath, out IReadOnlyList<ParseError> parseErrors)
 		{
-			var compilationUnitContext = compilationUnitContextFactory.CreateCompilationUnitContext(file, out var tokensAccessor, out parseErrors);
+			var compilationUnitContext = compilationUnitContextFactory.CreateCompilationUnitContext(file, out parseErrors);
 
 			if (parseErrors.Count > 0)
 				return null;
@@ -28,8 +28,6 @@ namespace Typemaker.Ast
 			var visitor = syntaxTreeVisitorFactory.CreateSyntaxTreeVisitor(filePath);
 
 			var tree = visitor.ConstructSyntaxTree(compilationUnitContext);
-			var tokens = tokensAccessor();
-			tree.Build(tokens);
 
 			return tree;
 		}

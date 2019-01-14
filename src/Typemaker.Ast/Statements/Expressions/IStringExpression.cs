@@ -10,6 +10,6 @@ namespace Typemaker.Ast.Statements.Expressions
 		bool HasFormatters { get; }
 		string Formatter { get; }
 
-		IReadOnlyList<IExpression> FormatExpressions { get; }
+		IEnumerable<IExpression> FormatExpressions { get; }
 	}
 }

@@ -19,7 +19,7 @@ namespace Typemaker.Ast.Statements.Expressions
 
 		public override RootType? EvaluateType() => null;
 
-		public IdentifierExpression(TypemakerParser.Basic_identifierContext context) : base(context, Enumerable.Empty<SyntaxNode>())
+		public IdentifierExpression(TypemakerParser.Basic_identifierContext context, IEnumerable<IInternalTrivia> children) : base(context,children)
 		{
 			var identifier = context.IDENTIFIER();
 			if (identifier != null)

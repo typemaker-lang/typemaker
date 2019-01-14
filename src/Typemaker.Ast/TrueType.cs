@@ -16,13 +16,12 @@ namespace Typemaker.Ast
 
 		public INullableType IndexType => mapDefinitionType == MapDefinitionType.IndexOnly || mapDefinitionType == MapDefinitionType.FullyDefined  ? ChildAs<INullableType>() : null;
 
-		public INullableType MapType => mapDefinitionType == MapDefinitionType.ValueOnly || mapDefinitionType == MapDefinitionType.FullyDefined ? SelectChildren<INullableType>().Last() : null;
+		public INullableType MapType => mapDefinitionType == MapDefinitionType.ValueOnly || mapDefinitionType == MapDefinitionType.FullyDefined ? ChildrenAs<INullableType>().Last() : null;
 
 		readonly MapDefinitionType? mapDefinitionType;
 		
-		public TrueType(TypemakerParser.True_typeContext context, IEnumerable<SyntaxNode> children, MapDefinitionType? mapDefinitionType) : base(context, children)
+		public TrueType(TypemakerParser.True_typeContext context, IEnumerable<IInternalTrivia> children, MapDefinitionType? mapDefinitionType) : base(context, children)
 		{
-			AntiTriviaContext(context);
 			var rootTypeContext = context.root_type();
 			this.mapDefinitionType = mapDefinitionType;
 			void NeedMapDefinitionType(bool yes)

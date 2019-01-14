@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Typemaker.Ast.Serialization;
 using Typemaker.Parser;
 
 namespace Typemaker.Ast.Statements
@@ -11,12 +10,12 @@ namespace Typemaker.Ast.Statements
 	{
 		public bool Unsafe { get; }
 
-		public IReadOnlyList<IStatement> Statements => ChildrenAs<IStatement>();
+		public IEnumerable<IStatement> Statements => ChildrenAs<IStatement>();
 
-		public override bool HasSideEffects => SelectChildren<IStatement>().Any(x => x.HasSideEffects);
+		public override bool HasSideEffects => ChildrenAs<IStatement>().Any(x => x.HasSideEffects);
 		
-		public Block(TypemakerParser.BlockContext context, IEnumerable<SyntaxNode> children) : base(context, children, false) { }
-		public Block(TypemakerParser.Unsafe_blockContext context, IEnumerable<SyntaxNode> children) : base(context, children, false)
+		public Block(TypemakerParser.BlockContext context, IEnumerable<IInternalTrivia> children) : base(context, children, false) { }
+		public Block(TypemakerParser.Unsafe_blockContext context, IEnumerable<IInternalTrivia> children) : base(context, children, false)
 		{
 			Unsafe = true;
 		}

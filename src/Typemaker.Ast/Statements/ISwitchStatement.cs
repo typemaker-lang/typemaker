@@ -6,7 +6,7 @@ namespace Typemaker.Ast.Statements
 {
 	public interface ISwitchStatement : IBranch
 	{
-		IReadOnlyList<IIfBase> Cases { get; }
+		IEnumerable<IIfBase> Cases { get; }
 
 		IStatement Default { get; }
 	}

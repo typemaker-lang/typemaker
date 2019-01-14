@@ -7,7 +7,7 @@ namespace Typemaker.Ast
 	public interface IObjectDeclaration : IGenericDeclaration, IDecorated
 	{
 		IObjectPath DeclaredParentPath { get; }
-		IReadOnlyList<ISetStatement> SetStatements { get; }
-		IReadOnlyList<IAssignment> VarOverrides { get; }
+		IEnumerable<ISetStatement> SetStatements { get; }
+		IEnumerable<IAssignment> VarOverrides { get; }
 	}
 }

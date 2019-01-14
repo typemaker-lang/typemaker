@@ -9,18 +9,18 @@ namespace Typemaker.Ast
 	{
 		string FilePath { get; }
 
-		IReadOnlyList<IMapDeclaration> Maps { get; }
+		IEnumerable<IMapDeclaration> Maps { get; }
 
-		IReadOnlyList<IVarDeclaration> GlobalVars { get; }
+		IEnumerable<IVarDeclaration> GlobalVars { get; }
 
-		IReadOnlyList<IEnumDefinition> Enums { get; }
+		IEnumerable<IEnumDefinition> Enums { get; }
 
-		IReadOnlyList<IInterface> Interfaces { get; }
+		IEnumerable<IInterface> Interfaces { get; }
 
-		IReadOnlyList<IProcDeclaration> ProcDeclarations { get; }
+		IEnumerable<IProcDeclaration> ProcDeclarations { get; }
 
-		IReadOnlyList<IObjectDeclaration> Objects { get; }
+		IEnumerable<IObjectDeclaration> Objects { get; }
 
-		IReadOnlyList<IProcDefinition> ProcDefinitions { get; }
+		IEnumerable<IProcDefinition> ProcDefinitions { get; }
 	}
 }

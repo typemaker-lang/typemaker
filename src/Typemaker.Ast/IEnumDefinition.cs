@@ -4,6 +4,6 @@ namespace Typemaker.Ast
 {
 	public interface IEnumDefinition : IIdentifiable
 	{
-		IReadOnlyList<IEnumItem> Items { get; }
+		IEnumerable<IEnumItem> Items { get; }
 	}
 }

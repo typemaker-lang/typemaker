@@ -4,6 +4,6 @@ namespace Typemaker.Ast.Statements.Expressions
 {
 	interface IDictExpression : IExpression
 	{
-		IReadOnlyList<IAssignment> Initializer { get; }
+		IEnumerable<IAssignment> Initializer { get; }
 	}
 }

@@ -14,8 +14,8 @@ namespace Typemaker.Ast
 		/// Construct a <see cref="ProcDefinition"/>
 		/// </summary>
 		/// <param name="context">The <see cref="TypemakerParser.Proc_definitionContext"/></param>
-		/// <param name="chidren">The child <see cref="SyntaxNode"/>s</param>
-		public ProcDefinition(TypemakerParser.Proc_definitionContext context, IEnumerable<SyntaxNode> chidren) : base(context.proc(), chidren)
+		/// <param name="chidren">The child <see cref="IInternalTrivia"/>s</param>
+		public ProcDefinition(TypemakerParser.Proc_definitionContext context, IEnumerable<IInternalTrivia> chidren) : base(context.proc(), chidren)
 		{ }
 	}
 }

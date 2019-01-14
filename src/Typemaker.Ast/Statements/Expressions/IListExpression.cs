@@ -8,6 +8,6 @@ namespace Typemaker.Ast.Statements.Expressions
 	{
 		int? InitialSize { get; }
 
-		IReadOnlyList<IExpression> Initializer { get; }
+		IEnumerable<IExpression> Initializer { get; }
 	}
 }

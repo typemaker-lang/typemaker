@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Typemaker.Ast.Serialization;
 using Typemaker.Ast.Statements.Expressions;
 using Typemaker.Parser;
 
@@ -12,9 +11,9 @@ namespace Typemaker.Ast
 
 		public bool AutoValue { get; }
 
-		public IExpression Expression => SelectChildren<IExpression>().FirstOrDefault();
+		public IExpression Expression => ChildrenAs<IExpression>().FirstOrDefault();
 
-		public EnumItem(TypemakerParser.Enum_itemContext context, SyntaxNode initializer) : base(context, initializer != null ? new List<SyntaxNode>{ initializer } : Enumerable.Empty<SyntaxNode>())
+		public EnumItem(TypemakerParser.Enum_itemContext context, IEnumerable<IInternalTrivia> children) : base(context, children)
 		{
 			Name = ParseTreeFormatters.ExtractIdentifier(context.IDENTIFIER());
 

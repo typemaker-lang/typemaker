@@ -6,6 +6,6 @@ namespace Typemaker.Ast
 {
 	public interface IDecorated : ISyntaxNode
 	{
-		IReadOnlyList<IDecorator> Decorators { get; }
+		IEnumerable<IDecorator> Decorators { get; }
 	}
 }

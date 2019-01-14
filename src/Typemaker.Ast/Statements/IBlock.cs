@@ -6,6 +6,6 @@ namespace Typemaker.Ast.Statements
 	{
 		bool Unsafe { get; }
 
-		IReadOnlyList<IStatement> Statements { get; }
+		IEnumerable<IStatement> Statements { get; }
 	}
 }

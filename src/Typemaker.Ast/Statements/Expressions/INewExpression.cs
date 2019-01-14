@@ -8,6 +8,6 @@ namespace Typemaker.Ast.Statements.Expressions
 	{
 		IExpression AccessedType { get; }
 
-		IReadOnlyList<IArgument> Arguments { get; }
+		IEnumerable<IArgument> Arguments { get; }
 	}
 }

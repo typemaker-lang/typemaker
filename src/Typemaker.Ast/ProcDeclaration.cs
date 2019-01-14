@@ -15,15 +15,15 @@ namespace Typemaker.Ast
 
 		public IObjectPath ObjectPath { get; }
 
-		public IReadOnlyList<IArgumentDeclaration> Arguments => ChildrenAs<IArgumentDeclaration>();
+		public IEnumerable<IArgumentDeclaration> Arguments => ChildrenAs<IArgumentDeclaration>();
 
-		public INullableType ReturnType => isVoid ? null : SelectChildren<INullableType>().Last();
+		public INullableType ReturnType => isVoid ? null : ChildrenAs<INullableType>().Last();
 
-		public IReadOnlyList<IDecorator> Decorators => ChildrenAs<IDecorator>();
+		public IEnumerable<IDecorator> Decorators => ChildrenAs<IDecorator>();
 
 		readonly bool isVoid;
 
-		protected ProcDeclaration(TypemakerParser.ProcContext context, IEnumerable<SyntaxNode> children) : base(context, children)
+		protected ProcDeclaration(TypemakerParser.ProcContext context, IEnumerable<IInternalTrivia> children) : base(context, children)
 		{
 			isVoid = context.proc_return_declaration()?.return_type().VOID() != null;
 			IsVerb = context.proc_type().VERB() != null;
@@ -42,10 +42,9 @@ namespace Typemaker.Ast
 				Name = TypemakerLexer.DefaultVocabulary.GetLiteralName(TypemakerLexer.CONSTRUCTOR);
 			else
 				Name = ParseTreeFormatters.ExtractIdentifier(identifier);
-			AntiTriviaContext((ParserRuleContext)fEI ?? context.proc_type(), idOrCon);
 		}
 
-		public ProcDeclaration(TypemakerParser.Proc_declarationContext context, IEnumerable<SyntaxNode> children) : this(context.proc(), children)
+		public ProcDeclaration(TypemakerParser.Proc_declarationContext context, IEnumerable<IInternalTrivia> children) : this(context.proc(), children)
 		{ }
 	}
 }

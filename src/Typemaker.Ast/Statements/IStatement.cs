@@ -2,6 +2,7 @@
 {
 	public interface IStatement : ISyntaxNode
 	{
+		bool BlockBreaker { get; }
 		bool HasSideEffects { get; }
 	}
 }

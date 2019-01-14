@@ -12,6 +12,6 @@ namespace Typemaker.Ast
 
 		INullableType ReturnType { get; }
 
-		IReadOnlyList<IArgumentDeclaration> Arguments { get; }
+		IEnumerable<IArgumentDeclaration> Arguments { get; }
 	}
 }

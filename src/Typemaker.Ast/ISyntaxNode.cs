@@ -1,26 +1,16 @@
 ﻿using System.Collections.Generic;
-using Typemaker.Ast.Serialization;
 
 namespace Typemaker.Ast
 {
 	public interface ISyntaxNode : ILocatable
 	{
-		IReadOnlyList<ICommentTrivia> Comments { get; }
-		IReadOnlyList<IWhitespaceTrivia> Whitespace { get; }
-
 		ISyntaxTree Tree { get; }
 		ISyntaxNode Parent { get; }
 
-		IReadOnlyList<ISyntaxNode> Children { get; }
+		IEnumerable<ISyntaxNode> Children { get; }
 
-		bool Trivia { get; }
+		IEnumerable<ITrivia> Trivia { get; }
 
-		ILocatable TriviaRestrictionViolation { get; }
-
-		SyntaxGraph Serialize();
-
-		void Transform(IEnumerable<SyntaxGraph> replacements);
-
-		IEnumerable<TChildNode> SelectChildren<TChildNode>() where TChildNode : ISyntaxNode;
+		IEnumerable<TChildNode> ChildrenAs<TChildNode>() where TChildNode : ISyntaxNode;
 	}
 }

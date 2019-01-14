@@ -6,7 +6,7 @@ using Typemaker.Parser;
 
 namespace Typemaker.Ast
 {
-	sealed class ReportingErrorListener : IAntlrErrorListener<IToken>, IAntlrErrorListener<int>
+	sealed class ReportingErrorListener : IAntlrErrorListener<Antlr4.Runtime.IToken>, IAntlrErrorListener<int>
 	{
 		readonly List<ParseError> output;
 
@@ -20,7 +20,7 @@ namespace Typemaker.Ast
 
 		void AddParseError(int line, int column, string message) => output.Add(new ParseError((ulong)line, (ulong)column, message));
 
-		public void SyntaxError([NotNull] IRecognizer recognizer, [Nullable] IToken offendingSymbol, int line, int charPositionInLine, [NotNull] string msg, [Nullable] RecognitionException e)
+		public void SyntaxError([NotNull] IRecognizer recognizer, [Nullable] Antlr4.Runtime.IToken offendingSymbol, int line, int charPositionInLine, [NotNull] string msg, [Nullable] RecognitionException e)
 		{
 			var readableError = offendingSymbol == null
 				|| msg.StartsWith("missing", StringComparison.Ordinal);

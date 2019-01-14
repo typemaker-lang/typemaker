@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Typemaker.Ast.Serialization;
 using Typemaker.Ast.Statements.Expressions;
 using Typemaker.Parser;
 
@@ -13,7 +12,7 @@ namespace Typemaker.Ast.Statements
 
 		public IExpression Throw => ChildAs<IExpression>();
 		
-		public JumpStatement(TypemakerParser.Jump_statementContext context, IEnumerable<SyntaxNode> children) : base(context, children, true)
+		public JumpStatement(TypemakerParser.Jump_statementContext context, IEnumerable<IInternalTrivia> children) : base(context, children, true)
 		{
 			if (context.BREAK() != null)
 				JumpType = JumpType.Break;

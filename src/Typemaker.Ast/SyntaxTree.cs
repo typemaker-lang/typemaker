@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Typemaker.Ast.Serialization;
 using Typemaker.Parser;
 
 namespace Typemaker.Ast
@@ -11,29 +10,25 @@ namespace Typemaker.Ast
 	{
 		public string FilePath { get; private set; }
 
-		public IReadOnlyList<IMapDeclaration> Maps => ChildrenAs<IMapDeclaration>();
+		public IEnumerable<IMapDeclaration> Maps => ChildrenAs<IMapDeclaration>();
 
-		public IReadOnlyList<IVarDeclaration> GlobalVars => ChildrenAs<IVarDeclaration>();
+		public IEnumerable<IVarDeclaration> GlobalVars => ChildrenAs<IVarDeclaration>();
 
-		public IReadOnlyList<IEnumDefinition> Enums => ChildrenAs<IEnumDefinition>();
+		public IEnumerable<IEnumDefinition> Enums => ChildrenAs<IEnumDefinition>();
 
-		public IReadOnlyList<IInterface> Interfaces => ChildrenAs<IInterface>();
+		public IEnumerable<IInterface> Interfaces => ChildrenAs<IInterface>();
 
-		public IReadOnlyList<IProcDeclaration> ProcDeclarations => SelectChildren<IProcDeclaration>().Where(x => !(x is IProcDefinition)).ToList();
+		public IEnumerable<IProcDeclaration> ProcDeclarations => ChildrenAs<IProcDeclaration>().Where(x => !(x is IProcDefinition)).ToList();
 
-		public IReadOnlyList<IObjectDeclaration> Objects => ChildrenAs<IObjectDeclaration>();
+		public IEnumerable<IObjectDeclaration> Objects => ChildrenAs<IObjectDeclaration>();
 
-		public IReadOnlyList<IProcDefinition> ProcDefinitions => ChildrenAs<IProcDefinition>();
+		public IEnumerable<IProcDefinition> ProcDefinitions => ChildrenAs<IProcDefinition>();
 
-		public SyntaxTree(string filePath, TypemakerParser.Compilation_unitContext context, IEnumerable<SyntaxNode> children) : base(context, children)
+		public SyntaxTree(string filePath, TypemakerParser.Compilation_unitContext context, IEnumerable<IInternalTrivia> children) : base(context, children)
 		{
 			FilePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
 		}
 
-		public void Build(IList<IToken> tokens)
-		{
-			LinkTree(this, this, false);
-			BuildTrivia(null, null, tokens);
-		}
+		public void Build(IList<IToken> tokens) => LinkTree(this, this);
 	}
 }

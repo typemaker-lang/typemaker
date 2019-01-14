@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Typemaker.Ast
 {
-	public interface ICommentTrivia : ISyntaxNode
+	public interface ITrivia : ILocatable
 	{
-		ulong? LineCount { get; }
-		string Comment { get; }
+		IToken Token { get; }
+		ISyntaxNode Node { get; }
 	}
 }

@@ -10,18 +10,17 @@ namespace Typemaker.Ast
 		public string Name { get; }
 
 		/// <inheritdoc />
-		public IReadOnlyList<IEnumItem> Items => ChildrenAs<IEnumItem>();
+		public IEnumerable<IEnumItem> Items => ChildrenAs<IEnumItem>();
 
 		/// <summary>
 		/// Construct an <see cref="EnumDefinition"/>
 		/// </summary>
 		/// <param name="context">The <see cref="TypemakerParser.EnumContext"/></param>
-		/// <param name="children">The child <see cref="SyntaxNode"/>s</param>
-		public EnumDefinition(TypemakerParser.EnumContext context, IEnumerable<SyntaxNode> children) : base(context, children)
+		/// <param name="children">The child <see cref="IInternalTrivia"/>s</param>
+		public EnumDefinition(TypemakerParser.EnumContext context, IEnumerable<IInternalTrivia> children) : base(context, children)
 		{
 			var enumType = context.enum_type();
 			Name = enumType.IDENTIFIER().Symbol.Text;
-			AntiTriviaContext(enumType);
 		}
 	}
 }

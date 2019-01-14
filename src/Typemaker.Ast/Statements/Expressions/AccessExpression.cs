@@ -19,7 +19,7 @@ namespace Typemaker.Ast.Statements.Expressions
 
 		public override RootType? EvaluateType() => null;
 
-		public AccessExpression(TypemakerParser.Accessed_targetContext context, IEnumerable<SyntaxNode> children) : base(context, children)
+		public AccessExpression(TypemakerParser.Accessed_targetContext context, IEnumerable<IInternalTrivia> children) : base(context, children)
 		{
 			Name = ParseTreeFormatters.ExtractIdentifier(context.IDENTIFIER());
 

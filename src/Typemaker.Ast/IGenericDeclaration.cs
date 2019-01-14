@@ -4,10 +4,10 @@ namespace Typemaker.Ast
 {
 	public interface IGenericDeclaration: IIdentifiable
 	{
-		IReadOnlyList<IImplements> Implements { get; }
+		IEnumerable<IImplements> Implements { get; }
 
-		IReadOnlyList<IVarDeclaration> VarDeclarations { get; }
+		IEnumerable<IVarDeclaration> VarDeclarations { get; }
 
-		IReadOnlyList<IProcDeclaration> ProcDeclarations { get; }
+		IEnumerable<IProcDeclaration> ProcDeclarations { get; }
 	}
 }

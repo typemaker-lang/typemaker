@@ -6,7 +6,7 @@ namespace Typemaker.Ast.Statements
 {
 	public interface IIfStatement : IIfBase
 	{
-		IReadOnlyList<IIfBase> ElseIfs { get; }
+		IEnumerable<IIfBase> ElseIfs { get; }
 		IStatement Else { get; }
 	}
 }

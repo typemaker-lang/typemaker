@@ -10,7 +10,7 @@ namespace Typemaker.Ast
 		public string Name { get; }
 		public IExpression Value => ChildAs<IExpression>();
 
-		public Argument(TypemakerParser.ArgumentContext context, IEnumerable<SyntaxNode> children) : base(context, children)
+		public Argument(TypemakerParser.ArgumentContext context, IEnumerable<IInternalTrivia> children) : base(context, children)
 		{
 			var identifier = context.IDENTIFIER();
 			if (identifier != null)

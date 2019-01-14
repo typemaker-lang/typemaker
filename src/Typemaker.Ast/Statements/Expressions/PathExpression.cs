@@ -15,11 +15,10 @@ namespace Typemaker.Ast.Statements.Expressions
 
 		public override RootType? EvaluateType() => RootType.Path;
 
-		public PathExpression(TypemakerParser.Fully_extended_identifierContext context, IEnumerable<SyntaxNode> children) : base(context, children)
+		public PathExpression(TypemakerParser.Fully_extended_identifierContext context, IEnumerable<IInternalTrivia> children) : base(context, children)
 		{
 			ParseTreeFormatters.ExtractObjectPath(context, true, out var objectPath);
 			ObjectPath = objectPath;
-			AntiTriviaContext(context);
 		}
 	}
 }

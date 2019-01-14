@@ -14,7 +14,7 @@ namespace Typemaker.Ast
 
 		public string Name { get; }
 
-		public IdentifierDeclaration(TypemakerParser.Var_definition_statementContext context, IEnumerable<SyntaxNode> children): base(context, children)
+		public IdentifierDeclaration(TypemakerParser.Var_definition_statementContext context, IEnumerable<IInternalTrivia> children): base(context, children)
 		{
 			Name = ParseTreeFormatters.ExtractIdentifier(context.var_definition_only().typed_identifier().IDENTIFIER());
 		}

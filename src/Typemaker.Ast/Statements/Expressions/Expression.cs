@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Typemaker.Ast.Serialization;
 
 namespace Typemaker.Ast.Statements.Expressions
 {
@@ -15,6 +14,6 @@ namespace Typemaker.Ast.Statements.Expressions
 
 		public abstract RootType? EvaluateType();
 
-		protected Expression(ParserRuleContext context, IEnumerable<SyntaxNode> children) : base(context, children, false) { }
+		protected Expression(ParserRuleContext context, IEnumerable<IInternalTrivia> children) : base(context, children, false) { }
 	}
 }
