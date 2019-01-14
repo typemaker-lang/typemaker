@@ -10,7 +10,7 @@ namespace Typemaker.Ast.Statements
 	{
 		public bool BlockBreaker { get; }
 		public abstract bool HasSideEffects { get; }
-		protected Statement(ParserRuleContext context, IEnumerable<ITrivia> children, bool blockBreaker) : base(children)
+		protected Statement(IEnumerable<ITrivia> children, bool blockBreaker) : base(children)
 		{
 			BlockBreaker = blockBreaker;
 		}

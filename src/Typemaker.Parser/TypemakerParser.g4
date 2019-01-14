@@ -35,8 +35,7 @@ fully_extended_identifier: SLASH extended_identifier;
 
 true_type: root_type | extended_identifier;
 nullable_type: true_type | NULLABLE SLASH true_type;
-const_type: true_type | CONST SLASH true_type;
-type: const_type | nullable_type;
+type: CONST SLASH nullable_type | nullable_type;
 return_type: nullable_type | VOID;	//extended_identifier is expanded from nullable
 
 typed_identifier: type SLASH IDENTIFIER | IDENTIFIER;

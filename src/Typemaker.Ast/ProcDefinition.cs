@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Typemaker.Ast.Statements;
-using Typemaker.Parser;
 
 namespace Typemaker.Ast
 {
@@ -10,12 +9,13 @@ namespace Typemaker.Ast
 		/// <inheritdoc />
 		public IStatement Body => ChildAs<IStatement>();
 
-		/// <summary>
-		/// Construct a <see cref="ProcDefinition"/>
-		/// </summary>
-		/// <param name="context">The <see cref="TypemakerParser.Proc_definitionContext"/></param>
-		/// <param name="chidren">The child <see cref="ITrivia"/>s</param>
-		public ProcDefinition(TypemakerParser.Proc_definitionContext context, IEnumerable<ITrivia> chidren) : base(context.proc(), chidren)
-		{ }
+
+		public ProcDefinition(string name, bool isVoid, bool isVerb, IObjectPath objectPath, IEnumerable<ITrivia> children) : base(name, isVoid, isVerb, objectPath, children)
+		{
+		}
+
+		public ProcDefinition(IObjectPath objectPath, IEnumerable<ITrivia> children) : base(objectPath, children)
+		{
+		}
 	}
 }

@@ -18,11 +18,10 @@ namespace Typemaker.Ast.Statements
 
 		public override bool HasSideEffects => Initializer?.HasSideEffects ?? false;
 
-		public VarDefinition(TypemakerParser.Var_definition_onlyContext context, IEnumerable<ITrivia> children) : base(context, children, false)
+		public VarDefinition(string name, bool isConst, IEnumerable<ITrivia> children) : base(children, false)
 		{
-			var typedIdentifier = context.typed_identifier();
-			Name = ParseTreeFormatters.ExtractIdentifier(typedIdentifier.IDENTIFIER());
-			IsConst = typedIdentifier.type()?.const_type() != null;
+			Name = name ?? throw new ArgumentNullException(nameof(name));
+			IsConst = isConst;
 		}
 	}
 }

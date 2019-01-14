@@ -10,6 +10,6 @@ namespace Typemaker.Ast
 	{
 		public IEnumerable<IDecorator> Decorators => ChildrenAs<IDecorator>();
 
-		public VarDeclaration(TypemakerParser.Var_declarationContext context, IEnumerable<ITrivia> children) : base(context.var_definition_statement().var_definition_only(), children) { }
+		public VarDeclaration(string name, bool isConst, IEnumerable<ITrivia> children) : base(name, isConst, children) { }
 	}
 }
