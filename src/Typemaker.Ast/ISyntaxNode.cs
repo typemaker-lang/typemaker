@@ -7,6 +7,8 @@ namespace Typemaker.Ast
 		ISyntaxTree Tree { get; }
 		ISyntaxNode Parent { get; }
 
+		IEnumerable<IToken> Tokens { get; }
+
 		IEnumerable<ISyntaxNode> Children { get; }
 
 		IReadOnlyList<ITrivia> Trivia { get; }

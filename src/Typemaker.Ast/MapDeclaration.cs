@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Typemaker.Parser;
 
 namespace Typemaker.Ast
 {
 	sealed class MapDeclaration : SyntaxNode, IMapDeclaration
 	{
 		public string MapPath { get; }
-		public MapDeclaration(TypemakerParser.MapContext context, IEnumerable<ITrivia> children) : base(children)
+		public MapDeclaration(string mapPath, IEnumerable<ITrivia> children) : base(children)
 		{
-			MapPath = ParseTreeFormatters.ExtractResource(context.RES());
+			MapPath = mapPath ?? throw new ArgumentNullException(nameof(mapPath));
 		}
 	}
 }

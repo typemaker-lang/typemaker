@@ -11,6 +11,8 @@ namespace Typemaker.Ast
 
 		public ISyntaxNode Parent { get; private set; }
 
+		public IEnumerable<IToken> Tokens => Trivia.SelectMany(x => SelectTokens(x));
+
 		public IReadOnlyList<ITrivia> Trivia { get; }
 
 		public IEnumerable<ISyntaxNode> Children => Trivia.Where(x => x.Node != null).Select(x => x.Node);
@@ -20,6 +22,15 @@ namespace Typemaker.Ast
 		public Location Start => Trivia.First().Start;
 
 		public Location End => Trivia.Last().End;
+
+		static IEnumerable<IToken> SelectTokens(ITrivia trivia)
+		{
+			if (trivia.Token != null)
+				yield return trivia.Token;
+			else
+				foreach (var I in trivia.Node.Tokens)
+					yield return I;
+		}
 
 		protected SyntaxNode(IEnumerable<ITrivia> trivia)
 		{

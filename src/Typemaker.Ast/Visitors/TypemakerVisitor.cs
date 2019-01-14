@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using Antlr4.Runtime;
@@ -47,29 +48,52 @@ namespace Typemaker.Ast.Visitors
 		}
 		
 		IEnumerable<ITrivia> Visit<TContext>(TContext[] contexts)
-			where TContext : ParserRuleContext => contexts.SelectMany(context => Visit(context)).Select(x => Trivialize(x));
+			where TContext : ParserRuleContext => contexts.SelectMany(context =>
+			{
+				var result = Visit(context);
+				Debug.Assert(result != null);
+				return result;
+			}).Select(x => Trivialize(x));
 
 		IEnumerable<ITrivia> SelectAndVisitContextTokens(ParserRuleContext context) => SelectAndVisitContextTokens(context.children);
 		IEnumerable<ITrivia> SelectAndVisitContextTokens(IEnumerable<IParseTree> parseTree, params ParserRuleContext[] tokenizeOnly)
 		{
 			var tokenizeIndex = 0;
+
+			void FixIndex()
+			{
+				for (; tokenizeOnly.Length > tokenizeIndex && tokenizeOnly[tokenizeIndex] == null; ++tokenizeIndex) ;
+			}
+		
+			FixIndex();
+
+			Debug.Assert(parseTree != null);
+
 			foreach (var I in parseTree)
 			{
 				if (tokenizeOnly.Length > tokenizeIndex && I == tokenizeOnly[tokenizeIndex])
 				{
 					foreach (var J in GetContextTokensOnly((ParserRuleContext)I))
 						yield return J;
+					
 					++tokenizeIndex;
+					FixIndex();
 				}
 				else if (I is ITerminalNode asTerminal)
 					yield return new Trivia(asTerminal.Symbol);
 				else
-					foreach (var J in Visit(I))
+				{
+					if (I is TypemakerParser.String_bodyContext)
+						Debugger.Break();
+					var childVisit = Visit(I);
+					Debug.Assert(childVisit != null);
+					foreach (var J in childVisit)
 						yield return Trivialize(J);
+				}
 			}
 		}
 
-		protected override IEnumerable<SyntaxNode> AggregateResult(IEnumerable<SyntaxNode> aggregate, IEnumerable<SyntaxNode> nextResult) => Enumerable.Concat(aggregate, nextResult);
+		protected override IEnumerable<SyntaxNode> AggregateResult(IEnumerable<SyntaxNode> aggregate, IEnumerable<SyntaxNode> nextResult) => aggregate == null || nextResult == null ? aggregate ?? nextResult : Enumerable.Concat(aggregate, nextResult);
 
 		public SyntaxTree ConstructSyntaxTree(TypemakerParser.Compilation_unitContext context) => new SyntaxTree(filePath, Visit(context.top_level_declaration()));
 
@@ -161,8 +185,13 @@ namespace Typemaker.Ast.Visitors
 			var identifier = identOrConst.IDENTIFIER();
 			var fEI = definition.fully_extended_identifier();
 			var procType = definition.proc_type();
+			var arguments = definition.proc_arguments();
+			var adl = arguments.argument_declaration_list();
+			var rDec = definition.proc_return_declaration();
 
-			ParseTreeFormatters.ExtractObjectPath(fEI, true, out var objectPath);
+			ObjectPath objectPath = null;
+			if(fEI != null)
+				ParseTreeFormatters.ExtractObjectPath(fEI, true, out objectPath);
 
 			IEnumerable<IParseTree> ExplodeProcDefinition() {
 				foreach(var I in context.children)
@@ -175,16 +204,24 @@ namespace Typemaker.Ast.Visitors
 				}
 			}
 
-			IEnumerable<ITrivia> GetProcChildren() => SelectAndVisitContextTokens(ExplodeProcDefinition(), fEI, procType, identOrConst);
+			IEnumerable<ITrivia> GetProcChildren(bool flattenRdec)
+			{
+				var toFlatten = new List<ParserRuleContext> { fEI, procType, identOrConst };
+				if (adl == null)
+					toFlatten.Add(arguments);
+				if (flattenRdec)
+					toFlatten.Add(rDec);
+				return SelectAndVisitContextTokens(ExplodeProcDefinition(), toFlatten.ToArray());
+			}
 
 			if (identifier == null)
-				yield return new ProcDefinition(objectPath, GetProcChildren());
+				yield return new ProcDefinition(objectPath, GetProcChildren(true));
 			else
 			{
 				var name = ParseTreeFormatters.ExtractIdentifier(identifier);
 				var isVerb = procType?.VERB() != null;
-				var isVoid = definition.proc_return_declaration() == null;
-				yield return new ProcDefinition(name, isVoid, isVoid, objectPath, GetProcChildren());
+				var isVoid = rDec?.VOID() != null;
+				yield return new ProcDefinition(name, isVoid, isVerb, objectPath, GetProcChildren(isVoid));
 			}
 		}
 
@@ -284,7 +321,7 @@ namespace Typemaker.Ast.Visitors
 			//switch the token for the remaining ones
 
 			//rest are 1 token, so switch it
-			var parseTreeChild = context.children.Where(x => x is ITerminalNode terminalNode && new Token(terminalNode.Symbol).Class != TokenClass.Grammar).First();
+			var parseTreeChild = rootTypeContext.children.Where(x => x is ITerminalNode terminalNode && new Token(terminalNode.Symbol).Class == TokenClass.Grammar).First();
 			var tokenType = ((ITerminalNode)parseTreeChild).Symbol.Type;
 
 			RootType rootType;
@@ -313,6 +350,37 @@ namespace Typemaker.Ast.Visitors
 			}
 
 			yield return new NullableType(rootType, null, isNull, children);
+		}
+		
+		public override IEnumerable<SyntaxNode> VisitString([NotNull] TypemakerParser.StringContext context)
+		{
+			var body = context.string_body();
+			var formatter = ParseTreeFormatters.ExtractStringFormatter(body);
+			var verbatim = context.VERBATIUM_STRING() != null || context.MULTILINE_VERBATIUM_STRING() != null;
+
+			IEnumerable<IParseTree> SelectStringParts()
+			{
+				var bodyIndex = 0;
+				foreach (var I in context.children)
+					if (body.Length > bodyIndex && I == body[bodyIndex])
+					{
+						var thing = body[bodyIndex];
+						var content = (ParserRuleContext)thing.string_content() ?? thing;
+						foreach (var J in content.children)
+							yield return J;
+						++bodyIndex;
+					}
+					else
+						yield return I;
+			}
+
+			yield return new StringExpression(formatter, verbatim, SelectAndVisitContextTokens(SelectStringParts()));
+		}
+
+		public override IEnumerable<SyntaxNode> VisitMap([NotNull] TypemakerParser.MapContext context)
+		{
+			var res = ParseTreeFormatters.ExtractResource(context.RES());
+			yield return new MapDeclaration(res, GetAllContextTokens(context));
 		}
 	}
 }

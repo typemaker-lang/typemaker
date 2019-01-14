@@ -36,7 +36,6 @@ fully_extended_identifier: SLASH extended_identifier;
 true_type: root_type | extended_identifier;
 nullable_type: true_type | NULLABLE SLASH true_type;
 type: CONST SLASH nullable_type | nullable_type;
-return_type: nullable_type | VOID;	//extended_identifier is expanded from nullable
 
 typed_identifier: type SLASH IDENTIFIER | IDENTIFIER;
 
@@ -254,7 +253,7 @@ argument_declaration: typed_identifier | typed_identifier EQUALS expression;
 argument_declaration_list: argument_declaration | argument_declaration COMMA argument_declaration_list | var_args;
 
 proc_arguments: LPAREN RPAREN | LPAREN argument_declaration_list RPAREN;
-proc_return_declaration: RDEC return_type;
+proc_return_declaration: RDEC nullable_type | RDEC VOID;
 identifier_or_constructor: SLASH IDENTIFIER | SLASH CONSTRUCTOR;
 
 access_decorator: PUBLIC | PROTECTED;

@@ -12,7 +12,7 @@ namespace Typemaker.Ast.Statements.Expressions
 
 		public bool Verbatim { get; }
 
-		public bool HasFormatters { get; }
+		public bool HasFormatters => FormatExpressions.Any();
 
 		public string Formatter { get; }
 
@@ -20,17 +20,10 @@ namespace Typemaker.Ast.Statements.Expressions
 
 		public override bool HasSideEffects => ChildrenAs<IExpression>().Any(x => x.HasSideEffects);
 
-		public StringExpression(TypemakerParser.StringContext context, IEnumerable<ITrivia> children) : base(context, children)
+		public StringExpression(string formatter, bool verbatim, IEnumerable<ITrivia> children) : base(children)
 		{
-			var verbatimNode = context.VERBATIUM_STRING() ?? context.MULTILINE_VERBATIUM_STRING();
-			Verbatim = verbatimNode != null;
-			if (Verbatim)
-				Formatter = ParseTreeFormatters.ExtractVerbatimString(verbatimNode);
-			else
-			{
-				Formatter = ParseTreeFormatters.ExtractStringFormatter(context.string_body(), out var any);
-				HasFormatters = any;
-			}
+			Formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
+			Verbatim = verbatim;
 		}
 
 		public override RootType? EvaluateType() => RootType.String;

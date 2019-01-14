@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using Typemaker.Parser;
 
 namespace Typemaker.Ast
 {
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	sealed class Token : IToken
 	{
 		public TokenClass Class { get; }
@@ -20,7 +22,7 @@ namespace Typemaker.Ast
 		public Token(Antlr4.Runtime.IToken token)
 		{
 			this.token = token ?? throw new ArgumentNullException(nameof(token));
-
+			
 			switch (Type)
 			{
 				case TypemakerLexer.NEWLINES:
@@ -51,11 +53,12 @@ namespace Typemaker.Ast
 				Column = (ulong)token.Column,
 				Line = (ulong)token.Line
 			};
-			Start = new Location
+			End = new Location
 			{
 				Column = (ulong)(token.Column + Text.Length),
 				Line = (ulong)token.Line
 			};
 		}
+		private string DebuggerDisplay => $"{Text} ({TypemakerLexer.DefaultVocabulary.GetSymbolicName(Type)})";
 	}
 }

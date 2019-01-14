@@ -29,11 +29,10 @@ namespace Typemaker.Ast
 			return identifier.Symbol.Text;
 		}
 
-		public static string ExtractStringFormatter(TypemakerParser.String_bodyContext[] context, out bool any)
+		public static string ExtractStringFormatter(TypemakerParser.String_bodyContext[] context)
 		{
 			Debug.Assert(context != null);  //remove this once you check the empty string doesn't null out
-
-			any = false;
+			
 			if (context.Length == 0)
 				return String.Empty;
 
@@ -48,7 +47,6 @@ namespace Typemaker.Ast
 					builder.Append('{');
 					builder.Append(embedCount++);
 					builder.Append('}');
-					any = true;
 				}
 				else
 					builder.Append(I.string_content().GetText());
