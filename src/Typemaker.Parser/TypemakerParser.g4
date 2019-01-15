@@ -242,8 +242,9 @@ try_block: TRY block CATCH LPAREN var_definition_only RPAREN block;
 jump_statement: BREAK | CONTINUE | THROW expression;
 semicolonless_statement: expression | jump_statement;
 statement: var_definition_statement | set_statement | return_statement | flow_control | try_block | unsafe_block | semicolonless_statement SEMI;
-block: statement | LCURL statement+ RCURL;
-unsafe_block: UNSAFE block;
+block_interior: statement | LCURL statement+ RCURL;
+unsafe_block: UNSAFE block_interior;
+block: UNSAFE block_interior | block_interior;
 
 implements_statement: IMPLEMENTS IDENTIFIER SEMI;
 object_declaration: decorator* fully_extended_identifier declaration_block;

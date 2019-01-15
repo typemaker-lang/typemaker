@@ -15,6 +15,6 @@ namespace Typemaker.Ast
 
 		IEnumerable<TChildNode> ChildrenAs<TChildNode>() where TChildNode : ISyntaxNode;
 
-		void LinkTree(ISyntaxNode parent, ISyntaxTree tree);
+		void LinkTree(ISyntaxNode parent, ISuperSyntaxTree tree);
 	}
 }

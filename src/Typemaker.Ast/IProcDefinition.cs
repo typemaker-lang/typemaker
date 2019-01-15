@@ -4,6 +4,6 @@ namespace Typemaker.Ast
 {
 	public interface IProcDefinition : IProcDeclaration
 	{
-		IStatement Body { get; }
+		IBlock Body { get; }
 	}
 }

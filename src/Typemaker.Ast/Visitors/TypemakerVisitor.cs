@@ -41,12 +41,12 @@ namespace Typemaker.Ast.Visitors
 		static ITrivia Trivialize(SyntaxNode syntaxNode) => new Trivia(syntaxNode);
 
 		readonly string filePath;
-		
+
 		public TypemakerVisitor(string filePath)
 		{
 			this.filePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
 		}
-		
+
 		IEnumerable<ITrivia> Visit<TContext>(TContext[] contexts)
 			where TContext : ParserRuleContext => contexts.SelectMany(context =>
 			{
@@ -64,7 +64,7 @@ namespace Typemaker.Ast.Visitors
 			{
 				for (; tokenizeOnly.Length > tokenizeIndex && tokenizeOnly[tokenizeIndex] == null; ++tokenizeIndex) ;
 			}
-		
+
 			FixIndex();
 
 			Debug.Assert(parseTree != null);
@@ -75,7 +75,7 @@ namespace Typemaker.Ast.Visitors
 				{
 					foreach (var J in GetContextTokensOnly((ParserRuleContext)I))
 						yield return J;
-					
+
 					++tokenizeIndex;
 					FixIndex();
 				}
@@ -190,11 +190,12 @@ namespace Typemaker.Ast.Visitors
 			var rDec = definition.proc_return_declaration();
 
 			ObjectPath objectPath = null;
-			if(fEI != null)
+			if (fEI != null)
 				ParseTreeFormatters.ExtractObjectPath(fEI, true, out objectPath);
 
-			IEnumerable<IParseTree> ExplodeProcDefinition() {
-				foreach(var I in context.children)
+			IEnumerable<IParseTree> ExplodeProcDefinition()
+			{
+				foreach (var I in context.children)
 				{
 					if (I == definition)
 						foreach (var J in definition.children)
@@ -351,7 +352,7 @@ namespace Typemaker.Ast.Visitors
 
 			yield return new NullableType(rootType, null, isNull, children);
 		}
-		
+
 		public override IEnumerable<SyntaxNode> VisitString([NotNull] TypemakerParser.StringContext context)
 		{
 			var body = context.string_body();
@@ -381,6 +382,40 @@ namespace Typemaker.Ast.Visitors
 		{
 			var res = ParseTreeFormatters.ExtractResource(context.RES());
 			yield return new MapDeclaration(res, GetAllContextTokens(context));
+		}
+
+		public override IEnumerable<SyntaxNode> VisitBlock([NotNull] TypemakerParser.BlockContext context)
+		{
+			var isUnsafe = context.UNSAFE() != null;
+			var blockInterior = context.block_interior();
+
+			IEnumerable<IParseTree> FlattenBlock()
+			{
+				foreach (var I in context.children)
+					if (I == blockInterior)
+						foreach (var J in blockInterior.children)
+							yield return J;
+					else
+						yield return I;
+			}
+
+			yield return new Block(isUnsafe, SelectAndVisitContextTokens(FlattenBlock()));
+		}
+
+		public override IEnumerable<SyntaxNode> VisitUnsafe_block([NotNull] TypemakerParser.Unsafe_blockContext context)
+		{
+			var blockInterior = context.block_interior();
+			IEnumerable<IParseTree> FlattenBlock()
+			{
+				foreach (var I in context.children)
+					if (I == blockInterior)
+						foreach (var J in blockInterior.children)
+							yield return J;
+					else
+						yield return I;
+			}
+
+			yield return new Block(true, SelectAndVisitContextTokens(FlattenBlock()));
 		}
 	}
 }

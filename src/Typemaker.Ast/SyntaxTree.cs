@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Typemaker.Ast
 {
-	sealed class SyntaxTree : SyntaxNode, ISyntaxTree
+	sealed class SyntaxTree : SyntaxNode, ISuperSyntaxTree
 	{
 		public string FilePath { get; }
 
@@ -16,7 +16,7 @@ namespace Typemaker.Ast
 
 		public IEnumerable<IInterface> Interfaces => ChildrenAs<IInterface>();
 
-		public IEnumerable<IProcDeclaration> ProcDeclarations => ChildrenAs<IProcDeclaration>().Where(x => !(x is IProcDefinition)).ToList();
+		public IEnumerable<IProcDeclaration> ProcDeclarations => ChildrenAs<IProcDeclaration>().Where(x => !(x is IProcDefinition));
 
 		public IEnumerable<IObjectDeclaration> Objects => ChildrenAs<IObjectDeclaration>();
 
@@ -25,8 +25,7 @@ namespace Typemaker.Ast
 		public SyntaxTree(string filePath, IEnumerable<ITrivia> children) : base(children)
 		{
 			FilePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
+			LinkTree(this, this);
 		}
-
-		public void Build(IList<IToken> tokens) => LinkTree(this, this);
 	}
 }

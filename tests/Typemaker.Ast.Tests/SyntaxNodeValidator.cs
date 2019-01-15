@@ -53,7 +53,9 @@ namespace Typemaker.Ast.Tests
 			var J = 0;
 			foreach (var I in syntaxNode.Trivia)
 			{
-				Assert.False(J > Children.Count, "More children than child validators!");
+				if (!validateTokens && I.Node == null)
+					continue;
+				Assert.True(J < Children.Count, "More children than child validators!");
 				Children[J].Validate(I, validateTokens);
 				++J;
 			}

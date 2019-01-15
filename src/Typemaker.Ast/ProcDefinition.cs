@@ -7,7 +7,7 @@ namespace Typemaker.Ast
 	sealed class ProcDefinition : ProcDeclaration, IProcDefinition
 	{
 		/// <inheritdoc />
-		public IStatement Body => ChildAs<IStatement>();
+		public IBlock Body => ChildAs<IBlock>();
 
 
 		public ProcDefinition(string name, bool isVoid, bool isVerb, IObjectPath objectPath, IEnumerable<ITrivia> children) : base(name, isVoid, isVerb, objectPath, children)

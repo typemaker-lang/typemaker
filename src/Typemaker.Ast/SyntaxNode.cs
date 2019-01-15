@@ -37,7 +37,7 @@ namespace Typemaker.Ast
 			Trivia = trivia?.ToList() ?? throw new ArgumentNullException(nameof(trivia));
 		}
 
-		public void LinkTree(ISyntaxNode parent, ISyntaxTree tree)
+		public void LinkTree(ISyntaxNode parent, ISuperSyntaxTree tree)
 		{
 			if (parent == null)
 				throw new ArgumentNullException(nameof(parent));

@@ -8,7 +8,7 @@ namespace Typemaker.Ast.Statements.Expressions
 {
 	sealed class StringExpression : Expression, IStringExpression
 	{
-		public override bool IsConstant => !HasFormatters;
+		public override bool IsConstant => FormatExpressions.All(x => x.IsConstant);
 
 		public bool Verbatim { get; }
 
