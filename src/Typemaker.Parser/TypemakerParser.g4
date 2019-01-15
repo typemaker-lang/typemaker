@@ -172,11 +172,10 @@ target
 	| fully_extended_identifier
 	| basic_identifier
 	| string
+	| number
 	| RES
 	| TRUE
 	| FALSE
-	| INT
-	| FLOAT
 	| NULL
 	;
 

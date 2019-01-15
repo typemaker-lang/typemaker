@@ -22,6 +22,12 @@ namespace Typemaker.Ast.Tests
 		}
 
 		[Fact]
+		public void TestTgsDeclarations()
+		{
+			var tree = GenerateSyntaxTreeFromSourceFile("TGS/tgs.tm", false);
+		}
+
+		[Fact]
 		public void CommentMapEnumSimpleGlobalProc() => new SyntaxNodeValidator<ISyntaxTree>
 		{
 			Children = {
