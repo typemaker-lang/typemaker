@@ -8,6 +8,6 @@ namespace Typemaker.Ast
 {
 	interface ICompilationUnitContextFactory
 	{
-		TypemakerParser.Compilation_unitContext CreateCompilationUnitContext(Stream input, out IReadOnlyList<ParseError> parseErrors);
+		TypemakerParser.Compilation_unitContext CreateCompilationUnitContext(string filePath, Stream input, out IReadOnlyList<ParseError> parseErrors);
 	}
 }

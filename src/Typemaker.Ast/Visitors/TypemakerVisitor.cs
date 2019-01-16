@@ -111,19 +111,19 @@ namespace Typemaker.Ast.Visitors
 			var precedence = context.precedence_decorator();
 			if (precedence != null)
 			{
-				yield return new Decorator(DecoratorType.Precedence, SelectAndVisitContextTokens(context));
+				yield return new Decorator(DecoratorType.Precedence, GetContextTokensOnly(context));
 				yield break;
 			}
 
 			var protection = context.access_decorator();
 			if (protection != null)
 			{
-				yield return new Decorator(protection.PUBLIC() != null, SelectAndVisitContextTokens(context));
+				yield return new Decorator(protection.PUBLIC() != null, GetContextTokensOnly(context));
 				yield break;
 			}
 
 			//rest are 1 token, so switch it
-			var parseTreeChild = context.children.Where(x => x is ITerminalNode terminalNode && new Token(terminalNode.Symbol).Class != TokenClass.Grammar).First();
+			var parseTreeChild = context.children.Where(x => x is ITerminalNode terminalNode && new Token(terminalNode.Symbol).Class == TokenClass.Grammar).First();
 			var tokenType = ((ITerminalNode)parseTreeChild).Symbol.Type;
 			DecoratorType decoratorType;
 			switch (tokenType)
@@ -155,11 +155,20 @@ namespace Typemaker.Ast.Visitors
 				case TypemakerLexer.FINAL:
 					decoratorType = DecoratorType.Readonly;
 					break;
+				case TypemakerLexer.ASYNC:
+					decoratorType = DecoratorType.Async;
+					break;
+				case TypemakerLexer.ENTRYPOINT:
+					decoratorType = DecoratorType.Entrypoint;
+					break;
+				case TypemakerLexer.YIELD:
+					decoratorType = DecoratorType.Yield;
+					break;
 				default:
 					throw new InvalidOperationException(String.Format(CultureInfo.InvariantCulture, "Decorator context child is of type {0}!", tokenType));
 			}
 
-			yield return new Decorator(decoratorType, SelectAndVisitContextTokens(context));
+			yield return new Decorator(decoratorType, GetAllContextTokens(context));
 		}
 
 		public override IEnumerable<SyntaxNode> VisitEnum([NotNull] TypemakerParser.EnumContext context)
@@ -314,7 +323,7 @@ namespace Typemaker.Ast.Visitors
 			var pathType = rootTypeContext.path_type();
 			if (pathType != null)
 			{
-				var pathRootType = pathType.concrete_path() != null ? RootType.ConcretePath : RootType.Path;
+				var pathRootType = pathType.CONCRETE() != null ? RootType.ConcretePath : RootType.Path;
 				yield return new NullableType(pathRootType, null, isNull, children);
 				yield break;
 			}

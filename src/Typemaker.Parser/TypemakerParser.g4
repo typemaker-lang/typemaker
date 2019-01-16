@@ -11,10 +11,9 @@ map: MAP LPAREN RES RPAREN SEMI;
 integer: INTEGER | MINUS INTEGER;
 number: integer | REAL | MINUS REAL;
 
-enum_type: SLASH ENUM SLASH IDENTIFIER;
+enum_type: ENUM SLASH IDENTIFIER;
 
-concrete_path: PATH SLASH CONCRETE;
-path_type: concrete_path | PATH;
+path_type: PATH SLASH CONCRETE | PATH;
 
 string_content: CHAR_INSIDE | STRING_INSIDE | MULTI_STRING_INSIDE | MULTI_STRING_QUOTE;
 string_body: string_content | EMBED_START expression RBRACE;
@@ -265,13 +264,13 @@ proc: decorator* fully_extended_identifier? proc_type? identifier_or_constructor
 proc_declaration: proc SEMI;
 proc_definition: proc block;
 
-interface_type: SLASH INTERFACE SLASH IDENTIFIER;
-interface: interface_type declaration_block;
+interface_type: INTERFACE SLASH IDENTIFIER;
+interface: SLASH interface_type declaration_block;
 
 enum_item: IDENTIFIER EQUALS expression | IDENTIFIER;
 enum_items: enum_item | enum_item COMMA enum_items;
 enum_block: LCURL enum_items? RCURL;
-enum: enum_type enum_block;
+enum: SLASH enum_type enum_block;
 
 declaration
 	: proc_declaration

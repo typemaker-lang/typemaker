@@ -11,7 +11,7 @@ declare var/const/int/BLIND;
 declare partial /mob {
 	public var/nullable/string/ckey;
 	public var/nullable/client/client;
-	public var/readonly/list/mob/group;
+	readonly public var/list/mob/group;
 	public var/nullable/string/key;
 	public var/int/see_in_dark;
 	public var/bool/see_infrared;

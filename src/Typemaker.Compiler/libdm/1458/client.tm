@@ -20,5 +20,5 @@ declare var/const/number/EDGE_PERSPECTIVE;
 }
 
 declare partial /client {
-	set parent_type = /__typemaker_base_object
+	set parent_type = /__typemaker_base_object;
 }

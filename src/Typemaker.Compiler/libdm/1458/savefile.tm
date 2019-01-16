@@ -1,5 +1,5 @@
 ﻿declare sealed /savefile {
-	set parent_type = /__tm_base_object
+	set parent_type = /__tm_base_object;
 
 	public var/string/cd;
 	public var/list/string/dir;

@@ -8,13 +8,13 @@ namespace Typemaker.Ast
 {
 	class CompilationUnitContextFactory : ICompilationUnitContextFactory
 	{
-		public TypemakerParser.Compilation_unitContext CreateCompilationUnitContext(Stream input, out IReadOnlyList<ParseError> parseErrors)
+		public TypemakerParser.Compilation_unitContext CreateCompilationUnitContext(string filePath, Stream input, out IReadOnlyList<ParseError> parseErrors)
 		{
 			var inputStream = new AntlrInputStream(input);
 			var lexer = new TypemakerLexer(inputStream);
 
 			var errors = new List<ParseError>();
-			var errorListener = new ReportingErrorListener(errors, lexer.Vocabulary);
+			var errorListener = new ReportingErrorListener(errors, lexer.Vocabulary, filePath);
 			lexer.AddErrorListener(errorListener);
 
 			var tokenStream = new CommonTokenStream(lexer);

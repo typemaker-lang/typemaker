@@ -2,7 +2,7 @@
 
 declare /proc/addtext(string/Arg1, string/Arg2, string/...) -> string;
 
-declare yield /proc/alert(mob/Usr = usr, nullable/string/Message, nullable/string/Title = null, string/Button1 = "Ok", nullble/string/Button2 = null, nullable/string/Button3 = null);
+declare yield /proc/alert(mob/Usr = usr, nullable/string/Message, nullable/string/Title = null, string/Button1 = "Ok", nullable/string/Button2 = null, nullable/string/Button3 = null);
 
 declare /proc/animate(...) -> void;
 

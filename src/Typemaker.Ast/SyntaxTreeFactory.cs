@@ -25,7 +25,7 @@ namespace Typemaker.Ast
 
 			TypemakerParser.Compilation_unitContext compilationUnitContext;
 			using (usingStream)
-				compilationUnitContext = compilationUnitContextFactory.CreateCompilationUnitContext(file, out parseErrors);
+				compilationUnitContext = compilationUnitContextFactory.CreateCompilationUnitContext(filePath, file, out parseErrors);
 
 			if (parseErrors.Count > 0)
 				return null;

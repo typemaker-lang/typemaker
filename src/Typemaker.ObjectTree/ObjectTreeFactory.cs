@@ -8,11 +8,12 @@ using Typemaker.Ast.Validation;
 
 namespace Typemaker.ObjectTree
 {
-	public static class ObjectTreeFactory
+	public sealed class ObjectTreeFactory : IObjectTreeFactory
 	{
-		public static IObjectTree CreateObjectTree() => new ObjectTree(new BaseObject());
 
-		public static void AddOrUpdateAst(IObjectTree objectTree, IValidSyntaxTree validSyntaxTree, IExpressionReducer expressionReducer)
+		public IObjectTree CreateObjectTree() => new ObjectTree(new BaseObject());
+
+		public void AddOrUpdateAst(IObjectTree objectTree, IValidSyntaxTree validSyntaxTree, IExpressionReducer expressionReducer)
 		{
 			if (objectTree == null)
 				throw new ArgumentNullException(nameof(objectTree));

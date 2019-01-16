@@ -9,16 +9,17 @@ namespace Typemaker.Ast
 	sealed class ReportingErrorListener : IAntlrErrorListener<Antlr4.Runtime.IToken>, IAntlrErrorListener<int>
 	{
 		readonly List<ParseError> output;
-
 		readonly IVocabulary vocabulary;
+		readonly string filePath;
 
-		public ReportingErrorListener(List<ParseError> output, IVocabulary vocabulary)
+		public ReportingErrorListener(List<ParseError> output, IVocabulary vocabulary, string filePath)
 		{
 			this.output = output ?? throw new ArgumentNullException(nameof(output));
 			this.vocabulary = vocabulary ?? throw new ArgumentNullException(nameof(vocabulary));
+			this.filePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
 		}
 
-		void AddParseError(int line, int column, string message) => output.Add(new ParseError((ulong)line, (ulong)column, message));
+		void AddParseError(int line, int column, string message) => output.Add(new ParseError(filePath, (ulong)line, (ulong)column, message));
 
 		public void SyntaxError([NotNull] IRecognizer recognizer, [Nullable] Antlr4.Runtime.IToken offendingSymbol, int line, int charPositionInLine, [NotNull] string msg, [Nullable] RecognitionException e)
 		{
