@@ -86,7 +86,9 @@ namespace Typemaker.Ast.Visitors
 					if (I is TypemakerParser.String_bodyContext)
 						Debugger.Break();
 					var childVisit = Visit(I);
-					Debug.Assert(childVisit != null);
+
+					Debug.Assert(childVisit != null, "Missing visitor implementation!");
+
 					foreach (var J in childVisit)
 						yield return Trivialize(J);
 				}
