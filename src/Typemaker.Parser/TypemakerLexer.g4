@@ -131,6 +131,8 @@ UNSAFE: 'unsafe';
 
 SLASH: '/';
 
+ARGLIST: 'arglist';
+
 CONCRETE: 'concrete';
 RESOURCE: 'resource';
 BOOL: 'bool';

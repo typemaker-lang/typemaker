@@ -192,7 +192,7 @@ target_var: target | var_definition_only;
 
 argument: expression | IDENTIFIER EQUALS expression;
 arguments: argument | argument COMMA arguments;
-argument_list: LPAREN RPAREN | LPAREN arguments* RPAREN;
+argument_list: LPAREN RPAREN | LPAREN arguments* RPAREN | LPAREN ARGLIST LPAREN expression RPAREN RPAREN;
 
 call_invocation
 	: CALL argument_list 
