@@ -108,25 +108,24 @@ precedence(-1) /world/proc/TgsInitializationComplete() -> void
 	return;
 
 //DATUM DEFINITIONS
-//unless otherwise specified all datums defined here should be considered read-only, warranty void if written
 
 //represents git revision information about the current world build
 /datum/tgs_revision_information {
-	var/nullable/string/commit;			//full sha of compiled commit
-	var/nullable/string/origin_commit;	//full sha of last known remote commit. This may be null if the TGS repository is not currently tracking a remote branch
+	readonly var/nullable/string/commit;			//full sha of compiled commit
+	readonly var/nullable/string/origin_commit;	//full sha of last known remote commit. This may be null if the TGS repository is not currently tracking a remote branch
 }
 
 //represents a version of tgstation-server
 /datum/tgs_version {
-	var/int/suite;			//The suite version, can be >=3
+	readonly var/int/suite;			//The suite version, can be >=3
 
 	//this group of variables can be null to represent a wild card
-	var/nullable/int/major;					//The major version
-	var/nullable/int/minor;					//The minor version
-	var/nullable/int/patch;					//The patch version
+	readonly var/nullable/int/major;					//The major version
+	readonly var/nullable/int/minor;					//The minor version
+	readonly var/nullable/int/patch;					//The patch version
 	
-	var/string/raw_parameter;			//The unparsed parameter
-	var/string/deprefixed_parameter;	//The version only bit of raw_parameter
+	readonly var/string/raw_parameter;			//The unparsed parameter
+	readonly var/string/deprefixed_parameter;	//The version only bit of raw_parameter
 }
 
 //if the tgs_version is a wildcard version
@@ -135,32 +134,32 @@ precedence(-1) /world/proc/TgsInitializationComplete() -> void
 
 //represents a merge of a GitHub pull request
 /datum/tgs_revision_information/test_merge {
-	var/int/number;				//pull request number
-	var/string/title;				//pull request title
-	var/string/body;				//pull request body
-	var/string/author;				//pull request github author
-	var/string/url;					//link to pull request html
-	var/string/pull_request_commit;	//commit of the pull request when it was merged
-	var/nullable/string/time_merged;			//timestamp of when the merge commit for the pull request was created
-	var/nullable/string/comment;				//optional comment left by the one who initiated the test merge
+	readonly var/int/number;				//pull request number
+	readonly var/string/title;				//pull request title
+	readonly var/string/body;				//pull request body
+	readonly var/string/author;				//pull request github author
+	readonly var/string/url;					//link to pull request html
+	readonly var/string/pull_request_commit;	//commit of the pull request when it was merged
+	readonly var/nullable/string/time_merged;			//timestamp of when the merge commit for the pull request was created
+	readonly var/nullable/string/comment;				//optional comment left by the one who initiated the test merge
 }
 
 //represents a connected chat channel
 /datum/tgs_chat_channel {
-	var/string/id;					//internal channel representation
-	var/string/friendly_name;		//user friendly channel name
-	var/string/connection_name;		//the name of the configured chat connection
-	var/bool/is_admin_channel;	//if the server operator has marked this channel for game admins only
-	var/bool/is_private_channel;	//if this is a private chat channel
-	var/nullable/string/custom_tag;					//user defined string associated with channel
+	readonly var/string/id;					//internal channel representation
+	readonly var/string/friendly_name;		//user friendly channel name
+	readonly var/string/connection_name;		//the name of the configured chat connection
+	readonly var/bool/is_admin_channel;	//if the server operator has marked this channel for game admins only
+	readonly var/bool/is_private_channel;	//if this is a private chat channel
+	readonly var/nullable/string/custom_tag;					//user defined string associated with channel
 }	
 
 //represents a chat user
 /datum/tgs_chat_user {
-	var/string/id;							//Internal user representation, requires channel to be unique
-	var/string/friendly_name;				//The user's public name
-	var/string/mention;						//The text to use to ping this user in a message
-	var/datum/tgs_chat_channel/channel;	//The /datum/tgs_chat_channel this user was from
+	readonly var/string/id;							//Internal user representation, requires channel to be unique
+	readonly var/string/friendly_name;				//The user's public name
+	readonly var/string/mention;						//The text to use to ping this user in a message
+	readonly var/datum/tgs_chat_channel/channel;	//The /datum/tgs_chat_channel this user was from
 }
 
 //user definable callback for handling events
@@ -172,9 +171,9 @@ precedence(-1) /datum/tgs_event_handler/proc/HandleEvent(int/event_code, ...) ->
 
 //user definable chat command
 /datum/tgs_chat_command {
-	var/string/name;			//the string to trigger this command on a chat bot. e.g. TGS3_BOT: do_this_command
-	var/string/help_text;		//help text for this command
-	var/bool/admin_only;	//set to TRUE if this command should only be usable by registered chat admins
+	readonly var/string/name;			//the string to trigger this command on a chat bot. e.g. TGS3_BOT: do_this_command
+	readonly var/string/help_text;		//help text for this command
+	readonly var/bool/admin_only;	//set to TRUE if this command should only be usable by registered chat admins
 }
 
 //override to implement command
