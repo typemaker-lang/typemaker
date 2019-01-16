@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Typemaker.Ast.Visitors;
+using Typemaker.Parser;
 
 namespace Typemaker.Ast
 {
@@ -18,9 +19,13 @@ namespace Typemaker.Ast
 			this.syntaxTreeVisitorFactory = syntaxTreeVisitorFactory ?? throw new ArgumentNullException(nameof(syntaxTreeVisitorFactory));
 		}
 
-		public ISyntaxTree CreateSyntaxTree(Stream file, string filePath, out IReadOnlyList<ParseError> parseErrors)
+		public ISyntaxTree CreateSyntaxTree(Stream file, string filePath, bool disposeStream, out IReadOnlyList<ParseError> parseErrors)
 		{
-			var compilationUnitContext = compilationUnitContextFactory.CreateCompilationUnitContext(file, out parseErrors);
+			var usingStream = disposeStream ? file : null;
+
+			TypemakerParser.Compilation_unitContext compilationUnitContext;
+			using (usingStream)
+				compilationUnitContext = compilationUnitContextFactory.CreateCompilationUnitContext(file, out parseErrors);
 
 			if (parseErrors.Count > 0)
 				return null;

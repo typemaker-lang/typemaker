@@ -5,6 +5,6 @@ namespace Typemaker.Ast
 {
 	public interface ISyntaxTreeFactory
 	{
-		ISyntaxTree CreateSyntaxTree(Stream file, string filePath, out IReadOnlyList<ParseError> parseErrors);
+		ISyntaxTree CreateSyntaxTree(Stream file, string filePath, bool disposeStream, out IReadOnlyList<ParseError> parseErrors);
 	}
 }

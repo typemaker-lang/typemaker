@@ -15,7 +15,7 @@ namespace Typemaker.Ast.Tests
 			ISyntaxTree result;
 			IReadOnlyList<ParseError> errors;
 			using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read))
-				result = SyntaxTreeFactory.Default.CreateSyntaxTree(fs, path, out errors);
+				result = SyntaxTreeFactory.Default.CreateSyntaxTree(fs, path, true, out errors);
 			if(errors.Count > 0 && !allowErrors)
 				Assert.True(false, $"{errors.Count} parse errors! First: ({errors[0].Location.Line}, {errors[0].Location.Column}): {errors[0].Description}");
 			return result;
