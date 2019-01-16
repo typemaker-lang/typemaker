@@ -258,7 +258,7 @@ identifier_or_constructor: SLASH IDENTIFIER | SLASH CONSTRUCTOR;
 
 access_decorator: PUBLIC | PROTECTED;
 precedence_decorator: PRECEDENCE LPAREN integer RPAREN;
-decorator: access_decorator | precedence_decorator | SEALED | PARTIAL | READONLY | ABSTRACT | VIRTUAL | FINAL | STATIC | INLINE | EXPLICIT | DECLARE;
+decorator: access_decorator | precedence_decorator | SEALED | PARTIAL | READONLY | ABSTRACT | VIRTUAL | FINAL | STATIC | INLINE | EXPLICIT | DECLARE | ASYNC | ENTRYPOINT | YIELD;
 
 proc_type: SLASH PROC | SLASH VERB;
 proc: decorator* fully_extended_identifier? proc_type? identifier_or_constructor proc_arguments proc_return_declaration?;

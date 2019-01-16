@@ -12,6 +12,9 @@
 		Partial,
 		Inline,
 		Virtual,
-		Final
+		Final,
+		Async,
+		Entrypoint,
+		Yield
 	}
 }

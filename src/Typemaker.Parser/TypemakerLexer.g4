@@ -147,6 +147,10 @@ PROC: 'proc';
 DICT: 'dict';
 GLOBAL: 'global';
 
+ASYNC: 'async';
+ENTRYPOINT: 'entrypoint';
+YIELD: 'yield';
+
 CALL: 'call';
 SRC: 'src';
 

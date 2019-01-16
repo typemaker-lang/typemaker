@@ -17,6 +17,7 @@
 		NestedUnsafeBlock,
 		InvalidTriviaLocation,
 		InvalidDeclarationSetType,
-		InvalidDeclarationSetTargetExpression
+		InvalidDeclarationSetTargetExpression,
+		IncompatibleYield
 	}
 }

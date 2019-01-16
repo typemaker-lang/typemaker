@@ -404,6 +404,57 @@ bar.tm
 }
 ```
 
+## Other Proc Decorators
+
+### async
+
+The `async` proc decorator is equivalent to adding `set waitfor = FALSE;` to the first line of your proc
+
+```dm
+async /proc/foo() -> void {}
+```
+is equivalent to
+```dm
+/proc/foo()
+	set waitfor = FALSE
+```
+
+You should prefer async as it allows the compiler to anaylze correctly. Async methods must return void
+
+### entrypoint
+
+The `entrypoint` proc decorator tells the analyzer this code can be invoked at the start of a new thread by the runtime.
+
+```dm
+/client/New()	//libdm functions have appropriate `entrypoint`s specified in their declarations
+{
+	..();
+	verbs += /datum/proc/foo;
+}
+
+//tells the compiler to anaylze static paths from this point
+entrypoint /datum/proc/foo(int/count) -> void {
+	set name = "Woot"
+	for(var I in 1 to count)
+		world.log << "woot!\n";
+}
+```
+
+### yield
+
+The `yield` decorator is valid only for proc declarations and indicates that calling the proc will put the current "thread" to sleep. This is used for static analysis
+
+i.e. The libdm declaration of some functions
+```
+declare yield /proc/sleep(float/ticks) -> void;
+
+declare /world {
+	yield proc/Export(string/Addr, nullable/file/File = null, nullable/bool/Persist = null, nullable/list/client/Clients = null);
+}
+```
+
+
+
 ## Optimization
 
 Transpiled code will use `:` access operators wherever possible. Code transpiled as relatively pathed for compiler optimization. Unreferenced code will be eliminated (`.vars` usage does not prevent this)

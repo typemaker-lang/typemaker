@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using Typemaker.Ast.Statements;
 using Typemaker.Ast.Statements.Expressions;
 
@@ -16,7 +15,7 @@ namespace Typemaker.Ast.Validation
 		 * So we do some validation ourselves
 		 * 
 		 * Full list:
-		 * Decorator types, ordering, and duplication
+		 * Decorator types, ordering, and duplication. No yield without declare
 		 * Set assignment statements in interfaces and objects (banned in intefaces, only allowed in object declarations, and only a certain list of valid identifiers with const expressions)
 		 * Enum assignments are const strings or ints
 		 * Nested unsafe blocks
@@ -25,6 +24,9 @@ namespace Typemaker.Ast.Validation
 
 		readonly DecoratorType[] decoratorOrder = new DecoratorType[] {
 			DecoratorType.Declare,
+			DecoratorType.Async,
+			DecoratorType.Yield,
+			DecoratorType.Entrypoint,
 			DecoratorType.Protection,
 			DecoratorType.Readonly,
 			DecoratorType.Sealed,
@@ -37,7 +39,7 @@ namespace Typemaker.Ast.Validation
 			DecoratorType.Precedence
 		};
 		readonly IReadOnlyDictionary<DecoratorType, DecoratorType[]> incompatibleDecorators = new Dictionary<DecoratorType, DecoratorType[]> {
-			{ DecoratorType.Explicit, new DecoratorType[] { DecoratorType.Declare } },
+			{ DecoratorType.Declare, new DecoratorType[] { DecoratorType.Explicit, DecoratorType.Entrypoint } },
 			{ DecoratorType.Abstract, new DecoratorType[] { DecoratorType.Sealed, DecoratorType.Virtual, DecoratorType.Final, DecoratorType.Inline } },
 			{ DecoratorType.Virtual, new DecoratorType[] { DecoratorType.Final, DecoratorType.Inline } },
 			{ DecoratorType.Final,new DecoratorType[] { DecoratorType.Inline } }
@@ -100,6 +102,15 @@ namespace Typemaker.Ast.Validation
 				}
 				seenDecoratorPositions.Add(decoratorType, decoratorTypeIndex);
 			}
+
+
+			if (seenDecoratorPositions.TryGetValue(DecoratorType.Yield, out var yieldIndex) && !seenDecoratorPositions.ContainsKey(DecoratorType.Declare))
+				yield return new ValidationError
+				{
+					Code = ValidationErrorCode.IncompatibleYield,
+					Description = "Only declared functions may yield!",
+					Location = decorated.Decorators.ElementAt(yieldIndex)
+				};
 
 			foreach (var I in seenDecoratorPositions)
 			{
